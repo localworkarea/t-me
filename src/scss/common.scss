@@ -61,36 +61,10 @@ html.lenis body {
   overflow: hidden;
 }
 
-
-.element {
-  .line {
-    overflow: hidden;
-  }
-
-  .word {
-    transform: translateY(100%);
-    transition: transform .55s cubic-bezier(.22, .89, .34, .96);
-  }
-
-  &._watcher-view {
-    .word {
-      transform: translateY(0);
-      transition-delay: calc(var(--index) * .03s);
-    }
-  }
-}
-
-.split-chars {
-  display: inline-block;
-  .char {
-    transform: translateY(100%);
-    transition: transform .85s cubic-bezier(.22, .89, .34, .96);
-  }
-}
-
 .split-words.set-span {
   .word {
     overflow: hidden;
+
     span {
       display: inline-block;
       transform: translateY(100%);
@@ -103,11 +77,30 @@ html.lenis body {
   .word {
     span {
       .loaded & {
-         transform: translateY(0);
-        
-         transition-delay: calc(0.3s + var(--index) * .03s);
-       }
+        transform: translateY(0);
+        transition: transform .85s cubic-bezier(.22, .89, .34, .96);
+        transition-delay: calc(0.3s + var(--index) * .03s);
+      }
     }
+  }
+}
+
+%viewSetSpan {
+  &._view {
+    .word {
+      span {
+        transform: translateY(0);
+        transition-delay: calc(var(--index) * .03s);
+      }
+    }
+  }
+}
+
+.split-chars {
+  display: inline-block;
+
+  .char {
+    transform: translateY(100%);
   }
 }
 
@@ -115,11 +108,13 @@ html.lenis body {
   .char {
     .loaded & {
       transform: translateY(0);
-      
+      transition: transform .85s cubic-bezier(.22, .89, .34, .96);
       transition-delay: calc(var(--index) * .03s);
     }
   }
 }
+
+
 
 
 // Ticker =================================
@@ -169,6 +164,7 @@ html.lenis body {
   }
 }
 
+// == TITLES ========================
 .title-hero {
   font-weight: 500;
   @include adaptiveValue("font-size", 51, 30, 2, 1920.98, 1440.98);
@@ -180,4 +176,60 @@ html.lenis body {
   font-weight: 700;
   @include adaptiveValue("font-size", 234, 180, 2, 1920.98, 1440.98);
   @include adaptiveValue("font-size", 180, 130, 3, 1440.98, 375.98);
+}
+
+.title-main {
+  @include adaptiveValue("font-size", 104, 80, 2, 1920.98, 1440.98);
+  @include adaptiveValue("font-size", 80, 40, 3, 1440.98, 375.98);
+  font-weight: 700;
+  line-height: 1.15;
+  @extend %viewSetSpan;
+}
+
+.title-44 {
+  // @include adaptiveValue("font-size", 104, 44, 2, 1920.98, 1440.98);
+  // @include adaptiveValue("font-size", 44, 24, 3, 1440.98, 375.98);
+  @include adaptiveValue("font-size", 44, 24, 0, 1440.98, 375.98);
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+// == TEXTS =======================
+.txt-main {
+  @include adaptiveValue("font-size", 57, 50, 2, 1920.98, 1440.98);
+  @include adaptiveValue("font-size", 50, 21, 3, 1440.98, 375.98);
+  font-weight: 700;
+  line-height: 1.2;
+  &.split-words {
+    .word {
+      opacity: 0.025;
+    }
+  }
+}
+
+.txt-20 {
+  font-weight: 600;
+  line-height: 1.2;
+  @include adaptiveValue("font-size", 20, 14,0,1920.98,375.98);
+}
+
+
+
+// == PADDINGS ==================
+.pt-40 {
+  padding-top: toRem(40);
+}
+.pt-90-60 {
+  @include adaptiveValue("padding-top", 90, 60,0,1440.98,375.98);
+}
+.pb-90-60 {
+  @include adaptiveValue("padding-bottom", 90, 60,0,1440.98,375.98);
+}
+
+// -- MARGINS =====================
+.mb-60-50 {
+  @include adaptiveValue("margin-bottom", 60, 50,0,1440.98,375.98);
+}
+.mb-44-30 {
+  @include adaptiveValue("margin-bottom", 44, 30,0,1440.98,375.98);
 }

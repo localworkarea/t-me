@@ -164,7 +164,7 @@ flsForms.formFieldsInit({
 
 // Спостерігач за об'єктами з атрибутом data-watch
 // Сніппет(HTML):
-// import './libs/watcher.js'
+import './libs/watcher.js'
 
 // Модуль поекранної прокрутки
 // Сніппет(HTML):

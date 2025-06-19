@@ -1,11 +1,13 @@
 %mlBeforeHero {
-  @include adaptiveValue("margin-left", 22, 17,0,1440.98,375.98);
+  @include adaptiveValue("margin-left", 22, 17, 0, 1440.98, 375.98);
 }
+
 section {
   position: relative;
   z-index: 1;
   background-color: var(--white);
 }
+
 .hero {
   position: fixed;
   z-index: 0;
@@ -16,75 +18,89 @@ section {
   min-height: 100svh;
   background-color: var(--gray);
   display: grid;
-  @include adaptiveValue("padding-bottom", 80, 26,0,1440.98,375.98);
+  @include adaptiveValue("padding-bottom", 80, 26, 0, 1440.98, 375.98);
   padding-top: toRem(64);
+
   @media (orientation: portrait) and (max-width:toEm(820.98)) {
     padding-top: toRem(110);
   }
+
   // .hero__container
   &__container {
     flex: 1;
     position: relative;
     z-index: 1;
   }
+
   // .hero__block
   &__block {
     height: 100%;
-    @media (min-width:$mobileSmall){
+
+    @media (min-width:$mobileSmall) {
       display: grid;
     }
-    @media (max-width:$mobileSmall){
+
+    @media (max-width:$mobileSmall) {
       display: flex;
       flex-direction: column;
     }
+
     &::before {
-      content:'';
+      content: '';
       width: 3.4vw;
       max-width: toRem(65);
       min-width: toRem(29);
       aspect-ratio: 1;
       background-color: var(--red);
       @extend %mlBeforeHero;
-      @media (min-width:$mobileSmall){
-         order: 2; 
-        }
-        @media (max-width:$mobileSmall){
-           margin-bottom: toRem(20); 
-        }
+
+      @media (min-width:$mobileSmall) {
+        order: 2;
+      }
+
+      @media (max-width:$mobileSmall) {
+        margin-bottom: toRem(20);
       }
     }
-    // .hero__title
-    &__title {
-      @media (min-width:$mobileSmall){
-        order: 3; 
-        align-self: flex-end;
-      }
-      @media (max-width:$mobileSmall){
-        flex: 1;
-      }
+  }
+
+  // .hero__title
+  &__title {
+    @media (min-width:$mobileSmall) {
+      order: 3;
+      align-self: flex-end;
     }
-    // .hero__t-me
-    &__t-me {
-      @extend %loadedChar;
+
+    @media (max-width:$mobileSmall) {
+      flex: 1;
     }
-    // .hero__txt
-    &__txt {
-      // line-height: 1.2;
-      max-width: toRem(770);
-      @extend %loadedSetSpan;
-    }
+  }
+
+  // .hero__t-me
+  &__t-me {
+    @extend %loadedChar;
+  }
+
+  // .hero__txt
+  &__txt {
+    // line-height: 1.2;
+    max-width: toRem(770);
+    @extend %loadedSetSpan;
+  }
+
   // .hero__year
   &__year {
-     @extend %mlBeforeHero;
-     font-size: toRem(17);
-     font-weight: 700;
-    @media (min-width:$mobileSmall){
-       order: 1; 
+    @extend %mlBeforeHero;
+    font-size: toRem(17);
+    font-weight: 700;
+
+    @media (min-width:$mobileSmall) {
+      order: 1;
     }
   }
+
   // .hero__cards
-  &__cards {
-  }
+  &__cards {}
 }
 
 .cards-hero {
@@ -93,135 +109,414 @@ section {
   z-index: 0;
   transform: scale(0.5);
   opacity: 0;
+
   .loaded & {
     opacity: 1;
     transform: scale(1);
     transition: opacity .3s ease, transform .65s ease;
     transition-delay: .65s;
   }
+
   // .cards-hero__card
   &__card {
     position: absolute;
     width: 100%;
     aspect-ratio: 300/257;
     background-repeat: no-repeat;
-    background-size:contain;
+    background-size: contain;
     background-position: 50%;
-    
+
     // animation-duration: 12s;
     animation-timing-function: ease-in-out;
     animation-iteration-count: infinite;
     animation-direction: alternate;
     line-height: 1.2;
 
-    @include adaptiveValue("padding", 40, 20,0,1440.98,375.98);
+    @include adaptiveValue("padding", 40, 20, 0, 1440.98, 375.98);
+
     span {
       display: block;
       will-change: transform;
     }
+
     &.card-01 {
       background-color: var(--blue);
-      @include adaptiveValue("max-width", 375,206,0,1440.98,480.98 );
+      @include adaptiveValue("max-width", 375, 206, 0, 1440.98, 480.98);
       background-image: url('@img/hero-cards/cards-1.svg');
       animation-name: moveCard01;
-      @media (min-width:$mobileSmall){
+
+      @media (min-width:$mobileSmall) {
         animation-duration: 35s;
       }
-      @media (max-width:$mobileSmall){
+
+      @media (max-width:$mobileSmall) {
         animation-duration: 12s;
       }
     }
+
     &.card-02 {
       background-color: var(--purple);
-      @include adaptiveValue("max-width", 375,198,0,1440.98,480.98 );
+      @include adaptiveValue("max-width", 375, 198, 0, 1440.98, 480.98);
       background-image: url('@img/hero-cards/cards-3.svg');
       animation-name: moveCard02;
-       @media (min-width:$mobileSmall){
+
+      @media (min-width:$mobileSmall) {
         animation-duration: 20s;
       }
-      @media (max-width:$mobileSmall){
+
+      @media (max-width:$mobileSmall) {
         animation-duration: 25s;
       }
     }
+
     &.card-03 {
       background-color: var(--green);
-      @include adaptiveValue("max-width", 300,206,0,1440.98,480.98 );
+      @include adaptiveValue("max-width", 300, 206, 0, 1440.98, 480.98);
       background-image: url('@img/hero-cards/cards-2.svg');
       animation-name: moveCard03;
-        @media (min-width:$mobileSmall){
+
+      @media (min-width:$mobileSmall) {
         animation-duration: 30s;
       }
-      @media (max-width:$mobileSmall){
+
+      @media (max-width:$mobileSmall) {
         animation-duration: 15s;
       }
     }
   }
-	// .cards-hero__title
-	&__title {
+
+  // .cards-hero__title
+  &__title {
     font-family: "Montserrat";
     font-weight: 700;
-    @include adaptiveValue("font-size", 50, 40,0,1440.98,375.98);
-	}
-	// .cards-hero__txt
-	&__txt {
-    @include adaptiveValue("font-size", 17, 15,0,1440.98,375.98);
-	}
+    @include adaptiveValue("font-size", 50, 40, 0, 1440.98, 375.98);
+  }
+
+  // .cards-hero__txt
+  &__txt {
+    @include adaptiveValue("font-size", 17, 15, 0, 1440.98, 375.98);
+  }
 }
 
-@media (min-width:$mobileSmall){
+@media (min-width:$mobileSmall) {
   @keyframes moveCard01 {
-    0%   { top: -10%; left: 35%; transform: scale(1) rotate(-15deg); }
-    25%  { top: 15%; left: 5%; transform: scale(0.65) rotate(15deg); }
-    50%  { top: 40%; left: 35%; transform: scale(1.1) rotate(-10deg); }
-    75%  { top: 25%; left: 0%; transform: scale(.8) rotate(20deg); }
-    100% { top: 35%; left: 15%; transform: scale(0.5) rotate(-20deg); }
-  }
-  
-  @keyframes moveCard02 {
-    0%   { top: 0%; right: 5%; transform: scale(1) rotate(-35deg); }
-    20%  { top: 10%; right: -10%; transform: scale(1.05) rotate(-10deg); }
-    40%  { top: 20%; right: 10%; transform: scale(0.95) rotate(40deg); }
-    60%  { top: 15%; right: -5%; transform: scale(1) rotate(5deg); }
-    80%  { top: 10%; right: 8%; transform: scale(1.05) rotate(10deg); }
-    100% { top: 5%; right: 5%; transform: scale(1) rotate(0deg); }
-  }
-  
-  @keyframes moveCard03 {
-    0%   { top: 50%; right: 20%; transform: scale(.5) rotate(0deg); }
-    16%  { top: 75%; right: 30%; transform: scale(0.95) rotate(-30deg); }
-    32%  { top: 90%; right: 15%; transform: scale(1.05) rotate(20deg); }
-    48%  { top: 40%; right: 25%; transform: scale(1) rotate(-5deg); }
-    62%  { top: 70%; right: 25%; transform: scale(1) rotate(10deg); }
-    76%  { top: 60%; right: 25%; transform: scale(.65) rotate(30deg); }
-    100% { top: 40%; right: 20%; transform: scale(1) rotate(-30deg); }
-  }
-    
-}
-@media (max-width:$mobileSmall){
-  @keyframes moveCard01 {
-    0%   { top: -15%; left: 55%; transform: scale(1) rotate(-10deg); }
-    33%  { top: 0%; left: 45%; transform: scale(0.95) rotate(10deg); }
-    66%  { top: -5%; left: 50%; transform: scale(1.05) rotate(-5deg); }
-    100% { top: 15%; left: 40%; transform: scale(1) rotate(-10deg); }
+    0% {
+      top: -10%;
+      left: 35%;
+      transform: scale(1) rotate(-15deg);
+    }
+
+    25% {
+      top: 15%;
+      left: 5%;
+      transform: scale(0.65) rotate(15deg);
+    }
+
+    50% {
+      top: 40%;
+      left: 35%;
+      transform: scale(1.1) rotate(-10deg);
+    }
+
+    75% {
+      top: 25%;
+      left: 0%;
+      transform: scale(.8) rotate(20deg);
+    }
+
+    100% {
+      top: 35%;
+      left: 15%;
+      transform: scale(0.5) rotate(-20deg);
+    }
   }
 
   @keyframes moveCard02 {
-    0%   { bottom: -5%; right: -10%; transform: scale(1) rotate(-10deg); }
-    30%  { bottom: 25%; right: 50%; transform: scale(0.8) rotate(10deg); }
-    40%  { bottom: -5%; right: -5%; transform: scale(1.25) rotate(-5deg); }
-    60%  { bottom: 25%; right: 5%; transform: scale(1) rotate(15deg); }
-    100% { bottom: 8%; right: 25%; transform: scale(0.9) rotate(0deg); }
+    0% {
+      top: 0%;
+      right: 5%;
+      transform: scale(1) rotate(-35deg);
+    }
+
+    20% {
+      top: 10%;
+      right: -10%;
+      transform: scale(1.05) rotate(-10deg);
+    }
+
+    40% {
+      top: 20%;
+      right: 10%;
+      transform: scale(0.95) rotate(40deg);
+    }
+
+    60% {
+      top: 15%;
+      right: -5%;
+      transform: scale(1) rotate(5deg);
+    }
+
+    80% {
+      top: 10%;
+      right: 8%;
+      transform: scale(1.05) rotate(10deg);
+    }
+
+    100% {
+      top: 5%;
+      right: 5%;
+      transform: scale(1) rotate(0deg);
+    }
   }
 
   @keyframes moveCard03 {
-    0%   { top: 50%; left: 10%; transform: scale(0.55) rotate(0deg); }
-    25%  { top: 70%; left: -10%; transform: scale(1.2) rotate(40deg); }
-    66%  { top: 85%; left: 30%; transform: scale(.6) rotate(-30deg); }
-    100% { top: 75%; left: 0%; transform: scale(1.3) rotate(0deg); }
-  } 
+    0% {
+      top: 50%;
+      right: 20%;
+      transform: scale(.5) rotate(0deg);
+    }
+
+    16% {
+      top: 75%;
+      right: 30%;
+      transform: scale(0.95) rotate(-30deg);
+    }
+
+    32% {
+      top: 90%;
+      right: 15%;
+      transform: scale(1.05) rotate(20deg);
+    }
+
+    48% {
+      top: 40%;
+      right: 25%;
+      transform: scale(1) rotate(-5deg);
+    }
+
+    62% {
+      top: 70%;
+      right: 25%;
+      transform: scale(1) rotate(10deg);
+    }
+
+    76% {
+      top: 60%;
+      right: 25%;
+      transform: scale(.65) rotate(30deg);
+    }
+
+    100% {
+      top: 40%;
+      right: 20%;
+      transform: scale(1) rotate(-30deg);
+    }
+  }
+
 }
 
+@media (max-width:$mobileSmall) {
+  @keyframes moveCard01 {
+    0% {
+      top: -15%;
+      left: 55%;
+      transform: scale(1) rotate(-10deg);
+    }
 
+    33% {
+      top: 0%;
+      left: 45%;
+      transform: scale(0.95) rotate(10deg);
+    }
+
+    66% {
+      top: -5%;
+      left: 50%;
+      transform: scale(1.05) rotate(-5deg);
+    }
+
+    100% {
+      top: 15%;
+      left: 40%;
+      transform: scale(1) rotate(-10deg);
+    }
+  }
+
+  @keyframes moveCard02 {
+    0% {
+      bottom: -5%;
+      right: -10%;
+      transform: scale(1) rotate(-10deg);
+    }
+
+    30% {
+      bottom: 25%;
+      right: 50%;
+      transform: scale(0.8) rotate(10deg);
+    }
+
+    40% {
+      bottom: -5%;
+      right: -5%;
+      transform: scale(1.25) rotate(-5deg);
+    }
+
+    60% {
+      bottom: 25%;
+      right: 5%;
+      transform: scale(1) rotate(15deg);
+    }
+
+    100% {
+      bottom: 8%;
+      right: 25%;
+      transform: scale(0.9) rotate(0deg);
+    }
+  }
+
+  @keyframes moveCard03 {
+    0% {
+      top: 50%;
+      left: 10%;
+      transform: scale(0.55) rotate(0deg);
+    }
+
+    25% {
+      top: 70%;
+      left: -10%;
+      transform: scale(1.2) rotate(40deg);
+    }
+
+    66% {
+      top: 85%;
+      left: 30%;
+      transform: scale(.6) rotate(-30deg);
+    }
+
+    100% {
+      top: 75%;
+      left: 0%;
+      transform: scale(1.3) rotate(0deg);
+    }
+  }
+}
+
+// == SERVICES-HOME SECTION ==========================================
 .services-home {
   margin-top: 100svh;
+
+  // .services-home__container
+  &__container {
+    padding-bottom: var(--heightEl);
+  }
+
+  // .services-home__title
+  &__title {}
+
+  // .services-home__txt
+  &__txt {
+    @media (min-width:$mobileSmall) {
+      max-width: 70%;
+    }
+
+    @media (max-width:$mobileSmall) {
+      max-width: 83%;
+    }
+  }
+
+  // .services-home__list
+  &__list {
+    position: relative;
+    list-style-type: none;
+    counter-reset: item;
+
+    @media (max-width:$mobileSmall){
+        
+    }
+   
+    li {
+      // position: relative;
+      &:before {
+        counter-increment: item;
+        content: "0"counter(item);
+        position: absolute;
+        right: 0;
+        top: 0;
+        font-family: "Montserrat", sans-serif;
+        font-weight: 400;
+        @include adaptiveValue("font-size", 300, 100,0,1440.98,480.98);
+      }
+    }
+
+    @media (min-width:toEm(820.98)) {
+      max-width: 68%;
+      margin-right: 3vw;
+      margin-left: auto;
+    }
+  }
+
+  // .services-home__item
+  &__item {
+     min-height:  var(--heightEl);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    border-top: toRem(1) solid var(--main);
+    background-color: var(--white);
+    @include adaptiveValue("padding-block", 44, 32, 0, 1440.98, 480.98);
+    @include adaptiveValue("padding-inline", 32, 0, 0, 1440.98, 480.98);
+    // &:not(:first-child) {
+      @media (min-width:$mobileSmall){
+        transform: translate(0,170%);
+      }
+      @media (max-width:$mobileSmall){
+        transform: translate(0,200%);
+      }
+    // }
+    &:last-child {
+      border-bottom: toRem(1) solid var(--main);
+    }
+
+  }
+
+  // .services-home__item-title
+  &__item-title {
+    @media (min-width:$mobileSmall) {
+      max-width: 56%;
+    }
+
+    @media (max-width:$mobileSmall) {
+      max-width: 76%;
+    }
+  }
+
+  // .services-home__item-txt
+  &__item-txt {
+    @media (min-width:$mobileSmall) {
+      max-width: 56%;
+    }
+
+    @media (max-width:$mobileSmall) {
+      max-width: 76%;
+    }
+  }
 }
+
+
+
+// == - SECTION ==========================================
+// == - SECTION ==========================================
+// == - SECTION ==========================================
+// == - SECTION ==========================================
+// == - SECTION ==========================================
+// == - SECTION ==========================================
+// == - SECTION ==========================================
+// == - SECTION ==========================================
+// == - SECTION ==========================================
+// == - SECTION ==========================================
+// == - SECTION ==========================================
+// == - SECTION ==========================================
+// == - SECTION ==========================================
+// == - SECTION ==========================================
+// == - SECTION ==========================================

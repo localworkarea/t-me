@@ -1,5 +1,6 @@
 (() => {
     "use strict";
+    const modules_flsModules = {};
     function addLoadedClass() {
         if (!document.documentElement.classList.contains("loading")) window.addEventListener("load", function() {
             setTimeout(function() {
@@ -7,6 +8,99 @@
             }, 0);
         });
     }
+    function uniqArray(array) {
+        return array.filter(function(item, index, self) {
+            return self.indexOf(item) === index;
+        });
+    }
+    class ScrollWatcher {
+        constructor(props) {
+            let defaultConfig = {
+                logging: true
+            };
+            this.config = Object.assign(defaultConfig, props);
+            this.observer;
+            !document.documentElement.classList.contains("watcher") ? this.scrollWatcherRun() : null;
+        }
+        scrollWatcherUpdate() {
+            this.scrollWatcherRun();
+        }
+        scrollWatcherRun() {
+            document.documentElement.classList.add("watcher");
+            this.scrollWatcherConstructor(document.querySelectorAll("[data-watch]"));
+        }
+        scrollWatcherConstructor(items) {
+            if (items.length) {
+                let uniqParams = uniqArray(Array.from(items).map(function(item) {
+                    if (item.dataset.watch === "navigator" && !item.dataset.watchThreshold) {
+                        let valueOfThreshold;
+                        if (item.clientHeight > 2) {
+                            valueOfThreshold = window.innerHeight / 2 / (item.clientHeight - 1);
+                            if (valueOfThreshold > 1) valueOfThreshold = 1;
+                        } else valueOfThreshold = 1;
+                        item.setAttribute("data-watch-threshold", valueOfThreshold.toFixed(2));
+                    }
+                    return `${item.dataset.watchRoot ? item.dataset.watchRoot : null}|${item.dataset.watchMargin ? item.dataset.watchMargin : "0px"}|${item.dataset.watchThreshold ? item.dataset.watchThreshold : 0}`;
+                }));
+                uniqParams.forEach(uniqParam => {
+                    let uniqParamArray = uniqParam.split("|");
+                    let paramsWatch = {
+                        root: uniqParamArray[0],
+                        margin: uniqParamArray[1],
+                        threshold: uniqParamArray[2]
+                    };
+                    let groupItems = Array.from(items).filter(function(item) {
+                        let watchRoot = item.dataset.watchRoot ? item.dataset.watchRoot : null;
+                        let watchMargin = item.dataset.watchMargin ? item.dataset.watchMargin : "0px";
+                        let watchThreshold = item.dataset.watchThreshold ? item.dataset.watchThreshold : 0;
+                        if (String(watchRoot) === paramsWatch.root && String(watchMargin) === paramsWatch.margin && String(watchThreshold) === paramsWatch.threshold) return item;
+                    });
+                    let configWatcher = this.getScrollWatcherConfig(paramsWatch);
+                    this.scrollWatcherInit(groupItems, configWatcher);
+                });
+            }
+        }
+        getScrollWatcherConfig(paramsWatch) {
+            let configWatcher = {};
+            if (document.querySelector(paramsWatch.root)) configWatcher.root = document.querySelector(paramsWatch.root);
+            configWatcher.rootMargin = paramsWatch.margin;
+            if (paramsWatch.margin.indexOf("px") < 0 && paramsWatch.margin.indexOf("%") < 0) return;
+            if (paramsWatch.threshold === "prx") {
+                paramsWatch.threshold = [];
+                for (let i = 0; i <= 1; i += .005) paramsWatch.threshold.push(i);
+            } else paramsWatch.threshold = paramsWatch.threshold.split(",");
+            configWatcher.threshold = paramsWatch.threshold;
+            return configWatcher;
+        }
+        scrollWatcherCreate(configWatcher) {
+            this.observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    this.scrollWatcherCallback(entry, observer);
+                });
+            }, configWatcher);
+        }
+        scrollWatcherInit(items, configWatcher) {
+            this.scrollWatcherCreate(configWatcher);
+            items.forEach(item => this.observer.observe(item));
+        }
+        scrollWatcherIntersecting(entry, targetElement) {
+            if (entry.isIntersecting) !targetElement.classList.contains("_view") ? targetElement.classList.add("_view") : null; else targetElement.classList.contains("_view") ? targetElement.classList.remove("_view") : null;
+        }
+        scrollWatcherOff(targetElement, observer) {
+            observer.unobserve(targetElement);
+        }
+        scrollWatcherCallback(entry, observer) {
+            const targetElement = entry.target;
+            this.scrollWatcherIntersecting(entry, targetElement);
+            targetElement.hasAttribute("data-watch-once") && entry.isIntersecting ? this.scrollWatcherOff(targetElement, observer) : null;
+            document.dispatchEvent(new CustomEvent("watcherCallback", {
+                detail: {
+                    entry
+                }
+            }));
+        }
+    }
+    modules_flsModules.watcher = new ScrollWatcher({});
     let addWindowScrollEvent = false;
     setTimeout(() => {
         if (addWindowScrollEvent) {
@@ -1356,83 +1450,74 @@
     });
     gsap.ticker.lagSmoothing(0);
     gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
-    const heroSection = document.querySelector(".hero");
-    function checkAndScrollToTop() {
-        const heroRect = heroSection.getBoundingClientRect();
-        const viewportHeight = window.innerHeight;
-        if (heroRect.top <= viewportHeight / 2 && heroRect.bottom >= viewportHeight / 2) setTimeout(() => {
-            document.documentElement.classList.remove("lock-body");
-        }, 0); else document.documentElement.classList.remove("lock-body");
-    }
-    window.addEventListener("load", function() {
-        setTimeout(function() {
-            checkAndScrollToTop();
-        }, 0);
-    });
-    const splitTextLines = document.querySelectorAll(".split-lines");
-    const splitTextWords = document.querySelectorAll(".split-words");
-    const splitTextChars = document.querySelectorAll(".split-chars");
-    const splitTextBoth = document.querySelectorAll(".split-both");
-    const splitSetSpan = document.querySelectorAll(".split-words.set-span");
-    function initSplitType() {
-        if (splitTextLines.length > 0) splitTextLines.forEach(element => {
-            new SplitType(element, {
-                types: "lines"
-            });
-        });
-        if (splitTextWords.length > 0) splitTextWords.forEach(element => {
-            new SplitType(element, {
-                types: "words"
-            });
-            const words = element.querySelectorAll(".word");
-            words.forEach((word, index) => {
-                word.style.setProperty("--index", index);
-            });
-        });
-        if (splitTextChars.length > 0) splitTextChars.forEach(element => {
-            new SplitType(element, {
-                types: "chars"
-            });
-            const chars = element.querySelectorAll(".char");
-            chars.forEach((char, index) => {
-                char.style.setProperty("--index", index);
-            });
-        });
-        if (splitTextBoth.length > 0) splitTextBoth.forEach(element => {
-            new SplitType(element, {
-                types: "lines, words"
-            });
-            const words = element.querySelectorAll(".word");
-            words.forEach((word, index) => {
-                word.style.setProperty("--index", index);
-            });
-        });
-        if (splitSetSpan.length > 0) splitSetSpan.forEach(splitSetSpan => {
-            const words = splitSetSpan.querySelectorAll(".word");
-            words.forEach(word => {
-                const text = word.textContent.trim();
-                word.innerHTML = `<span class="word-span">${text}</span>`;
-            });
-        });
-    }
-    initSplitType();
-    let lastWidth = window.innerWidth;
-    const resizeObserver = new ResizeObserver(entries => {
-        requestAnimationFrame(() => {
-            entries.forEach(entry => {
-                const currentWidth = entry.contentRect.width;
-                if (currentWidth !== lastWidth) {
-                    initSplitType();
-                    lastWidth = currentWidth;
-                }
-            });
-        });
-    });
-    resizeObserver.observe(document.body);
     document.addEventListener("DOMContentLoaded", () => {
         ScrollTrigger.refresh();
         const heroSection = document.querySelector(".hero");
+        function checkAndScrollToTop() {
+            const heroRect = heroSection.getBoundingClientRect();
+            const viewportHeight = window.innerHeight;
+            if (heroRect.top <= viewportHeight / 2 && heroRect.bottom >= viewportHeight / 2) setTimeout(() => {
+                document.documentElement.classList.remove("lock-body");
+                document.body.style.paddingRight = "";
+            }, 0); else {
+                document.documentElement.classList.remove("lock-body");
+                document.body.style.paddingRight = "";
+            }
+        }
+        window.addEventListener("load", function() {
+            setTimeout(function() {
+                checkAndScrollToTop();
+            }, 0);
+        });
+        const splitTextLines = document.querySelectorAll(".split-lines");
+        const splitTextWords = document.querySelectorAll(".split-words");
+        const splitTextChars = document.querySelectorAll(".split-chars");
+        const splitTextBoth = document.querySelectorAll(".split-both");
+        const splitSetSpan = document.querySelectorAll(".split-words.set-span");
+        function initSplitType() {
+            if (splitTextLines.length > 0) splitTextLines.forEach(element => {
+                new SplitType(element, {
+                    types: "lines"
+                });
+            });
+            if (splitTextWords.length > 0) splitTextWords.forEach(element => {
+                new SplitType(element, {
+                    types: "words"
+                });
+                const words = element.querySelectorAll(".word");
+                words.forEach((word, index) => {
+                    word.style.setProperty("--index", index);
+                });
+            });
+            if (splitTextChars.length > 0) splitTextChars.forEach(element => {
+                new SplitType(element, {
+                    types: "chars"
+                });
+                const chars = element.querySelectorAll(".char");
+                chars.forEach((char, index) => {
+                    char.style.setProperty("--index", index);
+                });
+            });
+            if (splitTextBoth.length > 0) splitTextBoth.forEach(element => {
+                new SplitType(element, {
+                    types: "lines, words"
+                });
+                const words = element.querySelectorAll(".word");
+                words.forEach((word, index) => {
+                    word.style.setProperty("--index", index);
+                });
+            });
+            if (splitSetSpan.length > 0) splitSetSpan.forEach(splitSetSpan => {
+                const words = splitSetSpan.querySelectorAll(".word");
+                words.forEach(word => {
+                    const text = word.textContent.trim();
+                    word.innerHTML = `<span class="word-span">${text}</span>`;
+                });
+            });
+        }
+        initSplitType();
         const heroContainer = document.querySelector(".hero__container");
+        const parentTxtMainSections = document.querySelectorAll(".parent-txt-main");
         function createAnimation() {
             ScrollTrigger.getAll().forEach(trigger => trigger.kill());
             if (heroSection) gsap.to(heroContainer, {
@@ -1445,17 +1530,78 @@
                     scrub: true
                 }
             });
+            if (parentTxtMainSections.length > 0) parentTxtMainSections.forEach(section => {
+                const txt = section.querySelector(".txt-main");
+                if (txt) {
+                    const words = txt.querySelectorAll(".word");
+                    if (words.length > 0) gsap.to(words, {
+                        opacity: 1,
+                        stagger: .1,
+                        ease: "none",
+                        scrollTrigger: {
+                            trigger: section,
+                            start: "35% bottom",
+                            end: "top 10%",
+                            scrub: true
+                        }
+                    });
+                }
+                const servixeHomecontainer = section.querySelector(".services-home__container");
+                const servixeHomeList = section.querySelector(".services-home__list");
+                const servixeHomeItems = section.querySelectorAll(".services-home__item");
+                if (servixeHomecontainer && servixeHomeList && servixeHomeItems.length > 0) {
+                    let maxHeight = 0;
+                    servixeHomeItems.forEach(item => {
+                        const itemHeight = item.offsetHeight;
+                        if (itemHeight > maxHeight) maxHeight = itemHeight;
+                    });
+                    servixeHomecontainer.style.setProperty("--heightEl", `${maxHeight}px`);
+                    ScrollTrigger.create({
+                        trigger: section,
+                        start: "top top",
+                        end: () => `${(servixeHomeItems.length - .8) * window.innerHeight}px`,
+                        pin: servixeHomecontainer,
+                        scrub: true
+                    });
+                    servixeHomeItems.forEach((item, i) => {
+                        gsap.to(item, {
+                            y: 0,
+                            ease: "none",
+                            scrollTrigger: {
+                                trigger: section,
+                                start: () => `top+=${(i - 1) * window.innerHeight}px`,
+                                end: () => `top+=${i * window.innerHeight}px`,
+                                scrub: true
+                            }
+                        });
+                        if (i > 0) {
+                            const prevItem = servixeHomeItems[i - 1];
+                            gsap.to(prevItem, {
+                                opacity: 0,
+                                ease: "none",
+                                scrollTrigger: {
+                                    trigger: section,
+                                    start: () => `top+=${(i - 1) * window.innerHeight}px`,
+                                    end: () => `top+=${i * window.innerHeight}px`,
+                                    scrub: true
+                                }
+                            });
+                        }
+                    });
+                }
+            });
         }
         createAnimation();
-        let lastWidth = window.innerWidth;
+        let lastWidth2 = window.innerWidth;
         window.addEventListener("resize", () => {
             const currentWidth = window.innerWidth;
-            if (currentWidth !== lastWidth) {
+            if (currentWidth !== lastWidth2) {
+                initSplitType();
                 setTimeout(() => {
                     createAnimation();
                 }, 300);
                 ScrollTrigger.refresh();
-                lastWidth = currentWidth;
+                lastWidth2 = currentWidth;
             }
         });
     });
