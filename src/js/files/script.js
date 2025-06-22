@@ -16,9 +16,9 @@ import SplitType from 'split-type'
 const lenis = new Lenis({
   // smooth: true,          // Включает плавный скролл
   // smoothTouch: true,     // Включает плавный скролл на мобильных устройствах
-  lerp: 0.06, // Определяет инерцию (чем ближе к 1, тем медленнее скролл)
+  lerp: 0.04, // Определяет инерцию (чем ближе к 1, тем медленнее скролл)
   // direction: 'vertical', // Задаёт направление скролла: 'vertical' или 'horizontal'
-  // mouseMultiplier: 2, // Чувствительность прокрутки мыши (увеличивайте, чтобы сделать скролл быстрее)
+  // mouseMultiplier: 1, // Чувствительность прокрутки мыши (увеличивайте, чтобы сделать скролл быстрее)
 })
 
 lenis.on('scroll', ScrollTrigger.update)
@@ -151,12 +151,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
+
+  const roadmapSection = document.querySelector('.roadmap');
+  const roadmapItems = document.querySelectorAll('.roadmap__item');
+
   function createAnimation() {
     ScrollTrigger.getAll().forEach(trigger => trigger.kill());
 
     if (heroSection) {
       gsap.to(heroContainer, {
         yPercent: -30,
+        opacity: 0,
         ease: "none",
         scrollTrigger: {
           trigger: heroSection,
@@ -188,55 +193,76 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         }
 
-        // === SERVICES-HOME АНИМАЦИЯ ===
-        const servixeHomecontainer = section.querySelector('.services-home__container');
-        const servixeHomeList = section.querySelector('.services-home__list');
-        const servixeHomeItems = section.querySelectorAll('.services-home__item');
 
-        if (servixeHomecontainer && servixeHomeList && servixeHomeItems.length > 0) {
-          // Вычисляем максимальную высоту
+
+      });
+
+    }
+
+    if (roadmapSection) {
+      roadmapItems.forEach((item) => {
+        gsap.to(item, {
+          y: 0,
+          opacity: 1,
+          // ease: "none",
+          scrollTrigger: {
+            trigger: roadmapSection,
+            start: "20% bottom",
+            end: "top 10%",
+            scrub: true,
+            // markers: true,
+          }
+        });
+      });
+    }
+
+
+    let mm = gsap.matchMedia();
+    mm.add({
+      min600: "(min-width:37.5em)",
+      max600: "(max-width:37.5em)",
+    }, (context) => {
+
+      let {
+        min600,
+        max600
+      } = context.conditions;
+
+      const servixeHome = document.querySelector('.services-home');
+      const servixeHomecontainer = document.querySelector('.services-home__container');
+      const servixeHomeItems = document.querySelectorAll('.services-home__item');
+
+      if (min600) {
+        // === SERVICES-HOME АНИМАЦИЯ ===
+        if (servixeHome) {
+
           let maxHeight = 0;
           servixeHomeItems.forEach(item => {
             const itemHeight = item.offsetHeight;
             if (itemHeight > maxHeight) maxHeight = itemHeight;
           });
-          // Присваиваем переменную --heightEl в px
           servixeHomecontainer.style.setProperty('--heightEl', `${maxHeight}px`);
 
-          // Пин всей секции
+          const lastIndex = servixeHomeItems.length - 1;
+          const pinEnd = () => `${(lastIndex - 0.9 + 1) * window.innerHeight}px`; // или lastIndex + 0.1
           ScrollTrigger.create({
-            trigger: section,
+            trigger: servixeHome,
             start: "top top",
-            // end: () => `+=${servixeHomeItems.length * 100}%`, // длина прокрутки — по количеству айтемов
-            end: () => `${(servixeHomeItems.length - 0.8) * window.innerHeight}px`,
+            end: pinEnd,
             pin: servixeHomecontainer,
             scrub: true,
-            // anticipatePin: true,
-            // markers: true,
           });
 
           // Наложение айтемов
-          // servixeHomeItems.forEach((item, i) => {
-          //   gsap.to(item, {
-          //     y: 0,
-          //     ease: "none",
-          //     scrollTrigger: {
-          //       trigger: section,
-          //       start: () => `top+=${(i - 1) * window.innerHeight}px`,
-          //       end: () => `top+=${(i + 0) * window.innerHeight}px`,
-          //       scrub: true,
-          //       // markers: true,
-          //     }
-          //   });
-          // });
           servixeHomeItems.forEach((item, i) => {
             gsap.to(item, {
               y: 0,
-              ease: "none",
+              // ease: "none",
               scrollTrigger: {
-                trigger: section,
-                start: () => `top+=${(i - 1) * window.innerHeight}px`,
-                end: () => `top+=${i * window.innerHeight}px`,
+                trigger: servixeHome,
+                start: () => `top+=${(i - 0.9) * window.innerHeight}px`,
+                // start: () => `top+=${(i - 0.1) * window.innerHeight}px`,
+                end: () => `top+=${(i - 0) * window.innerHeight}px`,
                 scrub: true,
                 // markers: true,
               }
@@ -247,10 +273,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
               gsap.to(prevItem, {
                 opacity: 0,
-                ease: "none",
+                // ease: "none",
                 scrollTrigger: {
-                  trigger: section,
-                  start: () => `top+=${(i - 1) * window.innerHeight}px`, // когда анимация текущего айтема стартует
+                  trigger: servixeHome,
+                  start: () => `top+=${(i - 1) * window.innerHeight}px`,
+                  // start: () => `top+=${(i - 0.5) * window.innerHeight}px`,
                   end: () => `top+=${i * window.innerHeight}px`,
                   scrub: true,
                   // markers: true,
@@ -260,8 +287,18 @@ document.addEventListener("DOMContentLoaded", () => {
           });
 
         }
-      });
-    }
+
+
+      }
+
+      if (max600) {
+
+
+      }
+
+    }); // end match media ----------------------------------------
+
+
   }
 
 

@@ -1442,7 +1442,7 @@
         return SplitType;
     }();
     const lenis = new Lenis({
-        lerp: .06
+        lerp: .04
     });
     lenis.on("scroll", ScrollTrigger.update);
     gsap.ticker.add(time => {
@@ -1518,10 +1518,13 @@
         initSplitType();
         const heroContainer = document.querySelector(".hero__container");
         const parentTxtMainSections = document.querySelectorAll(".parent-txt-main");
+        const roadmapSection = document.querySelector(".roadmap");
+        const roadmapItems = document.querySelectorAll(".roadmap__item");
         function createAnimation() {
             ScrollTrigger.getAll().forEach(trigger => trigger.kill());
             if (heroSection) gsap.to(heroContainer, {
                 yPercent: -30,
+                opacity: 0,
                 ease: "none",
                 scrollTrigger: {
                     trigger: heroSection,
@@ -1546,31 +1549,51 @@
                         }
                     });
                 }
-                const servixeHomecontainer = section.querySelector(".services-home__container");
-                const servixeHomeList = section.querySelector(".services-home__list");
-                const servixeHomeItems = section.querySelectorAll(".services-home__item");
-                if (servixeHomecontainer && servixeHomeList && servixeHomeItems.length > 0) {
+            });
+            if (roadmapSection) roadmapItems.forEach(item => {
+                gsap.to(item, {
+                    y: 0,
+                    opacity: 1,
+                    scrollTrigger: {
+                        trigger: roadmapSection,
+                        start: "20% bottom",
+                        end: "top 10%",
+                        scrub: true
+                    }
+                });
+            });
+            let mm = gsap.matchMedia();
+            mm.add({
+                min600: "(min-width:37.5em)",
+                max600: "(max-width:37.5em)"
+            }, context => {
+                let {min600, max600} = context.conditions;
+                const servixeHome = document.querySelector(".services-home");
+                const servixeHomecontainer = document.querySelector(".services-home__container");
+                const servixeHomeItems = document.querySelectorAll(".services-home__item");
+                if (min600) if (servixeHome) {
                     let maxHeight = 0;
                     servixeHomeItems.forEach(item => {
                         const itemHeight = item.offsetHeight;
                         if (itemHeight > maxHeight) maxHeight = itemHeight;
                     });
                     servixeHomecontainer.style.setProperty("--heightEl", `${maxHeight}px`);
+                    const lastIndex = servixeHomeItems.length - 1;
+                    const pinEnd = () => `${(lastIndex - .9 + 1) * window.innerHeight}px`;
                     ScrollTrigger.create({
-                        trigger: section,
+                        trigger: servixeHome,
                         start: "top top",
-                        end: () => `${(servixeHomeItems.length - .8) * window.innerHeight}px`,
+                        end: pinEnd,
                         pin: servixeHomecontainer,
                         scrub: true
                     });
                     servixeHomeItems.forEach((item, i) => {
                         gsap.to(item, {
                             y: 0,
-                            ease: "none",
                             scrollTrigger: {
-                                trigger: section,
-                                start: () => `top+=${(i - 1) * window.innerHeight}px`,
-                                end: () => `top+=${i * window.innerHeight}px`,
+                                trigger: servixeHome,
+                                start: () => `top+=${(i - .9) * window.innerHeight}px`,
+                                end: () => `top+=${(i - 0) * window.innerHeight}px`,
                                 scrub: true
                             }
                         });
@@ -1578,9 +1601,8 @@
                             const prevItem = servixeHomeItems[i - 1];
                             gsap.to(prevItem, {
                                 opacity: 0,
-                                ease: "none",
                                 scrollTrigger: {
-                                    trigger: section,
+                                    trigger: servixeHome,
                                     start: () => `top+=${(i - 1) * window.innerHeight}px`,
                                     end: () => `top+=${i * window.innerHeight}px`,
                                     scrub: true
@@ -1589,6 +1611,7 @@
                         }
                     });
                 }
+                if (max600) ;
             });
         }
         createAnimation();
