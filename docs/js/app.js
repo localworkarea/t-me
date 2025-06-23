@@ -1,151 +1,6 @@
 (() => {
     "use strict";
     const modules_flsModules = {};
-    function addLoadedClass() {
-        if (!document.documentElement.classList.contains("loading")) window.addEventListener("load", function() {
-            setTimeout(function() {
-                document.documentElement.classList.add("loaded");
-            }, 0);
-        });
-    }
-    function getDigFormat(item, sepp = " ") {
-        return item.toString().replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, `$1${sepp}`);
-    }
-    function uniqArray(array) {
-        return array.filter(function(item, index, self) {
-            return self.indexOf(item) === index;
-        });
-    }
-    class ScrollWatcher {
-        constructor(props) {
-            let defaultConfig = {
-                logging: true
-            };
-            this.config = Object.assign(defaultConfig, props);
-            this.observer;
-            !document.documentElement.classList.contains("watcher") ? this.scrollWatcherRun() : null;
-        }
-        scrollWatcherUpdate() {
-            this.scrollWatcherRun();
-        }
-        scrollWatcherRun() {
-            document.documentElement.classList.add("watcher");
-            this.scrollWatcherConstructor(document.querySelectorAll("[data-watch]"));
-        }
-        scrollWatcherConstructor(items) {
-            if (items.length) {
-                let uniqParams = uniqArray(Array.from(items).map(function(item) {
-                    if (item.dataset.watch === "navigator" && !item.dataset.watchThreshold) {
-                        let valueOfThreshold;
-                        if (item.clientHeight > 2) {
-                            valueOfThreshold = window.innerHeight / 2 / (item.clientHeight - 1);
-                            if (valueOfThreshold > 1) valueOfThreshold = 1;
-                        } else valueOfThreshold = 1;
-                        item.setAttribute("data-watch-threshold", valueOfThreshold.toFixed(2));
-                    }
-                    return `${item.dataset.watchRoot ? item.dataset.watchRoot : null}|${item.dataset.watchMargin ? item.dataset.watchMargin : "0px"}|${item.dataset.watchThreshold ? item.dataset.watchThreshold : 0}`;
-                }));
-                uniqParams.forEach(uniqParam => {
-                    let uniqParamArray = uniqParam.split("|");
-                    let paramsWatch = {
-                        root: uniqParamArray[0],
-                        margin: uniqParamArray[1],
-                        threshold: uniqParamArray[2]
-                    };
-                    let groupItems = Array.from(items).filter(function(item) {
-                        let watchRoot = item.dataset.watchRoot ? item.dataset.watchRoot : null;
-                        let watchMargin = item.dataset.watchMargin ? item.dataset.watchMargin : "0px";
-                        let watchThreshold = item.dataset.watchThreshold ? item.dataset.watchThreshold : 0;
-                        if (String(watchRoot) === paramsWatch.root && String(watchMargin) === paramsWatch.margin && String(watchThreshold) === paramsWatch.threshold) return item;
-                    });
-                    let configWatcher = this.getScrollWatcherConfig(paramsWatch);
-                    this.scrollWatcherInit(groupItems, configWatcher);
-                });
-            }
-        }
-        getScrollWatcherConfig(paramsWatch) {
-            let configWatcher = {};
-            if (document.querySelector(paramsWatch.root)) configWatcher.root = document.querySelector(paramsWatch.root);
-            configWatcher.rootMargin = paramsWatch.margin;
-            if (paramsWatch.margin.indexOf("px") < 0 && paramsWatch.margin.indexOf("%") < 0) return;
-            if (paramsWatch.threshold === "prx") {
-                paramsWatch.threshold = [];
-                for (let i = 0; i <= 1; i += .005) paramsWatch.threshold.push(i);
-            } else paramsWatch.threshold = paramsWatch.threshold.split(",");
-            configWatcher.threshold = paramsWatch.threshold;
-            return configWatcher;
-        }
-        scrollWatcherCreate(configWatcher) {
-            this.observer = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    this.scrollWatcherCallback(entry, observer);
-                });
-            }, configWatcher);
-        }
-        scrollWatcherInit(items, configWatcher) {
-            this.scrollWatcherCreate(configWatcher);
-            items.forEach(item => this.observer.observe(item));
-        }
-        scrollWatcherIntersecting(entry, targetElement) {
-            if (entry.isIntersecting) !targetElement.classList.contains("_view") ? targetElement.classList.add("_view") : null; else targetElement.classList.contains("_view") ? targetElement.classList.remove("_view") : null;
-        }
-        scrollWatcherOff(targetElement, observer) {
-            observer.unobserve(targetElement);
-        }
-        scrollWatcherCallback(entry, observer) {
-            const targetElement = entry.target;
-            this.scrollWatcherIntersecting(entry, targetElement);
-            targetElement.hasAttribute("data-watch-once") && entry.isIntersecting ? this.scrollWatcherOff(targetElement, observer) : null;
-            document.dispatchEvent(new CustomEvent("watcherCallback", {
-                detail: {
-                    entry
-                }
-            }));
-        }
-    }
-    modules_flsModules.watcher = new ScrollWatcher({});
-    let addWindowScrollEvent = false;
-    function digitsCounter() {
-        function digitsCountersInit(digitsCountersItems) {
-            let digitsCounters = digitsCountersItems ? digitsCountersItems : document.querySelectorAll("[data-digits-counter]");
-            if (digitsCounters.length) digitsCounters.forEach(digitsCounter => {
-                if (digitsCounter.hasAttribute("data-go")) return;
-                digitsCounter.setAttribute("data-go", "");
-                digitsCounter.dataset.digitsCounter = digitsCounter.innerHTML;
-                digitsCounter.innerHTML = `0`;
-                digitsCountersAnimate(digitsCounter);
-            });
-        }
-        function digitsCountersAnimate(digitsCounter) {
-            let startTimestamp = null;
-            const duration = parseFloat(digitsCounter.dataset.digitsCounterSpeed) ? parseFloat(digitsCounter.dataset.digitsCounterSpeed) : 1e3;
-            const startValue = parseFloat(digitsCounter.dataset.digitsCounter);
-            const format = digitsCounter.dataset.digitsCounterFormat ? digitsCounter.dataset.digitsCounterFormat : " ";
-            const startPosition = 0;
-            const step = timestamp => {
-                if (!startTimestamp) startTimestamp = timestamp;
-                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-                const value = Math.floor(progress * (startPosition + startValue));
-                digitsCounter.innerHTML = typeof digitsCounter.dataset.digitsCounterFormat !== "undefined" ? getDigFormat(value, format) : value;
-                if (progress < 1) window.requestAnimationFrame(step); else digitsCounter.removeAttribute("data-go");
-            };
-            window.requestAnimationFrame(step);
-        }
-        function digitsCounterAction(e) {
-            const entry = e.detail.entry;
-            const targetElement = entry.target;
-            if (targetElement.querySelectorAll("[data-digits-counter]").length) digitsCountersInit(targetElement.querySelectorAll("[data-digits-counter]"));
-        }
-        document.addEventListener("watcherCallback", digitsCounterAction);
-    }
-    setTimeout(() => {
-        if (addWindowScrollEvent) {
-            let windowScroll = new Event("windowScroll");
-            window.addEventListener("scroll", function(e) {
-                document.dispatchEvent(windowScroll);
-            });
-        }
-    }, 0);
     var version = "1.3.4";
     function clamp(min, input, max) {
         return Math.max(min, Math.min(input, max));
@@ -858,6 +713,210 @@
             this.rootElement.className = this.rootElement.className.replace(/lenis(-\w+)?/g, "").trim();
         }
     };
+    const lenis = new Lenis({
+        lerp: .04
+    });
+    lenis.on("scroll", ScrollTrigger.update);
+    gsap.ticker.add(time => {
+        lenis.raf(time * 1e3);
+    });
+    gsap.ticker.lagSmoothing(0);
+    function addLoadedClass() {
+        if (!document.documentElement.classList.contains("loading")) window.addEventListener("load", function() {
+            setTimeout(function() {
+                document.documentElement.classList.add("loaded");
+            }, 0);
+        });
+    }
+    let bodyLockStatus = true;
+    let bodyUnlock = (delay = 500) => {
+        if (bodyLockStatus) {
+            const lockPaddingElements = document.querySelectorAll("[data-lp]");
+            setTimeout(() => {
+                lockPaddingElements.forEach(lockPaddingElement => {
+                    lockPaddingElement.style.paddingRight = "";
+                });
+                document.body.style.paddingRight = "";
+                document.documentElement.classList.remove("lock");
+                const header = document.querySelector(".header");
+                if (header) header.style.paddingRight = "";
+            }, delay);
+            bodyLockStatus = false;
+            setTimeout(function() {
+                bodyLockStatus = true;
+            }, delay);
+        }
+    };
+    let bodyLock = (delay = 500) => {
+        if (bodyLockStatus) {
+            const lockPaddingElements = document.querySelectorAll("[data-lp]");
+            const lockPaddingValue = window.innerWidth - document.body.offsetWidth + "px";
+            lockPaddingElements.forEach(lockPaddingElement => {
+                lockPaddingElement.style.paddingRight = lockPaddingValue;
+            });
+            document.body.style.paddingRight = lockPaddingValue;
+            document.documentElement.classList.add("lock");
+            const header = document.querySelector(".header");
+            if (header) header.style.paddingRight = lockPaddingValue;
+            bodyLockStatus = false;
+            setTimeout(function() {
+                bodyLockStatus = true;
+            }, delay);
+        }
+    };
+    function menuInit() {
+        if (document.querySelector(".btn-header--menu")) document.addEventListener("click", function(e) {
+            const btn = e.target.closest(".btn-header--menu");
+            if (bodyLockStatus && btn) {
+                const isMenuOpen = document.documentElement.classList.toggle("menu-open");
+                if (isMenuOpen) {
+                    bodyLock();
+                    lenis.stop();
+                } else {
+                    bodyUnlock();
+                    lenis.start();
+                }
+            }
+        });
+    }
+    function getDigFormat(item, sepp = " ") {
+        return item.toString().replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, `$1${sepp}`);
+    }
+    function uniqArray(array) {
+        return array.filter(function(item, index, self) {
+            return self.indexOf(item) === index;
+        });
+    }
+    class ScrollWatcher {
+        constructor(props) {
+            let defaultConfig = {
+                logging: true
+            };
+            this.config = Object.assign(defaultConfig, props);
+            this.observer;
+            !document.documentElement.classList.contains("watcher") ? this.scrollWatcherRun() : null;
+        }
+        scrollWatcherUpdate() {
+            this.scrollWatcherRun();
+        }
+        scrollWatcherRun() {
+            document.documentElement.classList.add("watcher");
+            this.scrollWatcherConstructor(document.querySelectorAll("[data-watch]"));
+        }
+        scrollWatcherConstructor(items) {
+            if (items.length) {
+                let uniqParams = uniqArray(Array.from(items).map(function(item) {
+                    if (item.dataset.watch === "navigator" && !item.dataset.watchThreshold) {
+                        let valueOfThreshold;
+                        if (item.clientHeight > 2) {
+                            valueOfThreshold = window.innerHeight / 2 / (item.clientHeight - 1);
+                            if (valueOfThreshold > 1) valueOfThreshold = 1;
+                        } else valueOfThreshold = 1;
+                        item.setAttribute("data-watch-threshold", valueOfThreshold.toFixed(2));
+                    }
+                    return `${item.dataset.watchRoot ? item.dataset.watchRoot : null}|${item.dataset.watchMargin ? item.dataset.watchMargin : "0px"}|${item.dataset.watchThreshold ? item.dataset.watchThreshold : 0}`;
+                }));
+                uniqParams.forEach(uniqParam => {
+                    let uniqParamArray = uniqParam.split("|");
+                    let paramsWatch = {
+                        root: uniqParamArray[0],
+                        margin: uniqParamArray[1],
+                        threshold: uniqParamArray[2]
+                    };
+                    let groupItems = Array.from(items).filter(function(item) {
+                        let watchRoot = item.dataset.watchRoot ? item.dataset.watchRoot : null;
+                        let watchMargin = item.dataset.watchMargin ? item.dataset.watchMargin : "0px";
+                        let watchThreshold = item.dataset.watchThreshold ? item.dataset.watchThreshold : 0;
+                        if (String(watchRoot) === paramsWatch.root && String(watchMargin) === paramsWatch.margin && String(watchThreshold) === paramsWatch.threshold) return item;
+                    });
+                    let configWatcher = this.getScrollWatcherConfig(paramsWatch);
+                    this.scrollWatcherInit(groupItems, configWatcher);
+                });
+            }
+        }
+        getScrollWatcherConfig(paramsWatch) {
+            let configWatcher = {};
+            if (document.querySelector(paramsWatch.root)) configWatcher.root = document.querySelector(paramsWatch.root);
+            configWatcher.rootMargin = paramsWatch.margin;
+            if (paramsWatch.margin.indexOf("px") < 0 && paramsWatch.margin.indexOf("%") < 0) return;
+            if (paramsWatch.threshold === "prx") {
+                paramsWatch.threshold = [];
+                for (let i = 0; i <= 1; i += .005) paramsWatch.threshold.push(i);
+            } else paramsWatch.threshold = paramsWatch.threshold.split(",");
+            configWatcher.threshold = paramsWatch.threshold;
+            return configWatcher;
+        }
+        scrollWatcherCreate(configWatcher) {
+            this.observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    this.scrollWatcherCallback(entry, observer);
+                });
+            }, configWatcher);
+        }
+        scrollWatcherInit(items, configWatcher) {
+            this.scrollWatcherCreate(configWatcher);
+            items.forEach(item => this.observer.observe(item));
+        }
+        scrollWatcherIntersecting(entry, targetElement) {
+            if (entry.isIntersecting) !targetElement.classList.contains("_view") ? targetElement.classList.add("_view") : null; else targetElement.classList.contains("_view") ? targetElement.classList.remove("_view") : null;
+        }
+        scrollWatcherOff(targetElement, observer) {
+            observer.unobserve(targetElement);
+        }
+        scrollWatcherCallback(entry, observer) {
+            const targetElement = entry.target;
+            this.scrollWatcherIntersecting(entry, targetElement);
+            targetElement.hasAttribute("data-watch-once") && entry.isIntersecting ? this.scrollWatcherOff(targetElement, observer) : null;
+            document.dispatchEvent(new CustomEvent("watcherCallback", {
+                detail: {
+                    entry
+                }
+            }));
+        }
+    }
+    modules_flsModules.watcher = new ScrollWatcher({});
+    let addWindowScrollEvent = false;
+    function digitsCounter() {
+        function digitsCountersInit(digitsCountersItems) {
+            let digitsCounters = digitsCountersItems ? digitsCountersItems : document.querySelectorAll("[data-digits-counter]");
+            if (digitsCounters.length) digitsCounters.forEach(digitsCounter => {
+                if (digitsCounter.hasAttribute("data-go")) return;
+                digitsCounter.setAttribute("data-go", "");
+                digitsCounter.dataset.digitsCounter = digitsCounter.innerHTML;
+                digitsCounter.innerHTML = `0`;
+                digitsCountersAnimate(digitsCounter);
+            });
+        }
+        function digitsCountersAnimate(digitsCounter) {
+            let startTimestamp = null;
+            const duration = parseFloat(digitsCounter.dataset.digitsCounterSpeed) ? parseFloat(digitsCounter.dataset.digitsCounterSpeed) : 1e3;
+            const startValue = parseFloat(digitsCounter.dataset.digitsCounter);
+            const format = digitsCounter.dataset.digitsCounterFormat ? digitsCounter.dataset.digitsCounterFormat : " ";
+            const startPosition = 0;
+            const step = timestamp => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                const value = Math.floor(progress * (startPosition + startValue));
+                digitsCounter.innerHTML = typeof digitsCounter.dataset.digitsCounterFormat !== "undefined" ? getDigFormat(value, format) : value;
+                if (progress < 1) window.requestAnimationFrame(step); else digitsCounter.removeAttribute("data-go");
+            };
+            window.requestAnimationFrame(step);
+        }
+        function digitsCounterAction(e) {
+            const entry = e.detail.entry;
+            const targetElement = entry.target;
+            if (targetElement.querySelectorAll("[data-digits-counter]").length) digitsCountersInit(targetElement.querySelectorAll("[data-digits-counter]"));
+        }
+        document.addEventListener("watcherCallback", digitsCounterAction);
+    }
+    setTimeout(() => {
+        if (addWindowScrollEvent) {
+            let windowScroll = new Event("windowScroll");
+            window.addEventListener("scroll", function(e) {
+                document.dispatchEvent(windowScroll);
+            });
+        }
+    }, 0);
     (function() {
         function append() {
             var length = arguments.length;
@@ -1477,15 +1536,63 @@
         } ]);
         return SplitType;
     }();
-    const lenis = new Lenis({
-        lerp: .04
-    });
-    lenis.on("scroll", ScrollTrigger.update);
-    gsap.ticker.add(time => {
-        lenis.raf(time * 1e3);
-    });
-    gsap.ticker.lagSmoothing(0);
     gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+    const splitTextLines = document.querySelectorAll(".split-lines");
+    const splitTextWords = document.querySelectorAll(".split-words");
+    const splitTextChars = document.querySelectorAll(".split-chars");
+    const splitTextBoth = document.querySelectorAll(".split-both");
+    const splitSetSpan = document.querySelectorAll(".split-words.set-span");
+    function initSplitType() {
+        if (splitTextLines.length > 0) splitTextLines.forEach(element => {
+            new SplitType(element, {
+                types: "lines"
+            });
+        });
+        if (splitTextWords.length > 0) splitTextWords.forEach(element => {
+            new SplitType(element, {
+                types: "words"
+            });
+            const words = element.querySelectorAll(".word");
+            words.forEach((word, index) => {
+                word.style.setProperty("--index", index);
+            });
+        });
+        if (splitTextChars.length > 0) splitTextChars.forEach(element => {
+            new SplitType(element, {
+                types: "chars"
+            });
+            const chars = element.querySelectorAll(".char");
+            chars.forEach((char, index) => {
+                char.style.setProperty("--index", index);
+            });
+        });
+        if (splitTextBoth.length > 0) splitTextBoth.forEach(element => {
+            new SplitType(element, {
+                types: "lines, words"
+            });
+            const words = element.querySelectorAll(".word");
+            words.forEach((word, index) => {
+                word.style.setProperty("--index", index);
+            });
+        });
+        if (splitSetSpan.length > 0) splitSetSpan.forEach(splitSetSpan => {
+            const words = splitSetSpan.querySelectorAll(".word");
+            words.forEach(word => {
+                const text = word.textContent.trim();
+                word.innerHTML = `<span class="word-span">${text}</span>`;
+            });
+        });
+    }
+    initSplitType();
+    let lastWidth2 = window.innerWidth;
+    window.addEventListener("resize", () => {
+        const currentWidth = window.innerWidth;
+        if (currentWidth !== lastWidth2) {
+            initSplitType();
+            ScrollTrigger.refresh();
+            lastWidth2 = currentWidth;
+        }
+    });
     document.addEventListener("DOMContentLoaded", () => {
         ScrollTrigger.refresh();
         const heroSection = document.querySelector(".hero");
@@ -1505,53 +1612,6 @@
                 checkAndScrollToTop();
             }, 0);
         });
-        const splitTextLines = document.querySelectorAll(".split-lines");
-        const splitTextWords = document.querySelectorAll(".split-words");
-        const splitTextChars = document.querySelectorAll(".split-chars");
-        const splitTextBoth = document.querySelectorAll(".split-both");
-        const splitSetSpan = document.querySelectorAll(".split-words.set-span");
-        function initSplitType() {
-            if (splitTextLines.length > 0) splitTextLines.forEach(element => {
-                new SplitType(element, {
-                    types: "lines"
-                });
-            });
-            if (splitTextWords.length > 0) splitTextWords.forEach(element => {
-                new SplitType(element, {
-                    types: "words"
-                });
-                const words = element.querySelectorAll(".word");
-                words.forEach((word, index) => {
-                    word.style.setProperty("--index", index);
-                });
-            });
-            if (splitTextChars.length > 0) splitTextChars.forEach(element => {
-                new SplitType(element, {
-                    types: "chars"
-                });
-                const chars = element.querySelectorAll(".char");
-                chars.forEach((char, index) => {
-                    char.style.setProperty("--index", index);
-                });
-            });
-            if (splitTextBoth.length > 0) splitTextBoth.forEach(element => {
-                new SplitType(element, {
-                    types: "lines, words"
-                });
-                const words = element.querySelectorAll(".word");
-                words.forEach((word, index) => {
-                    word.style.setProperty("--index", index);
-                });
-            });
-            if (splitSetSpan.length > 0) splitSetSpan.forEach(splitSetSpan => {
-                const words = splitSetSpan.querySelectorAll(".word");
-                words.forEach(word => {
-                    const text = word.textContent.trim();
-                    word.innerHTML = `<span class="word-span">${text}</span>`;
-                });
-            });
-        }
-        initSplitType();
         const heroContainer = document.querySelector(".hero__container");
         const parentTxtMainSections = document.querySelectorAll(".parent-txt-main");
         const parentTxtMainSections2 = document.querySelectorAll(".parent-txt-main-2");
@@ -1606,7 +1666,8 @@
                         });
                         servixeHomecontainer.style.setProperty("--heightEl", `${maxHeight}px`);
                         const lastIndex = servixeHomeItems.length - 1;
-                        const pinEnd = () => `${(lastIndex - .9 + 1) * window.innerHeight}px`;
+                        const speedFactor = 1.5;
+                        const pinEnd = () => `${(lastIndex - .9 + 1) * (window.innerHeight / speedFactor)}px`;
                         ScrollTrigger.create({
                             trigger: servixeHome,
                             start: "top top",
@@ -1619,8 +1680,8 @@
                                 y: 0,
                                 scrollTrigger: {
                                     trigger: servixeHome,
-                                    start: () => `top+=${(i - .9) * window.innerHeight}px`,
-                                    end: () => `top+=${(i - 0) * window.innerHeight}px`,
+                                    start: () => `top+=${(i - .9) * (window.innerHeight / speedFactor)}px`,
+                                    end: () => `top+=${(i - 0) * (window.innerHeight / speedFactor)}px`,
                                     scrub: true
                                 }
                             });
@@ -1630,8 +1691,8 @@
                                     opacity: 0,
                                     scrollTrigger: {
                                         trigger: servixeHome,
-                                        start: () => `top+=${(i - 1) * window.innerHeight}px`,
-                                        end: () => `top+=${i * window.innerHeight}px`,
+                                        start: () => `top+=${(i - 1) * (window.innerHeight / speedFactor)}px`,
+                                        end: () => `top+=${i * (window.innerHeight / speedFactor)}px`,
                                         scrub: true
                                     }
                                 });
@@ -1654,7 +1715,7 @@
                             scrollTrigger: {
                                 trigger: casesSection,
                                 start: "top 50px",
-                                end: () => `+=${list.scrollWidth - scrollWrapper.clientWidth + totalPadding}`,
+                                end: () => `+=${(list.scrollWidth - scrollWrapper.clientWidth + totalPadding) / 1.5}`,
                                 scrub: true,
                                 pin: casesWrapper
                             }
@@ -1677,7 +1738,7 @@
                             scrollTrigger: {
                                 trigger: blogSection,
                                 start: "top 30px",
-                                end: () => `+=${scrollDistance}`,
+                                end: () => `+=${scrollDistance / 1.5}`,
                                 scrub: true,
                                 pin: blogWrapper
                             }
@@ -1769,5 +1830,6 @@
     });
     window["FLS"] = false;
     addLoadedClass();
+    menuInit();
     digitsCounter();
 })();

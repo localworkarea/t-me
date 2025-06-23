@@ -1,6 +1,24 @@
 // Підключення списку активних модулів
 import { flsModules } from "./modules.js";
 
+import Lenis from 'lenis'
+// npm i lenis
+// === ПЛАВНАЯ ПРОКРУТКА ЧЕРЕЗ LENIS =============================
+const lenis = new Lenis({
+  // smooth: true,          // Включает плавный скролл
+  // smoothTouch: true,     // Включает плавный скролл на мобильных устройствах
+  lerp: 0.04, // Определяет инерцию (чем ближе к 1, тем медленнее скролл)
+  // direction: 'vertical', // Задаёт направление скролла: 'vertical' или 'horizontal'
+  // mouseMultiplier: 1, // Чувствительность прокрутки мыши (увеличивайте, чтобы сделать скролл быстрее)
+})
+
+lenis.on('scroll', ScrollTrigger.update)
+gsap.ticker.add((time) => {
+  lenis.raf(time * 1000)
+})
+gsap.ticker.lagSmoothing(0)
+export { lenis }
+
 /* Перевірка підтримки webp, додавання класу webp або no-webp для HTML */
 export function isWebp() {
 	// Проверка поддержки webp 
@@ -428,24 +446,55 @@ export function tabs() {
 	}
 }
 // Модуль роботи з меню (бургер) =======================================================================================================================================================================================================================
+// export function menuInit() {
+// 	if (document.querySelector(".btn-header--menu")) {
+// 		document.addEventListener("click", function (e) {
+// 			if (bodyLockStatus && e.target.closest('.btn-header--menu')) {
+// 				bodyLockToggle();
+// 				document.documentElement.classList.toggle("menu-open");
+// 			}
+// 		});
+// 	};
+// }
+// export function menuOpen() {
+// 	bodyLock();
+// 	document.documentElement.classList.add("menu-open");
+// }
+// export function menuClose() {
+// 	bodyUnlock();
+// 	document.documentElement.classList.remove("menu-open");
+// }
 export function menuInit() {
-	if (document.querySelector(".icon-menu")) {
+	if (document.querySelector(".btn-header--menu")) {
 		document.addEventListener("click", function (e) {
-			if (bodyLockStatus && e.target.closest('.icon-menu')) {
-				bodyLockToggle();
-				document.documentElement.classList.toggle("menu-open");
+			const btn = e.target.closest('.btn-header--menu');
+			if (bodyLockStatus && btn) {
+				const isMenuOpen = document.documentElement.classList.toggle("menu-open");
+
+				if (isMenuOpen) {
+					bodyLock();
+					lenis.stop(); // ⛔ Останавливаем скролл
+				} else {
+					bodyUnlock();
+					lenis.start(); // ✅ Возобновляем скролл
+				}
 			}
 		});
-	};
+	}
 }
+
 export function menuOpen() {
 	bodyLock();
+	lenis.stop(); // Остановка при открытии вручную
 	document.documentElement.classList.add("menu-open");
 }
+
 export function menuClose() {
 	bodyUnlock();
+	lenis.start(); // Возобновление при закрытии вручную
 	document.documentElement.classList.remove("menu-open");
 }
+
 // Модуль "показати ще" =======================================================================================================================================================================================================================
 export function showMore() {
 	window.addEventListener("load", function (e) {
