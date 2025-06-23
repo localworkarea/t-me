@@ -8,6 +8,9 @@
             }, 0);
         });
     }
+    function getDigFormat(item, sepp = " ") {
+        return item.toString().replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, `$1${sepp}`);
+    }
     function uniqArray(array) {
         return array.filter(function(item, index, self) {
             return self.indexOf(item) === index;
@@ -102,6 +105,39 @@
     }
     modules_flsModules.watcher = new ScrollWatcher({});
     let addWindowScrollEvent = false;
+    function digitsCounter() {
+        function digitsCountersInit(digitsCountersItems) {
+            let digitsCounters = digitsCountersItems ? digitsCountersItems : document.querySelectorAll("[data-digits-counter]");
+            if (digitsCounters.length) digitsCounters.forEach(digitsCounter => {
+                if (digitsCounter.hasAttribute("data-go")) return;
+                digitsCounter.setAttribute("data-go", "");
+                digitsCounter.dataset.digitsCounter = digitsCounter.innerHTML;
+                digitsCounter.innerHTML = `0`;
+                digitsCountersAnimate(digitsCounter);
+            });
+        }
+        function digitsCountersAnimate(digitsCounter) {
+            let startTimestamp = null;
+            const duration = parseFloat(digitsCounter.dataset.digitsCounterSpeed) ? parseFloat(digitsCounter.dataset.digitsCounterSpeed) : 1e3;
+            const startValue = parseFloat(digitsCounter.dataset.digitsCounter);
+            const format = digitsCounter.dataset.digitsCounterFormat ? digitsCounter.dataset.digitsCounterFormat : " ";
+            const startPosition = 0;
+            const step = timestamp => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                const value = Math.floor(progress * (startPosition + startValue));
+                digitsCounter.innerHTML = typeof digitsCounter.dataset.digitsCounterFormat !== "undefined" ? getDigFormat(value, format) : value;
+                if (progress < 1) window.requestAnimationFrame(step); else digitsCounter.removeAttribute("data-go");
+            };
+            window.requestAnimationFrame(step);
+        }
+        function digitsCounterAction(e) {
+            const entry = e.detail.entry;
+            const targetElement = entry.target;
+            if (targetElement.querySelectorAll("[data-digits-counter]").length) digitsCountersInit(targetElement.querySelectorAll("[data-digits-counter]"));
+        }
+        document.addEventListener("watcherCallback", digitsCounterAction);
+    }
     setTimeout(() => {
         if (addWindowScrollEvent) {
             let windowScroll = new Event("windowScroll");
@@ -1518,6 +1554,8 @@
         initSplitType();
         const heroContainer = document.querySelector(".hero__container");
         const parentTxtMainSections = document.querySelectorAll(".parent-txt-main");
+        const parentTxtMainSections2 = document.querySelectorAll(".parent-txt-main-2");
+        const parentTxtMainSections3 = document.querySelector(".team__text");
         const roadmapSection = document.querySelector(".roadmap__container");
         const roadmapItems = document.querySelectorAll(".roadmap__item");
         function createAnimation() {
@@ -1613,6 +1651,59 @@
                     }
                 });
             });
+            const casesSection = document.querySelector(".cases-home");
+            const casesWrapper = casesSection?.querySelector(".cases-home__content");
+            const scrollWrapper = casesWrapper?.querySelector(".cases-home__scroll");
+            const list = scrollWrapper?.querySelector(".cases-home__list");
+            const items = list?.querySelectorAll(".cases-home__item");
+            if (casesSection && scrollWrapper && list && items.length > 0) {
+                const style = window.getComputedStyle(scrollWrapper);
+                const paddingLeft = parseFloat(style.paddingLeft) || 0;
+                const paddingRight = parseFloat(style.paddingRight) || 0;
+                const totalPadding = paddingLeft + paddingRight;
+                gsap.to(list, {
+                    x: () => -(list.scrollWidth - scrollWrapper.clientWidth + totalPadding),
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: casesSection,
+                        start: "top 50px",
+                        end: () => `+=${list.scrollWidth - scrollWrapper.clientWidth + totalPadding}`,
+                        scrub: true,
+                        pin: casesWrapper
+                    }
+                });
+            }
+            if (parentTxtMainSections2.length > 0) parentTxtMainSections2.forEach(section => {
+                const txt = section.querySelector(".txt-main");
+                if (txt) {
+                    const words = txt.querySelectorAll(".word");
+                    if (words.length > 0) gsap.to(words, {
+                        opacity: 1,
+                        stagger: .1,
+                        ease: "none",
+                        scrollTrigger: {
+                            trigger: section,
+                            start: "top 60%",
+                            end: "top 20%",
+                            scrub: true
+                        }
+                    });
+                }
+            });
+            if (parentTxtMainSections3) {
+                const words = parentTxtMainSections3.querySelectorAll(".word");
+                if (words.length > 0) gsap.to(words, {
+                    opacity: 1,
+                    stagger: .2,
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: parentTxtMainSections3,
+                        start: "top 80%",
+                        end: "top 10%",
+                        scrub: true
+                    }
+                });
+            }
         }
         createAnimation();
         let lastWidth2 = window.innerWidth;
@@ -1653,4 +1744,5 @@
     });
     window["FLS"] = false;
     addLoadedClass();
+    digitsCounter();
 })();

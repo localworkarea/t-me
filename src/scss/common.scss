@@ -190,6 +190,13 @@ html.lenis body {
   @extend %viewSetSpan;
 }
 
+.title-45 {
+   @include adaptiveValue("font-size", 58, 45, 2, 1920.98, 1440.98);
+  @include adaptiveValue("font-size", 45, 30, 3, 1440.98, 375.98);
+  font-weight: 700;
+  line-height: 1.1;
+}
+
 .title-44 {
   // @include adaptiveValue("font-size", 104, 44, 2, 1920.98, 1440.98);
   // @include adaptiveValue("font-size", 44, 24, 3, 1440.98, 375.98);
@@ -219,6 +226,13 @@ html.lenis body {
   }
 }
 
+
+.txt-23 {
+  font-weight: 500;
+  line-height: 1.2;
+  @include adaptiveValue("font-size", 30, 18, 0, 1920.98, 375.98);
+}
+
 .txt-20 {
   font-weight: 600;
   line-height: 1.2;
@@ -246,6 +260,9 @@ html.lenis body {
 }
 
 // -- MARGINS =====================
+.mb-90-60 {
+  @include adaptiveValue("margin-bottom", 60, 50, 0, 1440.98, 375.98);
+}
 .mb-60-50 {
   @include adaptiveValue("margin-bottom", 60, 50, 0, 1440.98, 375.98);
 }
@@ -270,4 +287,16 @@ html.lenis body {
       font-family: "Montserrat", sans-serif;
     }
   }
+}
+
+
+// ---- lines ----------
+%lineElements {
+  overflow: hidden;
+  -webkit-line-clamp: 3;
+  display: box;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  white-space: normal;
 }

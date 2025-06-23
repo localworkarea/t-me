@@ -148,12 +148,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const heroContainer = document.querySelector('.hero__container');
   const parentTxtMainSections = document.querySelectorAll('.parent-txt-main');
-
-
-
+  const parentTxtMainSections2 = document.querySelectorAll('.parent-txt-main-2');
+  const parentTxtMainSections3 = document.querySelector('.team__text');
 
   const roadmapSection = document.querySelector('.roadmap__container');
   const roadmapItems = document.querySelectorAll('.roadmap__item');
+
+
 
   function createAnimation() {
     ScrollTrigger.getAll().forEach(trigger => trigger.kill());
@@ -193,13 +194,9 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         }
 
-
-
       });
 
     }
-
-
 
 
     let mm = gsap.matchMedia();
@@ -273,16 +270,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
         }
 
-        
+
       }
-      
+
       if (max600) {
-        
-        
+
+
       }
-      
+
     }); // end match media ----------------------------------------
-    
+
+
+
     if (roadmapSection) {
       roadmapItems.forEach((item1) => {
         gsap.to(item1, {
@@ -299,6 +298,92 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       });
     }
+
+    const casesSection = document.querySelector('.cases-home');
+    const casesWrapper = casesSection ?.querySelector('.cases-home__content');
+    const scrollWrapper = casesWrapper ?.querySelector('.cases-home__scroll');
+    const list = scrollWrapper ?.querySelector('.cases-home__list');
+    const items = list ?.querySelectorAll('.cases-home__item');
+
+    if (casesSection && scrollWrapper && list && items.length > 0) {
+      const style = window.getComputedStyle(scrollWrapper);
+      const paddingLeft = parseFloat(style.paddingLeft) || 0;
+      const paddingRight = parseFloat(style.paddingRight) || 0;
+      const totalPadding = paddingLeft + paddingRight;
+
+      const scrollTween = gsap.to(list, {
+        x: () => -(list.scrollWidth - scrollWrapper.clientWidth + totalPadding),
+        ease: "none",
+        scrollTrigger: {
+          trigger: casesSection,
+          start: "top 50px",
+          end: () => `+=${list.scrollWidth - scrollWrapper.clientWidth + totalPadding}`,
+          scrub: true,
+          pin: casesWrapper,
+          // anticipatePin: true,
+          // markers: true,
+        }
+      });
+
+      // items.forEach((item) => {
+      //   gsap.to(item, {
+      //     opacity: 1,
+      //     scale: 1,
+      //     scrollTrigger: {
+      //       trigger: item,
+      //       containerAnimation: scrollTween,
+      //       start: "left center",
+      //       end: "right center",
+      //       scrub: true,
+      //     }
+      //   });
+      // });
+    }
+
+        
+    if (parentTxtMainSections2.length > 0) {
+      parentTxtMainSections2.forEach((section) => {
+        const txt = section.querySelector('.txt-main');
+        if (txt) {
+          const words = txt.querySelectorAll('.word');
+          if (words.length > 0) {
+            gsap.to(words, {
+              opacity: 1,
+              stagger: 0.1,
+              ease: "none",
+              scrollTrigger: {
+                trigger: section,
+                start: "top 60%",
+                end: "top 20%",
+                scrub: true,
+                // markers: true,
+              },
+            });
+          }
+        }
+
+      });
+
+    }
+    if (parentTxtMainSections3) {
+          const words = parentTxtMainSections3.querySelectorAll('.word');
+          if (words.length > 0) {
+            gsap.to(words, {
+              opacity: 1,
+              stagger: 0.2,
+              ease: "none",
+              scrollTrigger: {
+                trigger: parentTxtMainSections3,
+                start: "top 80%",
+                end: "top 10%",
+                scrub: true,
+                // markers: true,
+              },
+            });
+          }
+    }
+
+
 
 
   }
