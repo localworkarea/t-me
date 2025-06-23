@@ -872,13 +872,7 @@ section,
         position: absolute;
         top: toRem(60);
         right: toRem(32);
-        background-image: url("@img/icons/arrow.svg");
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: contain;
-        // width: toRem(32);
-        aspect-ratio: 43/32;
-        @include adaptiveValue("width", 40, 32, 0, 1920.98, 1440.98);
+         @extend %arrow;
       }
     }
 
@@ -948,13 +942,7 @@ section,
     }
 
     &::after {
-      content: '';
-      background-image: url("@img/icons/arrow.svg");
-      background-repeat: no-repeat;
-      background-position: center;
-      background-size: contain;
-      aspect-ratio: 43/32;
-      @include adaptiveValue("width", 40, 32, 0, 1920.98, 1440.98);
+      @extend %arrow;
       transition: transform .3s ease;
     }
   }
@@ -975,7 +963,8 @@ section,
   // .cases-home__item
   &__item {
     position: relative;
-
+    // transform: translateY(50%);
+    // transform: scale(0.65);
     @media (min-width:toEm(820.98)) {
       .cases-home & {
         flex: 0 0 44%;
@@ -1277,21 +1266,118 @@ section,
 
 // == TIAM SECTION ==========================================
 .team {
-		// .team__container
-		&__container {
-		}
-		// .team__title
-		&__title {
-		}
-		// .team__text
-		&__text {
+	// .team__container
+	&__container {
+	}
+	// .team__title
+	&__title {
+	}
+	// .team__text
+	&__text {
+    @media (min-width:$mobileSmall){
       max-width: 95%;
-		}
+    }
+	}
+	// .team__list
+	&__list {
+    display: grid;
+    @media (min-width:toEm(600.98)){
+      grid-template-columns: repeat(3,1fr);
+    }
+    @media (max-width: toEm(600.98)) and (min-width:$mobileSmall) {
+      grid-template-columns: repeat(2,1fr);
+    }
+    @media (min-width:$mobileSmall){
+      gap: toRem(32);
+    }
+    @media (max-width:$mobileSmall){
+       gap: toRem(54); 
+    }
+	}
+	// .team__item
+	&__item {
+	}
+}
+
+.item-team {
+	// .item-team__img
+	&__img {
+    overflow: hidden;
+    clip-path: polygon(50% 0, 50% 0, 50% 0%, 50% 0%);
+    transition: clip-path 1.2s  cubic-bezier(.22, .89, .34, .96);
+    margin-bottom: toRem(32);
+    ._view & {
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    }
+    @media (any-hover: hover){
+      &:hover{
+        img {
+          transform: scale(1.1);
+        }
+      }
+    }
+    img {
+      transition: transform 1s  cubic-bezier(.22, .89, .34, .96);
+    }
+	}
+	// .item-team__footer
+	&__footer {
+    text-transform: uppercase;
+    transition: opacity .85s ease;
+    opacity: 0.1;
+    ._view & {
+      opacity: 1;
+    }
+	}
+	// .item-team__position
+	&__position {
+    margin-bottom: toRem(16);
+	}
+	// .item-team__name
+	&__name {
+    font-size: toRem(21);
+    font-weight: 500;
+	}
 }
 
 
 // == - SECTION ==========================================
 // == - SECTION ==========================================
+.brief {
+		// .brief__container
+		&__container {
+		}
+		// .brief__title
+		&__title {
+		}
+		// .brief__block
+		&__block {
+      display: flex;
+      gap: toRem(30);
+      @media (min-width:$mobile){
+        align-items: center;
+        justify-content: space-between;
+      }
+      @media (max-width:$mobile){
+        flex-direction: column;          
+      }
+		}
+		// .brief__text
+		&__text {
+      @media (min-width:$mobileSmall){
+        max-width: 48%;
+      }
+		}
+		// .brief__btn
+		&__btn {
+      @media (max-width:$mobile){
+         align-self: flex-end; 
+      }
+		}
+}
+
+
+
 // == - SECTION ==========================================
 // == - SECTION ==========================================
 // == - SECTION ==========================================

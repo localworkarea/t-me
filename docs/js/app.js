@@ -1683,18 +1683,18 @@
                         ease: "none",
                         scrollTrigger: {
                             trigger: section,
-                            start: "top 60%",
-                            end: "top 20%",
+                            start: "top 80%",
+                            end: "top 10%",
                             scrub: true
                         }
                     });
                 }
             });
             if (parentTxtMainSections3) {
-                const words = parentTxtMainSections3.querySelectorAll(".word");
+                const words = parentTxtMainSections3.querySelectorAll(".word-span");
                 if (words.length > 0) gsap.to(words, {
-                    opacity: 1,
-                    stagger: .2,
+                    y: "-8%",
+                    stagger: .1,
                     ease: "none",
                     scrollTrigger: {
                         trigger: parentTxtMainSections3,

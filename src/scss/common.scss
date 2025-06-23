@@ -100,8 +100,8 @@ html.lenis body {
 
 .split-chars {
   display: inline-block;
-
   .char {
+       transition: transform .85s cubic-bezier(.22, .89, .34, .96);
     transform: translateY(100%);
   }
 }
@@ -212,17 +212,42 @@ html.lenis body {
   line-height: 1.1;
 }
 
+.title-33 {
+  @include adaptiveValue("font-size", 43, 33, 2, 1920.98, 1440.98);
+  @include adaptiveValue("font-size", 33, 26, 3, 1440.98, 375.98);
+  font-weight: 700;
+  line-height: 1.1;
+}
+
 // == TEXTS =======================
 .txt-main {
   @include adaptiveValue("font-size", 57, 50, 2, 1920.98, 1440.98);
   @include adaptiveValue("font-size", 50, 21, 3, 1440.98, 375.98);
   font-weight: 700;
   line-height: 1.2;
+  
+  &--33 {
+    @include adaptiveValue("font-size", 42, 33, 2, 1920.98, 1440.98);
+    @include adaptiveValue("font-size", 33, 21, 3, 1440.98, 375.98);
+  }
 
   &.split-words {
     .word {
       opacity: 0.025;
     }
+  }
+  &.team__text {
+    line-height: 1;
+      &.split-words {
+        // overflow: hidden;
+        .word {
+          opacity: 1;
+          .word-span {
+            // opacity: 0.5;
+            // transform: translateY(100%);
+          }
+        }
+      }
   }
 }
 
@@ -257,6 +282,9 @@ html.lenis body {
 
 .pb-90-60 {
   @include adaptiveValue("padding-bottom", 90, 60, 0, 1440.98, 375.98);
+}
+.pb-150-90 {
+  @include adaptiveValue("padding-bottom", 150, 90, 0, 1440.98, 375.98);
 }
 
 // -- MARGINS =====================
@@ -300,3 +328,72 @@ html.lenis body {
   text-overflow: ellipsis;
   white-space: normal;
 }
+
+// === Arrow =============
+%arrow {
+   content: '';
+  background-image: url("@img/icons/arrow.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  aspect-ratio: 43/32;
+  @include adaptiveValue("width", 40, 32, 0, 1920.98, 1440.98);
+}
+
+
+
+// == Buttons =========================
+.btn {
+  flex: 0 0 auto;
+  width: max-content;
+  position: relative;
+  background-color: var(--white);
+  font-weight: 700;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: toRem(14);
+  border: toRem(1) solid var(--main);
+  transition: background-color .3s ease;
+  white-space: nowrap;
+  &::after {
+    @extend %arrow;
+      transition: transform .45s ease;
+  }
+  @media (min-width:$mobileSmall){
+    font-size: toRem(22);
+    min-height: toRem(52); 
+    padding-inline: toRem(19);
+  }
+  @media (max-width:$mobileSmall){
+    font-size: toRem(18);
+    min-height: toRem(41); 
+    padding-inline: toRem(13);
+  }
+  @media (any-hover: hover){
+    &:hover{
+      background-color: var(--blue);
+      &::after {
+        transform: translate(10px,0);
+      }
+      .char {
+        transform: translateY(-8%);
+      }
+    }
+  }
+		// // .btn__chars
+		// &__chars {
+    //   // text-shadow: ;
+    //   &.split-chars {
+    //     // overflow: vis;
+    //     text-shadow: 0 -26px 0 var(--main);
+    //     .char {
+    //       // transform: translateY(0);
+    //       transition-duration: 0.45s;
+    //       transition-timing-function: ease;
+    //       transition-delay: calc(0s + var(--index) * .03s);
+    //     }
+    //   }
+		// }
+}
+

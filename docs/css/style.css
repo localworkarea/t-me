@@ -258,6 +258,9 @@ html.lenis body {
   display: inline-block
 }
 .split-chars .char {
+  transition: -webkit-transform .85s cubic-bezier(.22,.89,.34,.96);
+  transition: transform .85s cubic-bezier(.22,.89,.34,.96);
+  transition: transform .85s cubic-bezier(.22,.89,.34,.96),-webkit-transform .85s cubic-bezier(.22,.89,.34,.96);
   -webkit-transform: translateY(100%);
   transform: translateY(100%)
 }
@@ -345,12 +348,22 @@ html.lenis body {
   font-weight: 700;
   line-height: 1.1
 }
+.title-33 {
+  font-weight: 700;
+  line-height: 1.1
+}
 .txt-main {
   font-weight: 700;
   line-height: 1.2
 }
 .txt-main.split-words .word {
   opacity: .025
+}
+.txt-main.team__text {
+  line-height: 1
+}
+.txt-main.team__text.split-words .word {
+  opacity: 1
 }
 .txt-23 {
   font-weight: 500;
@@ -391,6 +404,36 @@ html.lenis body {
   -webkit-box-orient: vertical;
   text-overflow: ellipsis;
   white-space: normal
+}
+.btn::after,
+.cases-home__link::after,
+.roadmap__item:not(:last-child):after {
+  content: "";
+  background-image: url(../img/icons/arrow.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  aspect-ratio: 43/32
+}
+.btn {
+  flex: 0 0 auto;
+  width: -webkit-max-content;
+  width: max-content;
+  position: relative;
+  background-color: var(--white);
+  font-weight: 700;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: .875rem;
+  border: .0625rem solid var(--main);
+  transition: background-color .3s ease;
+  white-space: nowrap
+}
+.btn::after {
+  transition: -webkit-transform .45s ease;
+  transition: transform .45s ease;
+  transition: transform .45s ease,-webkit-transform .45s ease
 }
 .ticker,
 section {
@@ -651,12 +694,7 @@ section {
   content: "";
   position: absolute;
   top: 3.75rem;
-  right: 2rem;
-  background-image: url(../img/icons/arrow.svg);
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
-  aspect-ratio: 43/32
+  right: 2rem
 }
 .roadmap__item:not(:first-child) {
   background-color: var(--gray)
@@ -688,12 +726,6 @@ section {
   transition: color .3s ease
 }
 .cases-home__link::after {
-  content: "";
-  background-image: url(../img/icons/arrow.svg);
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
-  aspect-ratio: 43/32;
   transition: -webkit-transform .3s ease;
   transition: transform .3s ease;
   transition: transform .3s ease,-webkit-transform .3s ease
@@ -780,10 +812,48 @@ section {
   font-family: Montserrat,sans-serif;
   font-weight: 700
 }
-.team__text {
-  max-width: 95%
+.team__list {
+  display: grid
+}
+.item-team__img {
+  overflow: hidden;
+  clip-path: polygon(50% 0,50% 0,50% 0,50% 0);
+  transition: clip-path 1.2s cubic-bezier(.22,.89,.34,.96);
+  margin-bottom: 2rem
+}
+._view .item-team__img {
+  clip-path: polygon(0 0,100% 0,100% 100%,0 100%)
+}
+.item-team__img img {
+  transition: -webkit-transform 1s cubic-bezier(.22,.89,.34,.96);
+  transition: transform 1s cubic-bezier(.22,.89,.34,.96);
+  transition: transform 1s cubic-bezier(.22,.89,.34,.96),-webkit-transform 1s cubic-bezier(.22,.89,.34,.96)
+}
+.item-team__footer {
+  text-transform: uppercase;
+  transition: opacity .85s ease;
+  opacity: .1
+}
+._view .item-team__footer {
+  opacity: 1
+}
+.item-team__position {
+  margin-bottom: 1rem
+}
+.item-team__name {
+  font-size: 1.3125rem;
+  font-weight: 500
+}
+.brief__block {
+  display: flex;
+  gap: 1.875rem
 }
 @media (min-width:30.06125em) {
+  .btn {
+    font-size: 1.375rem;
+    min-height: 3.25rem;
+    padding-inline: 1.1875rem
+  }
   .hero__block {
     display: grid
   }
@@ -1068,6 +1138,15 @@ section {
   .txt-channels__counters {
     font-size: 8.8vw
   }
+  .team__text {
+    max-width: 95%
+  }
+  .team__list {
+    gap: 2rem
+  }
+  .brief__text {
+    max-width: 48%
+  }
 }
 @media (min-width:37.56125em) {
   .services-home__list li {
@@ -1110,10 +1189,17 @@ section {
     -webkit-transform: translateY(120%);
     transform: translateY(120%)
   }
+  .team__list {
+    grid-template-columns: repeat(3,1fr)
+  }
 }
 @media (min-width:48.06125em) {
   .promotion__item {
     min-height: 50vh
+  }
+  .brief__block {
+    align-items: center;
+    justify-content: space-between
   }
 }
 @media (min-width:51.31125em) {
@@ -1147,6 +1233,9 @@ section {
   }
   .pb-90-60 {
     padding-bottom: 5.625rem
+  }
+  .pb-150-90 {
+    padding-bottom: 9.375rem
   }
   .mb-90-60 {
     margin-bottom: 3.75rem
@@ -1232,8 +1321,14 @@ section {
   .title-42 {
     font-size: 3.375rem
   }
+  .title-33 {
+    font-size: 2.6875rem
+  }
   .txt-main {
     font-size: 3.5625rem
+  }
+  .txt-main--33 {
+    font-size: 2.625rem
   }
   .txt-23 {
     font-size: 1.875rem
@@ -1244,6 +1339,11 @@ section {
   .txt-19 {
     font-size: 1.1875rem
   }
+  .btn::after,
+  .cases-home__link::after,
+  .roadmap__item:not(:last-child):after {
+    width: 2.5rem
+  }
   .roadmap__list li::before {
     font-size: 6.25rem
   }
@@ -1253,12 +1353,6 @@ section {
   .roadmap__item {
     min-height: 34.375rem
   }
-  .roadmap__item:not(:last-child):after {
-    width: 2.5rem
-  }
-  .cases-home__link::after {
-    width: 2.5rem
-  }
   .cases-home__scroll {
     padding-inline: 5.625rem
   }
@@ -1267,17 +1361,16 @@ section {
   [class*=__container] {
     max-width: 87rem
   }
+  .btn::after,
+  .cases-home__link::after,
+  .roadmap__item:not(:last-child):after {
+    width: 2rem
+  }
   .roadmap__list li::before {
     font-size: 5rem
   }
   .roadmap__item {
     min-height: 26.875rem
-  }
-  .roadmap__item:not(:last-child):after {
-    width: 2rem
-  }
-  .cases-home__link::after {
-    width: 2rem
   }
 }
 @media (max-width:87.06125em) {
@@ -1307,6 +1400,12 @@ section {
 @media (max-width:48.06125em) {
   .promotion__item {
     min-height: 12.5rem!important
+  }
+  .brief__block {
+    flex-direction: column
+  }
+  .brief__btn {
+    align-self: flex-end
   }
 }
 @media (max-width:37.56125em) {
@@ -1354,6 +1453,11 @@ section {
   }
 }
 @media (max-width:30.06125em) {
+  .btn {
+    font-size: 1.125rem;
+    min-height: 2.5625rem;
+    padding-inline: .8125rem
+  }
   .hero__block {
     display: flex;
     flex-direction: column
@@ -1644,6 +1748,9 @@ section {
   .txt-channels__counters {
     font-size: 15vw
   }
+  .team__list {
+    gap: 3.375rem
+  }
 }
 @media (max-width:23.49875em) {
   .title-hero {
@@ -1664,7 +1771,13 @@ section {
   .title-42 {
     font-size: 1.625rem
   }
+  .title-33 {
+    font-size: 1.625rem
+  }
   .txt-main {
+    font-size: 1.3125rem
+  }
+  .txt-main--33 {
     font-size: 1.3125rem
   }
   .txt-23 {
@@ -1681,6 +1794,9 @@ section {
   }
   .pb-90-60 {
     padding-bottom: 3.75rem
+  }
+  .pb-150-90 {
+    padding-bottom: 5.625rem
   }
   .mb-90-60 {
     margin-bottom: 3.125rem
@@ -1727,8 +1843,19 @@ section {
   .title-42 {
     font-size: clamp(2.625rem ,.37346875rem + 2.5vw ,3.375rem)
   }
+  .title-33 {
+    font-size: clamp(2.0625rem ,.1862239583rem + 2.0833333333vw ,2.6875rem)
+  }
   .txt-main {
     font-size: clamp(3.125rem ,1.8116067708rem + 1.4583333333vw ,3.5625rem)
+  }
+  .txt-main--33 {
+    font-size: clamp(2.0625rem ,.3738515625rem + 1.875vw ,2.625rem)
+  }
+  .btn::after,
+  .cases-home__link::after,
+  .roadmap__item:not(:last-child):after {
+    width: clamp(2rem ,.4989791667rem + 1.6666666667vw ,2.5rem)
   }
   .roadmap__list li::before {
     font-size: clamp(5rem ,1.2474479167rem + 4.1666666667vw ,6.25rem)
@@ -1738,12 +1865,6 @@ section {
   }
   .roadmap__item {
     min-height: clamp(26.875rem ,4.3596875rem + 25vw ,34.375rem)
-  }
-  .roadmap__item:not(:last-child):after {
-    width: clamp(2rem ,.4989791667rem + 1.6666666667vw ,2.5rem)
-  }
-  .cases-home__link::after {
-    width: clamp(2rem ,.4989791667rem + 1.6666666667vw ,2.5rem)
   }
   .cases-home__scroll {
     padding-inline: clamp(2.5rem ,-6.8813802083rem + 10.4166666667vw ,5.625rem)
@@ -1768,14 +1889,23 @@ section {
   .title-42 {
     font-size: clamp(1.625rem ,1.2719671362rem + 1.5023474178vw ,2.625rem)
   }
+  .title-33 {
+    font-size: clamp(1.625rem ,1.4705481221rem + .6572769953vw ,2.0625rem)
+  }
   .txt-main {
     font-size: clamp(1.3125rem ,.6726279343rem + 2.7230046948vw ,3.125rem)
+  }
+  .txt-main--33 {
+    font-size: clamp(1.3125rem ,1.0477253521rem + 1.1267605634vw ,2.0625rem)
   }
   .pt-90-60 {
     padding-top: clamp(3.75rem ,3.0880633803rem + 2.8169014085vw ,5.625rem)
   }
   .pb-90-60 {
     padding-bottom: clamp(3.75rem ,3.0880633803rem + 2.8169014085vw ,5.625rem)
+  }
+  .pb-150-90 {
+    padding-bottom: clamp(5.625rem ,4.3011267606rem + 5.6338028169vw ,9.375rem)
   }
   .mb-90-60 {
     margin-bottom: clamp(3.125rem ,2.9043544601rem + .9389671362vw ,3.75rem)
@@ -1868,7 +1998,23 @@ section {
     padding-inline: clamp(1rem ,-42.530625rem + 50vw ,2.5rem)
   }
 }
+@media (max-width:37.56125em)and (min-width:30.06125em) {
+  .team__list {
+    grid-template-columns: repeat(2,1fr)
+  }
+}
 @media (any-hover:hover) {
+  .btn:hover {
+    background-color: var(--blue)
+  }
+  .btn:hover::after {
+    -webkit-transform: translate(10px,0);
+    transform: translate(10px,0)
+  }
+  .btn:hover .char {
+    -webkit-transform: translateY(-8%);
+    transform: translateY(-8%)
+  }
   .ticker__item:hover {
     border-color: var(--blue);
     background-color: var(--blue)
@@ -1889,6 +2035,10 @@ section {
   }
   .channels__item:not(.txt-channels):hover {
     background-color: var(--blue)
+  }
+  .item-team__img:hover img {
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1)
   }
 }
 @media (orientation:landscape) {

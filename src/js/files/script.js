@@ -327,14 +327,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // items.forEach((item) => {
       //   gsap.to(item, {
-      //     opacity: 1,
+      //     // opacity: 1,
       //     scale: 1,
+      //     // y: 0,
       //     scrollTrigger: {
       //       trigger: item,
       //       containerAnimation: scrollTween,
       //       start: "left center",
-      //       end: "right center",
+      //       end: "center top",
       //       scrub: true,
+      //       markers: true,
       //     }
       //   });
       // });
@@ -353,8 +355,8 @@ document.addEventListener("DOMContentLoaded", () => {
               ease: "none",
               scrollTrigger: {
                 trigger: section,
-                start: "top 60%",
-                end: "top 20%",
+                start: "top 80%",
+                end: "top 10%",
                 scrub: true,
                 // markers: true,
               },
@@ -366,11 +368,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     }
     if (parentTxtMainSections3) {
-          const words = parentTxtMainSections3.querySelectorAll('.word');
+          const words = parentTxtMainSections3.querySelectorAll('.word-span');
           if (words.length > 0) {
             gsap.to(words, {
-              opacity: 1,
-              stagger: 0.2,
+              y: "-8%",
+              // opacity: 1,
+              stagger: 0.1,
               ease: "none",
               scrollTrigger: {
                 trigger: parentTxtMainSections3,
