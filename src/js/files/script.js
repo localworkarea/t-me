@@ -152,7 +152,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-  const roadmapSection = document.querySelector('.roadmap');
+  const roadmapSection = document.querySelector('.roadmap__container');
   const roadmapItems = document.querySelectorAll('.roadmap__item');
 
   function createAnimation() {
@@ -199,22 +199,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     }
 
-    if (roadmapSection) {
-      roadmapItems.forEach((item) => {
-        gsap.to(item, {
-          y: 0,
-          opacity: 1,
-          // ease: "none",
-          scrollTrigger: {
-            trigger: roadmapSection,
-            start: "20% bottom",
-            end: "top 10%",
-            scrub: true,
-            // markers: true,
-          }
-        });
-      });
-    }
+
 
 
     let mm = gsap.matchMedia();
@@ -288,15 +273,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
         }
 
-
+        
       }
-
+      
       if (max600) {
-
-
+        
+        
       }
-
+      
     }); // end match media ----------------------------------------
+    
+    if (roadmapSection) {
+      roadmapItems.forEach((item1) => {
+        gsap.to(item1, {
+          y: 0,
+          opacity: 1,
+          // ease: "none",
+          scrollTrigger: {
+            trigger: roadmapSection,
+            start: "top center",
+            end: "top top",
+            scrub: true,
+            markers: true,
+          }
+        });
+      });
+    }
 
 
   }

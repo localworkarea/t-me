@@ -1518,7 +1518,7 @@
         initSplitType();
         const heroContainer = document.querySelector(".hero__container");
         const parentTxtMainSections = document.querySelectorAll(".parent-txt-main");
-        const roadmapSection = document.querySelector(".roadmap");
+        const roadmapSection = document.querySelector(".roadmap__container");
         const roadmapItems = document.querySelectorAll(".roadmap__item");
         function createAnimation() {
             ScrollTrigger.getAll().forEach(trigger => trigger.kill());
@@ -1549,18 +1549,6 @@
                         }
                     });
                 }
-            });
-            if (roadmapSection) roadmapItems.forEach(item => {
-                gsap.to(item, {
-                    y: 0,
-                    opacity: 1,
-                    scrollTrigger: {
-                        trigger: roadmapSection,
-                        start: "20% bottom",
-                        end: "top 10%",
-                        scrub: true
-                    }
-                });
             });
             let mm = gsap.matchMedia();
             mm.add({
@@ -1612,6 +1600,19 @@
                     });
                 }
                 if (max600) ;
+            });
+            if (roadmapSection) roadmapItems.forEach(item1 => {
+                gsap.to(item1, {
+                    y: 0,
+                    opacity: 1,
+                    scrollTrigger: {
+                        trigger: roadmapSection,
+                        start: "top center",
+                        end: "top top",
+                        scrub: true,
+                        markers: true
+                    }
+                });
             });
         }
         createAnimation();
