@@ -1673,6 +1673,29 @@
                     }
                 });
             }
+            const blogSection = document.querySelector(".blog-home");
+            const blogWrapper = blogSection?.querySelector(".blog-home__content");
+            const scrollWrapper2 = blogWrapper?.querySelector(".blog-home__scroll");
+            const list2 = scrollWrapper2?.querySelector(".blog-home__list");
+            const items2 = list2?.querySelectorAll(".blog-home__item");
+            if (blogSection && blogWrapper && scrollWrapper2 && list2 && items2.length > 0) {
+                const style = window.getComputedStyle(scrollWrapper2);
+                const paddingLeft = parseFloat(style.paddingLeft) || 0;
+                const paddingRight = parseFloat(style.paddingRight) || 0;
+                const totalPadding = paddingLeft + paddingRight;
+                const scrollDistance = list2.scrollWidth - scrollWrapper2.clientWidth + totalPadding;
+                gsap.to(list2, {
+                    x: () => `-${scrollDistance}px`,
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: blogSection,
+                        start: "top 30px",
+                        end: () => `+=${scrollDistance}`,
+                        scrub: true,
+                        pin: blogWrapper
+                    }
+                });
+            }
             if (parentTxtMainSections2.length > 0) parentTxtMainSections2.forEach(section => {
                 const txt = section.querySelector(".txt-main");
                 if (txt) {

@@ -188,6 +188,11 @@ html.lenis body {
   // line-height: 1.15;
   line-height: 1;
   @extend %viewSetSpan;
+  .word {
+      span {
+        transition-duration: 1s;
+      }
+    }
 }
 
 .title-45 {
@@ -215,6 +220,11 @@ html.lenis body {
 .title-33 {
   @include adaptiveValue("font-size", 43, 33, 2, 1920.98, 1440.98);
   @include adaptiveValue("font-size", 33, 26, 3, 1440.98, 375.98);
+  font-weight: 700;
+  line-height: 1.1;
+}
+.title-25 {
+  @include adaptiveValue("font-size", 33, 21, 0, 1920.98, 375.98);
   font-weight: 700;
   line-height: 1.1;
 }
@@ -298,6 +308,9 @@ html.lenis body {
 .mb-44-30 {
   @include adaptiveValue("margin-bottom", 44, 30, 0, 1440.98, 375.98);
 }
+.mb-32-24 {
+  @include adaptiveValue("margin-bottom", 32, 24, 0, 1440.98, 375.98);
+}
 
 
 // === OL list ==========
@@ -380,6 +393,9 @@ html.lenis body {
         transform: translateY(-8%);
       }
     }
+  }
+  &--500 {
+    font-weight: 500;
   }
 		// // .btn__chars
 		// &__chars {
