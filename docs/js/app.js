@@ -1597,45 +1597,92 @@
                 const servixeHome = document.querySelector(".services-home");
                 const servixeHomecontainer = document.querySelector(".services-home__container");
                 const servixeHomeItems = document.querySelectorAll(".services-home__item");
-                if (min600) if (servixeHome) {
-                    let maxHeight = 0;
-                    servixeHomeItems.forEach(item => {
-                        const itemHeight = item.offsetHeight;
-                        if (itemHeight > maxHeight) maxHeight = itemHeight;
-                    });
-                    servixeHomecontainer.style.setProperty("--heightEl", `${maxHeight}px`);
-                    const lastIndex = servixeHomeItems.length - 1;
-                    const pinEnd = () => `${(lastIndex - .9 + 1) * window.innerHeight}px`;
-                    ScrollTrigger.create({
-                        trigger: servixeHome,
-                        start: "top top",
-                        end: pinEnd,
-                        pin: servixeHomecontainer,
-                        scrub: true
-                    });
-                    servixeHomeItems.forEach((item, i) => {
-                        gsap.to(item, {
-                            y: 0,
-                            scrollTrigger: {
-                                trigger: servixeHome,
-                                start: () => `top+=${(i - .9) * window.innerHeight}px`,
-                                end: () => `top+=${(i - 0) * window.innerHeight}px`,
-                                scrub: true
-                            }
+                if (min600) {
+                    if (servixeHome) {
+                        let maxHeight = 0;
+                        servixeHomeItems.forEach(item => {
+                            const itemHeight = item.offsetHeight;
+                            if (itemHeight > maxHeight) maxHeight = itemHeight;
                         });
-                        if (i > 0) {
-                            const prevItem = servixeHomeItems[i - 1];
-                            gsap.to(prevItem, {
-                                opacity: 0,
+                        servixeHomecontainer.style.setProperty("--heightEl", `${maxHeight}px`);
+                        const lastIndex = servixeHomeItems.length - 1;
+                        const pinEnd = () => `${(lastIndex - .9 + 1) * window.innerHeight}px`;
+                        ScrollTrigger.create({
+                            trigger: servixeHome,
+                            start: "top top",
+                            end: pinEnd,
+                            pin: servixeHomecontainer,
+                            scrub: true
+                        });
+                        servixeHomeItems.forEach((item, i) => {
+                            gsap.to(item, {
+                                y: 0,
                                 scrollTrigger: {
                                     trigger: servixeHome,
-                                    start: () => `top+=${(i - 1) * window.innerHeight}px`,
-                                    end: () => `top+=${i * window.innerHeight}px`,
+                                    start: () => `top+=${(i - .9) * window.innerHeight}px`,
+                                    end: () => `top+=${(i - 0) * window.innerHeight}px`,
                                     scrub: true
                                 }
                             });
-                        }
-                    });
+                            if (i > 0) {
+                                const prevItem = servixeHomeItems[i - 1];
+                                gsap.to(prevItem, {
+                                    opacity: 0,
+                                    scrollTrigger: {
+                                        trigger: servixeHome,
+                                        start: () => `top+=${(i - 1) * window.innerHeight}px`,
+                                        end: () => `top+=${i * window.innerHeight}px`,
+                                        scrub: true
+                                    }
+                                });
+                            }
+                        });
+                    }
+                    const casesSection = document.querySelector(".cases-home");
+                    const casesWrapper = casesSection?.querySelector(".cases-home__content");
+                    const scrollWrapper = casesWrapper?.querySelector(".cases-home__scroll");
+                    const list = scrollWrapper?.querySelector(".cases-home__list");
+                    const items = list?.querySelectorAll(".cases-home__item");
+                    if (casesSection && scrollWrapper && list && items.length > 0) {
+                        const style = window.getComputedStyle(scrollWrapper);
+                        const paddingLeft = parseFloat(style.paddingLeft) || 0;
+                        const paddingRight = parseFloat(style.paddingRight) || 0;
+                        const totalPadding = paddingLeft + paddingRight;
+                        gsap.to(list, {
+                            x: () => -(list.scrollWidth - scrollWrapper.clientWidth + totalPadding),
+                            ease: "none",
+                            scrollTrigger: {
+                                trigger: casesSection,
+                                start: "top 50px",
+                                end: () => `+=${list.scrollWidth - scrollWrapper.clientWidth + totalPadding}`,
+                                scrub: true,
+                                pin: casesWrapper
+                            }
+                        });
+                    }
+                    const blogSection = document.querySelector(".blog-home");
+                    const blogWrapper = blogSection?.querySelector(".blog-home__content");
+                    const scrollWrapper2 = blogWrapper?.querySelector(".blog-home__scroll");
+                    const list2 = scrollWrapper2?.querySelector(".blog-home__list");
+                    const items2 = list2?.querySelectorAll(".blog-home__item");
+                    if (blogSection && blogWrapper && scrollWrapper2 && list2 && items2.length > 0) {
+                        const style2 = window.getComputedStyle(scrollWrapper2);
+                        const paddingLeft2 = parseFloat(style2.paddingLeft) || 0;
+                        const paddingRight2 = parseFloat(style2.paddingRight) || 0;
+                        const totalPadding2 = paddingLeft2 + paddingRight2;
+                        const scrollDistance = list2.scrollWidth - scrollWrapper2.clientWidth + totalPadding2;
+                        gsap.to(list2, {
+                            x: () => `-${scrollDistance}px`,
+                            ease: "none",
+                            scrollTrigger: {
+                                trigger: blogSection,
+                                start: "top 30px",
+                                end: () => `+=${scrollDistance}`,
+                                scrub: true,
+                                pin: blogWrapper
+                            }
+                        });
+                    }
                 }
                 if (max600) ;
             });
@@ -1651,51 +1698,6 @@
                     }
                 });
             });
-            const casesSection = document.querySelector(".cases-home");
-            const casesWrapper = casesSection?.querySelector(".cases-home__content");
-            const scrollWrapper = casesWrapper?.querySelector(".cases-home__scroll");
-            const list = scrollWrapper?.querySelector(".cases-home__list");
-            const items = list?.querySelectorAll(".cases-home__item");
-            if (casesSection && scrollWrapper && list && items.length > 0) {
-                const style = window.getComputedStyle(scrollWrapper);
-                const paddingLeft = parseFloat(style.paddingLeft) || 0;
-                const paddingRight = parseFloat(style.paddingRight) || 0;
-                const totalPadding = paddingLeft + paddingRight;
-                gsap.to(list, {
-                    x: () => -(list.scrollWidth - scrollWrapper.clientWidth + totalPadding),
-                    ease: "none",
-                    scrollTrigger: {
-                        trigger: casesSection,
-                        start: "top 50px",
-                        end: () => `+=${list.scrollWidth - scrollWrapper.clientWidth + totalPadding}`,
-                        scrub: true,
-                        pin: casesWrapper
-                    }
-                });
-            }
-            const blogSection = document.querySelector(".blog-home");
-            const blogWrapper = blogSection?.querySelector(".blog-home__content");
-            const scrollWrapper2 = blogWrapper?.querySelector(".blog-home__scroll");
-            const list2 = scrollWrapper2?.querySelector(".blog-home__list");
-            const items2 = list2?.querySelectorAll(".blog-home__item");
-            if (blogSection && blogWrapper && scrollWrapper2 && list2 && items2.length > 0) {
-                const style = window.getComputedStyle(scrollWrapper2);
-                const paddingLeft = parseFloat(style.paddingLeft) || 0;
-                const paddingRight = parseFloat(style.paddingRight) || 0;
-                const totalPadding = paddingLeft + paddingRight;
-                const scrollDistance = list2.scrollWidth - scrollWrapper2.clientWidth + totalPadding;
-                gsap.to(list2, {
-                    x: () => `-${scrollDistance}px`,
-                    ease: "none",
-                    scrollTrigger: {
-                        trigger: blogSection,
-                        start: "top 30px",
-                        end: () => `+=${scrollDistance}`,
-                        scrub: true,
-                        pin: blogWrapper
-                    }
-                });
-            }
             if (parentTxtMainSections2.length > 0) parentTxtMainSections2.forEach(section => {
                 const txt = section.querySelector(".txt-main");
                 if (txt) {

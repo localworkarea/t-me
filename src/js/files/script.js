@@ -270,36 +270,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         }
 
-
-      }
-
-      if (max600) {
-
-
-      }
-
-    }); // end match media ----------------------------------------
-
-
-
-    if (roadmapSection) {
-      roadmapItems.forEach((item1) => {
-        gsap.to(item1, {
-          y: 0,
-          opacity: 1,
-          // ease: "none",
-          scrollTrigger: {
-            trigger: roadmapSection,
-            start: "top center",
-            end: "top top",
-            scrub: true,
-            // markers: true,
-          }
-        });
-      });
-    }
-
-    const casesSection = document.querySelector('.cases-home');
+          const casesSection = document.querySelector('.cases-home');
     const casesWrapper = casesSection ?.querySelector('.cases-home__content');
     const scrollWrapper = casesWrapper ?.querySelector('.cases-home__scroll');
     const list = scrollWrapper ?.querySelector('.cases-home__list');
@@ -342,20 +313,19 @@ document.addEventListener("DOMContentLoaded", () => {
       // });
     }
 
-
-    const blogSection = document.querySelector('.blog-home');
+            const blogSection = document.querySelector('.blog-home');
     const blogWrapper = blogSection?.querySelector('.blog-home__content');
     const scrollWrapper2 = blogWrapper?.querySelector('.blog-home__scroll');
     const list2 = scrollWrapper2?.querySelector('.blog-home__list');
       const items2 = list2?.querySelectorAll('.blog-home__item');
         
     if (blogSection && blogWrapper && scrollWrapper2 && list2 && items2.length > 0) {
-      const style = window.getComputedStyle(scrollWrapper2);
-      const paddingLeft = parseFloat(style.paddingLeft) || 0;
-      const paddingRight = parseFloat(style.paddingRight) || 0;
-      const totalPadding = paddingLeft + paddingRight;
+      const style2 = window.getComputedStyle(scrollWrapper2);
+      const paddingLeft2 = parseFloat(style2.paddingLeft) || 0;
+      const paddingRight2 = parseFloat(style2.paddingRight) || 0;
+      const totalPadding2 = paddingLeft2 + paddingRight2;
     
-      const scrollDistance = list2.scrollWidth - scrollWrapper2.clientWidth + totalPadding;
+      const scrollDistance = list2.scrollWidth - scrollWrapper2.clientWidth + totalPadding2;
     
       gsap.to(list2, {
         x: () => `-${scrollDistance}px`,
@@ -370,6 +340,37 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
     }
+
+      }
+
+      if (max600) {
+
+
+      }
+
+    }); // end match media ----------------------------------------
+
+
+
+    if (roadmapSection) {
+      roadmapItems.forEach((item1) => {
+        gsap.to(item1, {
+          y: 0,
+          opacity: 1,
+          // ease: "none",
+          scrollTrigger: {
+            trigger: roadmapSection,
+            start: "top center",
+            end: "top top",
+            scrub: true,
+            // markers: true,
+          }
+        });
+      });
+    }
+
+
+
       if (parentTxtMainSections2.length > 0) {
       parentTxtMainSections2.forEach((section) => {
         const txt = section.querySelector('.txt-main');
