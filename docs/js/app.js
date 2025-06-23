@@ -1609,8 +1609,7 @@
                         trigger: roadmapSection,
                         start: "top center",
                         end: "top top",
-                        scrub: true,
-                        markers: true
+                        scrub: true
                     }
                 });
             });

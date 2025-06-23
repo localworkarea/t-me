@@ -294,7 +294,7 @@ document.addEventListener("DOMContentLoaded", () => {
             start: "top center",
             end: "top top",
             scrub: true,
-            markers: true,
+            // markers: true,
           }
         });
       });
