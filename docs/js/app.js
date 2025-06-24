@@ -737,6 +737,8 @@
                     lockPaddingElement.style.paddingRight = "";
                 });
                 document.body.style.paddingRight = "";
+                let heroSection = document.querySelector(".hero");
+                if (heroSection) heroSection.style.paddingRight = "";
                 document.documentElement.classList.remove("lock");
                 const header = document.querySelector(".header");
                 if (header) header.style.paddingRight = "";
@@ -756,6 +758,8 @@
             });
             document.body.style.paddingRight = lockPaddingValue;
             document.documentElement.classList.add("lock");
+            let heroSection = document.querySelector(".hero");
+            if (heroSection) heroSection.style.paddingRight = lockPaddingValue;
             const header = document.querySelector(".header");
             if (header) header.style.paddingRight = lockPaddingValue;
             bodyLockStatus = false;
@@ -876,6 +880,32 @@
     }
     modules_flsModules.watcher = new ScrollWatcher({});
     let addWindowScrollEvent = false;
+    function headerScroll() {
+        addWindowScrollEvent = true;
+        const header = document.querySelector("header.header");
+        const headerShow = header.hasAttribute("data-scroll-show");
+        const headerShowTimer = header.dataset.scrollShow ? header.dataset.scrollShow : 500;
+        const startPoint = header.dataset.scroll ? header.dataset.scroll : 1;
+        let scrollDirection = 0;
+        let timer;
+        document.addEventListener("windowScroll", function(e) {
+            const scrollTop = window.scrollY;
+            clearTimeout(timer);
+            if (scrollTop >= startPoint) {
+                !header.classList.contains("_header-scroll") ? header.classList.add("_header-scroll") : null;
+                if (headerShow) {
+                    if (scrollTop > scrollDirection) header.classList.contains("_header-show") ? header.classList.remove("_header-show") : null; else !header.classList.contains("_header-show") ? header.classList.add("_header-show") : null;
+                    timer = setTimeout(() => {
+                        !header.classList.contains("_header-show") ? header.classList.add("_header-show") : null;
+                    }, headerShowTimer);
+                }
+            } else {
+                header.classList.contains("_header-scroll") ? header.classList.remove("_header-scroll") : null;
+                if (headerShow) header.classList.contains("_header-show") ? header.classList.remove("_header-show") : null;
+            }
+            scrollDirection = scrollTop <= 0 ? 0 : scrollTop;
+        });
+    }
     function digitsCounter() {
         function digitsCountersInit(digitsCountersItems) {
             let digitsCounters = digitsCountersItems ? digitsCountersItems : document.querySelectorAll("[data-digits-counter]");
@@ -1593,25 +1623,27 @@
             lastWidth2 = currentWidth;
         }
     });
+    const heroSection = document.querySelector(".hero");
+    function checkAndScrollToTop() {
+        const heroRect = heroSection.getBoundingClientRect();
+        const viewportHeight = window.innerHeight;
+        if (heroRect.top <= viewportHeight / 2 && heroRect.bottom >= viewportHeight / 2) setTimeout(() => {
+            document.documentElement.classList.remove("lock-body");
+            document.body.style.paddingRight = "";
+            document.querySelector(".hero").style.paddingRight = "";
+        }, 0); else {
+            document.documentElement.classList.remove("lock-body");
+            document.body.style.paddingRight = "";
+            document.querySelector(".hero").style.paddingRight = "";
+        }
+    }
+    window.addEventListener("load", function() {
+        setTimeout(function() {
+            checkAndScrollToTop();
+        }, 0);
+    });
     document.addEventListener("DOMContentLoaded", () => {
         ScrollTrigger.refresh();
-        const heroSection = document.querySelector(".hero");
-        function checkAndScrollToTop() {
-            const heroRect = heroSection.getBoundingClientRect();
-            const viewportHeight = window.innerHeight;
-            if (heroRect.top <= viewportHeight / 2 && heroRect.bottom >= viewportHeight / 2) setTimeout(() => {
-                document.documentElement.classList.remove("lock-body");
-                document.body.style.paddingRight = "";
-            }, 0); else {
-                document.documentElement.classList.remove("lock-body");
-                document.body.style.paddingRight = "";
-            }
-        }
-        window.addEventListener("load", function() {
-            setTimeout(function() {
-                checkAndScrollToTop();
-            }, 0);
-        });
         const heroContainer = document.querySelector(".hero__container");
         const parentTxtMainSections = document.querySelectorAll(".parent-txt-main");
         const parentTxtMainSections2 = document.querySelectorAll(".parent-txt-main-2");
@@ -1831,5 +1863,6 @@
     window["FLS"] = false;
     addLoadedClass();
     menuInit();
+    headerScroll();
     digitsCounter();
 })();

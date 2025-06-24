@@ -195,6 +195,12 @@ html.lenis body {
     }
 }
 
+.title-50 {
+   @include adaptiveValue("font-size", 65, 50, 2, 1920.98, 1440.98);
+  @include adaptiveValue("font-size", 50, 38, 3, 1440.98, 375.98);
+  font-weight: 700;
+  line-height: 1.1;
+}
 .title-45 {
    @include adaptiveValue("font-size", 58, 45, 2, 1920.98, 1440.98);
   @include adaptiveValue("font-size", 45, 30, 3, 1440.98, 375.98);

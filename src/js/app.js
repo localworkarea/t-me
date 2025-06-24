@@ -181,7 +181,7 @@ import * as flsScroll from "./files/scroll/scroll.js";
 // flsScroll.pageNavigation();
 
 // Функціонал додавання класів до хедеру під час прокручування
-// flsScroll.headerScroll();
+flsScroll.headerScroll();
 
 // Модуль анімація цифрового лічильника
 // Сніппет(HTML):

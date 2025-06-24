@@ -126,34 +126,36 @@ window.addEventListener('resize', () => {
 });
 
 
+const heroSection = document.querySelector('.hero');
+
+function checkAndScrollToTop() {
+  const heroRect = heroSection.getBoundingClientRect();
+  const viewportHeight = window.innerHeight;
+  if (heroRect.top <= viewportHeight / 2 && heroRect.bottom >= viewportHeight / 2) {
+    setTimeout(() => {
+      document.documentElement.classList.remove('lock-body');
+      document.body.style.paddingRight = '';
+      document.querySelector('.hero').style.paddingRight = '';
+    }, 0);
+    
+  } else {
+    document.documentElement.classList.remove('lock-body');
+    document.body.style.paddingRight = '';
+    document.querySelector('.hero').style.paddingRight = '';
+  }
+}
+
+window.addEventListener("load", function () {
+  setTimeout(function () {
+    checkAndScrollToTop();
+  }, 0);
+});
 
 document.addEventListener("DOMContentLoaded", () => {
   ScrollTrigger.refresh();
 
 
 
-  const heroSection = document.querySelector('.hero');
-
-  function checkAndScrollToTop() {
-    const heroRect = heroSection.getBoundingClientRect();
-    const viewportHeight = window.innerHeight;
-    if (heroRect.top <= viewportHeight / 2 && heroRect.bottom >= viewportHeight / 2) {
-      setTimeout(() => {
-        document.documentElement.classList.remove('lock-body');
-        document.body.style.paddingRight = '';
-      }, 0);
-
-    } else {
-      document.documentElement.classList.remove('lock-body');
-      document.body.style.paddingRight = '';
-    }
-  }
-
-  window.addEventListener("load", function () {
-    setTimeout(function () {
-      checkAndScrollToTop();
-    }, 0);
-  });
 
 
 

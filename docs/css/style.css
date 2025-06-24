@@ -339,6 +339,10 @@ html.lenis body {
 .title-main .word span {
   transition-duration: 1s
 }
+.title-50 {
+  font-weight: 700;
+  line-height: 1.1
+}
 .title-45 {
   font-weight: 700;
   line-height: 1.1
@@ -445,6 +449,107 @@ html.lenis body {
 }
 .btn--500 {
   font-weight: 500
+}
+.header {
+  position: fixed;
+  z-index: 3;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+  -webkit-transform: translate(100%,0);
+  transform: translate(100%,0)
+}
+.loaded .header {
+  transition: opacity .2s ease .8s,-webkit-transform .65s ease .8s;
+  transition: opacity .2s ease .8s,transform .65s ease .8s;
+  transition: opacity .2s ease .8s,transform .65s ease .8s,-webkit-transform .65s ease .8s;
+  opacity: 1;
+  -webkit-transform: translate(0,0);
+  transform: translate(0,0)
+}
+.header__btns {
+  background-color: var(--white);
+  height: 100%;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  width: 5.5rem;
+  transition: -webkit-transform .65s ease;
+  transition: transform .65s ease;
+  transition: transform .65s ease,-webkit-transform .65s ease
+}
+._header-scroll .header__btns {
+  -webkit-transform: translate(100%,0);
+  transform: translate(100%,0)
+}
+._header-scroll .header__btns._header-show {
+  -webkit-transform: translate(0,0);
+  transform: translate(0,0)
+}
+.btn-header {
+  -webkit-writing-mode: vertical-rl;
+  -ms-writing-mode: tb-rl;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  overflow: hidden;
+  border-left: .0625rem solid var(--main);
+  border-right: .0625rem solid var(--main);
+  padding-block: .9375rem;
+  font-weight: 700;
+  line-height: 1.1;
+  transition: background-color .3s ease
+}
+.btn-header:not(:first-child) {
+  border-top: .0625rem solid var(--main)
+}
+.menu-open .btn-header--menu {
+  background-color: var(--blue)
+}
+.btn-header span {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  transition: -webkit-transform 1.2s cubic-bezier(.22,.89,.34,.96);
+  transition: transform 1.2s cubic-bezier(.22,.89,.34,.96);
+  transition: transform 1.2s cubic-bezier(.22,.89,.34,.96),-webkit-transform 1.2s cubic-bezier(.22,.89,.34,.96)
+}
+.menu {
+  position: fixed;
+  z-index: -1;
+  top: 0;
+  right: 0;
+  height: 100%;
+  transition: -webkit-transform 1.2s cubic-bezier(.22,.89,.34,.96);
+  transition: transform 1.2s cubic-bezier(.22,.89,.34,.96);
+  transition: transform 1.2s cubic-bezier(.22,.89,.34,.96),-webkit-transform 1.2s cubic-bezier(.22,.89,.34,.96);
+  -webkit-transform: translate(100%,0);
+  transform: translate(100%,0);
+  background-color: var(--white);
+  padding-top: 8.75rem;
+  padding-left: 1.875rem;
+  padding-right: 15rem;
+  padding-bottom: 5.625rem;
+  min-width: 58vw
+}
+.menu-open .menu {
+  -webkit-transform: translate(0,0);
+  transform: translate(0,0)
+}
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  background-color: rgba(237,238,241,.3);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .85s ease,visible .85s ease
+}
+.menu-open body::after {
+  opacity: 1;
+  visibility: visible
 }
 .ticker,
 section {
@@ -898,72 +1003,6 @@ section {
     min-height: 3.25rem;
     padding-inline: 1.1875rem
   }
-  .header {
-    position: fixed;
-    z-index: 3;
-    top: 0;
-    right: 0;
-    bottom: 0
-  }
-  .header__btns {
-    background-color: var(--white);
-    height: 100%;
-    display: grid;
-    grid-template-rows: 1fr 1fr;
-    min-width: 5.5rem
-  }
-  .btn-header {
-    -webkit-writing-mode: vertical-rl;
-    -ms-writing-mode: tb-rl;
-    writing-mode: vertical-rl;
-    text-orientation: mixed;
-    overflow: hidden;
-    border-left: .0625rem solid var(--main);
-    border-right: .0625rem solid var(--main);
-    padding-block: .9375rem;
-    font-weight: 700;
-    line-height: 1.1
-  }
-  .btn-header:not(:first-child) {
-    border-top: .0625rem solid var(--main)
-  }
-  .btn-header span {
-    display: grid;
-    place-items: center;
-    width: 100%;
-    transition: -webkit-transform 1.2s cubic-bezier(.22,.89,.34,.96);
-    transition: transform 1.2s cubic-bezier(.22,.89,.34,.96);
-    transition: transform 1.2s cubic-bezier(.22,.89,.34,.96),-webkit-transform 1.2s cubic-bezier(.22,.89,.34,.96)
-  }
-  .menu {
-    position: fixed;
-    z-index: -1;
-    top: 0;
-    right: 0;
-    height: 100%;
-    transition: -webkit-transform 1.2s cubic-bezier(.22,.89,.34,.96);
-    transition: transform 1.2s cubic-bezier(.22,.89,.34,.96);
-    transition: transform 1.2s cubic-bezier(.22,.89,.34,.96),-webkit-transform 1.2s cubic-bezier(.22,.89,.34,.96);
-    -webkit-transform: translate(100%,0);
-    transform: translate(100%,0);
-    background-color: var(--white)
-  }
-  body::after {
-    content: "";
-    position: fixed;
-    inset: 0;
-    z-index: 1;
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    background-color: rgba(237,238,241,.3);
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity .85s ease,visible .85s ease
-  }
-  .menu-open body::after {
-    opacity: 1;
-    visibility: visible
-  }
   .hero__block {
     display: grid
   }
@@ -1258,11 +1297,6 @@ section {
     max-width: 48%
   }
 }
-@media (min-width:30.06125em)and (min-width:120.06125em) {
-  .btn-header {
-    font-size: 2.0625rem
-  }
-}
 @media (min-width:37.56125em) {
   .services-home__list li {
     position: absolute
@@ -1445,6 +1479,9 @@ section {
   .title-main {
     font-size: 6.5rem
   }
+  .title-50 {
+    font-size: 4.0625rem
+  }
   .title-45 {
     font-size: 3.625rem
   }
@@ -1476,6 +1513,9 @@ section {
   .cases-home__link::after,
   .roadmap__item:not(:last-child):after {
     width: 2.5rem
+  }
+  .btn-header {
+    font-size: 2.0625rem
   }
   .roadmap__list li::before {
     font-size: 6.25rem
@@ -1953,6 +1993,9 @@ section {
   .title-main {
     font-size: 2.5rem
   }
+  .title-50 {
+    font-size: 2.375rem
+  }
   .title-45 {
     font-size: 1.875rem
   }
@@ -2004,6 +2047,9 @@ section {
   .mb-32-24 {
     margin-bottom: 1.5rem
   }
+  .btn-header {
+    font-size: 1.125rem
+  }
   .hero__block::before,
   .hero__year {
     margin-left: 1.0625rem
@@ -2050,6 +2096,9 @@ section {
   .title-main {
     font-size: clamp(5rem ,.4969375rem + 5vw ,6.5rem)
   }
+  .title-50 {
+    font-size: clamp(3.125rem ,.3105859375rem + 3.125vw ,4.0625rem)
+  }
   .title-45 {
     font-size: clamp(2.8125rem ,.3733411458rem + 2.7083333333vw ,3.625rem)
   }
@@ -2092,6 +2141,9 @@ section {
   }
   .title-main {
     font-size: clamp(2.5rem ,1.6174178404rem + 3.7558685446vw ,5rem)
+  }
+  .title-50 {
+    font-size: clamp(2.375rem ,2.1102253521rem + 1.1267605634vw ,3.125rem)
   }
   .title-45 {
     font-size: clamp(1.875rem ,1.5440316901rem + 1.4084507042vw ,2.8125rem)
@@ -2162,15 +2214,8 @@ section {
   .txt-19 {
     font-size: clamp(.75rem ,.6435331715rem + .4530744337vw ,1.1875rem)
   }
-}
-@media (min-width:30.06125em)and (min-width:23.49875em)and (max-width:120.06125em) {
   .btn-header {
     font-size: clamp(1.125rem ,.8968567961rem + .9708737864vw ,2.0625rem)
-  }
-}
-@media (min-width:30.06125em)and (max-width:23.49875em) {
-  .btn-header {
-    font-size: 1.125rem
   }
 }
 @media (min-width:30.06125em)and (max-width:90.06125em) {
@@ -2251,6 +2296,9 @@ section {
   .btn:hover .char {
     -webkit-transform: translateY(-8%);
     transform: translateY(-8%)
+  }
+  .btn-header:hover {
+    background-color: var(--blue)
   }
   .ticker__item:hover {
     border-color: var(--blue);

@@ -154,6 +154,10 @@ export let bodyUnlock = (delay = 500) => {
 				lockPaddingElement.style.paddingRight = ''
 			});
 			document.body.style.paddingRight = ''
+			let heroSection = document.querySelector('.hero');
+			if (heroSection) {
+				heroSection.style.paddingRight = ''
+			}
 			document.documentElement.classList.remove("lock");
 
 			const header = document.querySelector('.header');
@@ -179,6 +183,10 @@ export let bodyLock = (delay = 500) => {
 
 		document.body.style.paddingRight = lockPaddingValue
 		document.documentElement.classList.add("lock");
+		let heroSection = document.querySelector('.hero');
+			if (heroSection) {
+				heroSection.style.paddingRight = lockPaddingValue;
+			}
 		
 		const header = document.querySelector('.header');
 		if (header) {
@@ -473,10 +481,10 @@ export function menuInit() {
 
 				if (isMenuOpen) {
 					bodyLock();
-					lenis.stop(); // ⛔ Останавливаем скролл
+					lenis.stop();
 				} else {
 					bodyUnlock();
-					lenis.start(); // ✅ Возобновляем скролл
+					lenis.start();
 				}
 			}
 		});
