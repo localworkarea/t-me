@@ -1,23 +1,27 @@
 // Підключення списку активних модулів
-import { flsModules } from "./modules.js";
+import {
+	flsModules
+} from "./modules.js";
 
 import Lenis from 'lenis'
 // npm i lenis
 // === ПЛАВНАЯ ПРОКРУТКА ЧЕРЕЗ LENIS =============================
 const lenis = new Lenis({
-  // smooth: true,          // Включает плавный скролл
-  // smoothTouch: true,     // Включает плавный скролл на мобильных устройствах
-  lerp: 0.04, // Определяет инерцию (чем ближе к 1, тем медленнее скролл)
-  // direction: 'vertical', // Задаёт направление скролла: 'vertical' или 'horizontal'
-  // mouseMultiplier: 1, // Чувствительность прокрутки мыши (увеличивайте, чтобы сделать скролл быстрее)
+	// smooth: true,          // Включает плавный скролл
+	// smoothTouch: true,     // Включает плавный скролл на мобильных устройствах
+	lerp: 0.04, // Определяет инерцию (чем ближе к 1, тем медленнее скролл)
+	// direction: 'vertical', // Задаёт направление скролла: 'vertical' или 'horizontal'
+	// mouseMultiplier: 1, // Чувствительность прокрутки мыши (увеличивайте, чтобы сделать скролл быстрее)
 })
 
 lenis.on('scroll', ScrollTrigger.update)
 gsap.ticker.add((time) => {
-  lenis.raf(time * 1000)
+	lenis.raf(time * 1000)
 })
 gsap.ticker.lagSmoothing(0)
-export { lenis }
+export {
+	lenis
+}
 
 /* Перевірка підтримки webp, додавання класу webp або no-webp для HTML */
 export function isWebp() {
@@ -36,7 +40,26 @@ export function isWebp() {
 	});
 }
 /* Перевірка мобільного браузера */
-export let isMobile = { Android: function () { return navigator.userAgent.match(/Android/i); }, BlackBerry: function () { return navigator.userAgent.match(/BlackBerry/i); }, iOS: function () { return navigator.userAgent.match(/iPhone|iPad|iPod/i); }, Opera: function () { return navigator.userAgent.match(/Opera Mini/i); }, Windows: function () { return navigator.userAgent.match(/IEMobile/i); }, any: function () { return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows()); } };
+export let isMobile = {
+	Android: function () {
+		return navigator.userAgent.match(/Android/i);
+	},
+	BlackBerry: function () {
+		return navigator.userAgent.match(/BlackBerry/i);
+	},
+	iOS: function () {
+		return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+	},
+	Opera: function () {
+		return navigator.userAgent.match(/Opera Mini/i);
+	},
+	Windows: function () {
+		return navigator.userAgent.match(/IEMobile/i);
+	},
+	any: function () {
+		return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
+	}
+};
 /* Додавання класу touch для HTML, якщо браузер мобільний */
 export function addTouchClass() {
 	// Додавання класу _touch для HTML, якщо браузер мобільний
@@ -54,7 +77,9 @@ export function addLoadedClass() {
 }
 // Отримання хешу на адресі сайту
 export function getHash() {
-	if (location.hash) { return location.hash.replace('#', ''); }
+	if (location.hash) {
+		return location.hash.replace('#', '');
+	}
 }
 // Вказівка хеша на адресу сайту
 export function setHash(hash) {
@@ -158,6 +183,10 @@ export let bodyUnlock = (delay = 500) => {
 			if (heroSection) {
 				heroSection.style.paddingRight = ''
 			}
+		// 	let footerSection = document.querySelector('.footer');
+		// if (footerSection) {
+		// 	footerSection.style.paddingRight = '';
+		// }
 			document.documentElement.classList.remove("lock");
 
 			const header = document.querySelector('.header');
@@ -184,10 +213,14 @@ export let bodyLock = (delay = 500) => {
 		document.body.style.paddingRight = lockPaddingValue
 		document.documentElement.classList.add("lock");
 		let heroSection = document.querySelector('.hero');
-			if (heroSection) {
-				heroSection.style.paddingRight = lockPaddingValue;
-			}
-		
+		if (heroSection) {
+			heroSection.style.paddingRight = lockPaddingValue;
+		}
+		// let footerSection = document.querySelector('.footer');
+		// if (footerSection) {
+		// 	footerSection.style.paddingRight = lockPaddingValue;
+		// }
+
 		const header = document.querySelector('.header');
 		if (header) {
 			header.style.paddingRight = lockPaddingValue;
@@ -262,6 +295,7 @@ export function spollers() {
 				});
 			}
 		}
+
 		function setSpollerAction(e) {
 			const el = e.target;
 			if (el.closest('summary') && el.closest('[data-spollers]')) {
@@ -278,7 +312,9 @@ export function spollers() {
 							hideSpollersBody(spollersBlock);
 						}
 
-						!spollerBlock.open ? spollerBlock.open = true : setTimeout(() => { spollerBlock.open = false }, spollerSpeed);
+						!spollerBlock.open ? spollerBlock.open = true : setTimeout(() => {
+							spollerBlock.open = false
+						}, spollerSpeed);
 
 						spollerTitle.classList.toggle('_spoller-active');
 						_slideToggle(spollerTitle.nextElementSibling, spollerSpeed);
@@ -289,12 +325,10 @@ export function spollers() {
 							const scrollSpollerNoHeader = spollerBlock.hasAttribute('data-spoller-scroll-noheader') ? document.querySelector('.header').offsetHeight : 0;
 
 							//setTimeout(() => {
-							window.scrollTo(
-								{
-									top: spollerBlock.offsetTop - (scrollSpollerOffset + scrollSpollerNoHeader),
-									behavior: "smooth",
-								}
-							);
+							window.scrollTo({
+								top: spollerBlock.offsetTop - (scrollSpollerOffset + scrollSpollerNoHeader),
+								behavior: "smooth",
+							});
 							//}, spollerSpeed);
 						}
 					}
@@ -311,12 +345,15 @@ export function spollers() {
 							const spollerSpeed = spollersBlock.dataset.spollersSpeed ? parseInt(spollersBlock.dataset.spollersSpeed) : 500;
 							spollerClose.classList.remove('_spoller-active');
 							_slideUp(spollerClose.nextElementSibling, spollerSpeed);
-							setTimeout(() => { spollerCloseBlock.open = false }, spollerSpeed);
+							setTimeout(() => {
+								spollerCloseBlock.open = false
+							}, spollerSpeed);
 						}
 					});
 				}
 			}
 		}
+
 		function hideSpollersBody(spollersBlock) {
 			const spollerActiveBlock = spollersBlock.querySelector('details[open]');
 			if (spollerActiveBlock && !spollersBlock.querySelectorAll('._slide').length) {
@@ -324,7 +361,9 @@ export function spollers() {
 				const spollerSpeed = spollersBlock.dataset.spollersSpeed ? parseInt(spollersBlock.dataset.spollersSpeed) : 500;
 				spollerActiveTitle.classList.remove('_spoller-active');
 				_slideUp(spollerActiveTitle.nextElementSibling, spollerSpeed);
-				setTimeout(() => { spollerActiveBlock.open = false }, spollerSpeed);
+				setTimeout(() => {
+					spollerActiveBlock.open = false
+				}, spollerSpeed);
 			}
 		}
 	}
@@ -403,10 +442,12 @@ export function tabs() {
 			});
 		}
 	}
+
 	function setTabsStatus(tabsBlock) {
 		let tabsTitles = tabsBlock.querySelectorAll('[data-tabs-title]');
 		let tabsContent = tabsBlock.querySelectorAll('[data-tabs-item]');
 		const tabsBlockIndex = tabsBlock.dataset.tabsIndex;
+
 		function isTabsAnamate(tabsBlock) {
 			if (tabsBlock.hasAttribute('data-tabs-animate')) {
 				return tabsBlock.dataset.tabsAnimate > 0 ? Number(tabsBlock.dataset.tabsAnimate) : 500;
@@ -437,6 +478,7 @@ export function tabs() {
 			});
 		}
 	}
+
 	function setTabsAction(e) {
 		const el = e.target;
 		if (el.closest('[data-tabs-title]')) {
@@ -532,16 +574,19 @@ export function showMore() {
 				initItemsMedia(mdQueriesArray);
 			}
 		}
+
 		function initItemsMedia(mdQueriesArray) {
 			mdQueriesArray.forEach(mdQueriesItem => {
 				initItems(mdQueriesItem.itemsArray, mdQueriesItem.matchMedia);
 			});
 		}
+
 		function initItems(showMoreBlocks, matchMedia) {
 			showMoreBlocks.forEach(showMoreBlock => {
 				initItem(showMoreBlock, matchMedia);
 			});
 		}
+
 		function initItem(showMoreBlock, matchMedia = false) {
 			showMoreBlock = matchMedia ? showMoreBlock.item : showMoreBlock;
 			let showMoreContent = showMoreBlock.querySelectorAll('[data-showmore-content]');
@@ -562,6 +607,7 @@ export function showMore() {
 				showMoreButton.hidden = true;
 			}
 		}
+
 		function getHeight(showMoreBlock, showMoreContent) {
 			let hiddenHeight = 0;
 			const showMoreType = showMoreBlock.dataset.showmore ? showMoreBlock.dataset.showmore : 'size';
@@ -598,6 +644,7 @@ export function showMore() {
 			showMoreContent.style.height = `${hiddenHeight}px`;
 			return originalHeight;
 		}
+
 		function showMoreActions(e) {
 			const targetEvent = e.target;
 			const targetType = e.type;
@@ -687,6 +734,7 @@ export function customCursor(isShadowTrue) {
 				height: cursorShadow.offsetHeight
 			}
 		}
+
 		function mouseActions(e) {
 			if (e.type === 'mouseout') {
 				cursor.style.opacity = 0;

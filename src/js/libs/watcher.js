@@ -127,10 +127,16 @@ class ScrollWatcher {
 			// Бачимо об'єкт
 			// Додаємо клас
 			!targetElement.classList.contains('_view') ? targetElement.classList.add('_view') : null;
+			if (targetElement.classList.contains('footer')) {
+				document.documentElement.classList.add('footer-view');
+			}
 		} else {
 			// Не бачимо об'єкт
 			// Забираємо клас
 			targetElement.classList.contains('_view') ? targetElement.classList.remove('_view') : null;
+			if (targetElement.classList.contains('footer')) {
+				document.documentElement.classList.remove('footer-view');
+			}
 		}
 	}
 	// Функція відключення стеження за об'єктом

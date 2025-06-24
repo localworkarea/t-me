@@ -77,6 +77,11 @@
         transform: translate(0%, 0%);
       }
     }
+    .footer-view & {
+      @media (min-width:toEm(600.98)){
+        transform: translate(0%, 0%);
+      }
+    }
   }
 
   // .header__btn
@@ -113,6 +118,7 @@
 
   @media (max-width: toEm(600.98)) {
     height: toRem(72);
+    border-top: toRem(1) solid var(--main);
     border-bottom: toRem(1) solid var(--main);
 
     &:first-child {

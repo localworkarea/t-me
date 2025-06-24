@@ -1058,7 +1058,13 @@
             items.forEach(item => this.observer.observe(item));
         }
         scrollWatcherIntersecting(entry, targetElement) {
-            if (entry.isIntersecting) !targetElement.classList.contains("_view") ? targetElement.classList.add("_view") : null; else targetElement.classList.contains("_view") ? targetElement.classList.remove("_view") : null;
+            if (entry.isIntersecting) {
+                !targetElement.classList.contains("_view") ? targetElement.classList.add("_view") : null;
+                if (targetElement.classList.contains("footer")) document.documentElement.classList.add("footer-view");
+            } else {
+                targetElement.classList.contains("_view") ? targetElement.classList.remove("_view") : null;
+                if (targetElement.classList.contains("footer")) document.documentElement.classList.remove("footer-view");
+            }
         }
         scrollWatcherOff(targetElement, observer) {
             observer.unobserve(targetElement);

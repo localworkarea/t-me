@@ -1,3 +1,112 @@
-//====================================================================================================
+.footer {
+  min-height: 100svh;
+  position: relative;
+  z-index: 5;
+  background-color: var(--gray2);
+  @include adaptiveValue("padding-top", 205, 84, 0, 1440.98, 480.98);
+  padding-bottom: toRem(38);
+  display: flex;
+  flex-direction: column;
 
-//====================================================================================================
+  // .footer__container
+  &__container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: toRem(80);
+  }
+
+  // .footer__list
+  &__list {
+    display: grid;
+    @include adaptiveValue("gap", 90, 40, 0, 1920.98, 480.98);
+    @media (min-width:toEm(820.98)){
+      max-width: 80%;
+      grid-template-columns: repeat(3, auto);
+    }
+  }
+
+  // .footer__item
+  &__item {}
+
+  // .footer__title
+  &__title {
+    @include adaptiveValue("margin-bottom", 60, 20, 0, 1920.98, 480.98);
+  }
+
+  // .footer__link
+  &__link {
+    display: block;
+    font-weight: 700;
+    transition: color .3s ease;
+
+    &:not(:last-child) {
+      @include adaptiveValue("margin-bottom", 30, 15, 0, 1920.98, 480.98);
+    }
+
+    @media (any-hover: hover) {
+      &:hover {
+        color: var(--blue);
+      }
+    }
+  }
+
+  // .footer__link--span
+  &__link--span {
+    span {
+      display: block;
+
+      &:not(:last-child) {
+        @include adaptiveValue("margin-bottom", 30, 15, 0, 1920.98, 480.98);
+      }
+    }
+  }
+
+  // .footer__link--social
+  &__link--social {
+    span {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 85%;
+      gap: toRem(27);
+    }
+    img {
+      width: 100%;
+      height: auto;
+      @include adaptiveValue("max-width", 30,18,0,1920.98,480.98 );
+    }
+  }
+
+  // .footer__bottom
+  &__bottom {}
+
+  // .footer__logo
+  &__logo {
+    margin-bottom: toRem(40);
+
+    img {
+      width: 100%;
+      height: auto;
+      max-width: toRem(570);
+    }
+  }
+
+  // .footer__copy
+  &__copy {
+    font-size: toRem(20);
+  }
+
+  // .footer__privacy
+  &__privacy {
+    transition: color .3s ease;
+
+    @media (any-hover: hover) {
+      &:hover {
+        color: var(--blue);
+      }
+    }
+  }
+}
