@@ -1026,11 +1026,11 @@ section,
   // .cases-home__img
   &__img {
     overflow: hidden;
-    background-color: var(--gray);
+    @extend %hoverImg;
     @include adaptiveValue("margin-bottom", 23, 10, 0, 1440.98, 480.98);
 
     img {
-      transition: transform .65s ease;
+      // transition: transform .65s ease;
 
       .cases-home & {
         @media (orientation: landscape) {
@@ -1069,6 +1069,9 @@ section,
 
     @media (min-width:toEm(820.98)) {
       -webkit-line-clamp: 2;
+    }
+    .page-cases & {
+      -webkit-line-clamp: 3;
     }
   }
 
@@ -1348,20 +1351,13 @@ section,
   &__item {}
 }
 
-.item-team {
-
-  // .item-team__img
-  &__img {
-    overflow: hidden;
-    background-color: var(--gray);
-    clip-path: polygon(50% 0, 50% 0, 50% 0%, 50% 0%);
-    transition: clip-path 1.2s cubic-bezier(.22, .89, .34, .96);
-    margin-bottom: toRem(32);
-
-    ._view & {
-      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+%hoverImg {
+  overflow: hidden;
+  transition: clip-path 1.2s cubic-bezier(.22, .89, .34, .96);
+  background-color: var(--gray);
+  img {
+      transition: transform 1s cubic-bezier(.22, .89, .34, .96);
     }
-
     @media (any-hover: hover) {
       &:hover {
         img {
@@ -1369,9 +1365,20 @@ section,
         }
       }
     }
+}
+.item-team {
+
+  // .item-team__img
+  &__img {
+    clip-path: polygon(50% 0, 50% 0, 50% 0%, 50% 0%);
+    margin-bottom: toRem(32);
+    @extend %hoverImg;
+    ._view & {
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    }
+
 
     img {
-      transition: transform 1s cubic-bezier(.22, .89, .34, .96);
     }
   }
 
@@ -1586,7 +1593,215 @@ section,
 
 
 // == - SECTION ==========================================
+.blog {
+		// .blog__container
+		&__container {
+		}
+		// .blog__filter
+		&__filter {
+		}
+		// .blog__list
+		&__list {
+      display: grid;
+      grid-template-columns: repeat(4,1fr);
+      column-gap: toRem(20);
+      @include adaptiveValue("row-gap", 64 ,54,0,1440.98,480.98 );
+      @media (max-width: toEm(1200.98)){
+        grid-template-columns: repeat(3,1fr);
+      }
+      @media (max-width: toEm(820.98)){
+        grid-template-columns: repeat(2,1fr);
+      }
+      @media (min-width:toEm(600.98)){
+        max-width: calc(100% - 88px);
+      }
+      @media (max-width: toEm(600.98)){
+        grid-template-columns: 1fr;
+      }
+		}
+		// .blog__item
+		&__item {
+		}
+}
+
+.filter {
+    display: flex;
+    align-items: center;
+    @include adaptiveValue("margin-bottom", 70, 64,0,1440.98,480.98);
+    @media (min-width:toEm(600.98)){
+      flex-wrap: wrap;
+      max-width: 90%;
+    }
+    @media (max-width: toEm(600.98)){
+         overflow: auto;
+      scroll-snap-type: x mandatory;
+      padding-left: toRem(16);
+      padding-right: toRem(16);
+      margin-inline: toRem(-16);
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
+		// .filter__item
+		&__item {
+      &:not(:first-child) {
+        position: relative;
+      }
+      .filter__btn {
+        // left: -1px;
+        // margin-inline: 1px;
+        // margin-block: 1px;
+      }
+    }
+		// .filter__btn
+		&__btn {
+      display: grid;
+      place-items: center;
+      padding-inline: toRem(25);
+      @include adaptiveValue("font-size", 25, 18,0,1920.98,480.98);
+      text-transform: uppercase;
+      border: toRem(1) solid var(--main);
+      @include adaptiveValue("min-height", 58, 40,0,1440.98,375.98);
+      transition: background-color .3s ease;
+      white-space: nowrap;
+      @media (any-hover: hover){
+        &:hover{
+          background-color: var(--blue);
+        }
+      }
+      &._active {
+        background-color: var(--blue);
+      }
+		}
+}
+
+.item-blog {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  @media (any-hover: hover){
+    &:hover{
+      .item-blog__title {
+        color: var(--blue);
+      }
+      img {
+        transform: scale(1.1);
+      }
+    }
+  }
+		// .item-blog__img
+		&__img {
+      margin-bottom: toRem(27);
+      overflow: hidden;
+        @extend %hoverImg;
+      img {
+        aspect-ratio: 303/339;
+      }
+		}
+		// .item-blog__body
+		&__body {
+      flex: 1;
+       display: flex;
+  flex-direction: column;
+    }
+		// .item-blog__tags
+		&__tags {
+      margin-bottom: toRem(27);
+      display: flex;
+      flex-wrap: wrap;
+		}
+		// .item-blog__tag
+		&__tag {
+      position: relative;
+      display: grid;
+      place-items: center;
+      text-transform: uppercase;
+      border: toRem(1) solid var(--main);
+      padding-inline: toRem(11);
+      font-weight: 500;
+      &:not(:first-child) {
+        left: toRem(-1);
+      }
+      @media (min-width:toEm(600.98)){
+        font-size: toRem(11);
+        min-height: toRem(27);
+      }
+      @media (max-width:toEm(600.98)){
+        font-size: toRem(14);
+        min-height: toRem(33);
+      }
+		}
+		// .item-blog__title
+		&__title {
+      font-weight: 700;
+      line-height: 1.1;
+      font-size: toRem(27);
+      transition: color .3s ease;
+      margin-bottom: toRem(20);
+		}
+		// .item-blog__subtitle
+		&__subtitle {
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: toRem(20);
+      flex: 1;
+      @media (min-width:$mobileSmall){
+        max-width: 80%;
+        font-size: toRem(18); 
+      }
+      @media (max-width:$mobileSmall){
+         font-size: toRem(21); 
+      }
+		}
+		// .item-blog__time
+		&__time {
+       font-family: "Montserrat", sans-serif;
+       font-weight: 500;
+       @media (min-width:$mobileSmall){
+         font-size: toRem(13); 
+        }
+        @media (max-width:$mobileSmall){
+         font-size: toRem(18); 
+          
+       }
+		}
+		// .item-blog__link
+		&__link {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+		}
+}
+
+
+
 // == - SECTION ==========================================
+.cases {
+		// .cases__container
+		&__container {
+		}
+		// .cases__list
+		&__list {
+      display: grid;
+      @include adaptiveValue("row-gap", 64 ,54,0,1440.98,480.98 );
+      column-gap: toRem(20);
+      @media (min-width:toEm(820.98)){
+        grid-template-columns: repeat(3,1fr);
+      }
+      @media (max-width: toEm(820.98)){
+        grid-template-columns: repeat(2,1fr);
+      }
+      @media (min-width:toEm(600.98)){
+        max-width: calc(100% - 88px);
+      }
+      @media (max-width: toEm(600.98)){
+        grid-template-columns: 1fr;
+      }
+		}
+}
+
+
 // == - SECTION ==========================================
 // == - SECTION ==========================================
 // == - SECTION ==========================================

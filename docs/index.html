@@ -13,7 +13,12 @@
 	<link rel="preload" href="fonts/Montserrat-Regular.woff2" as="font" type="font/woff2" crossorigin>
 	<link rel="preload" href="fonts/Montserrat-Bold.woff2" as="font" type="font/woff2" crossorigin>
 	<!-- <style>body{opacity: 0;}</style> -->
-	<link rel="stylesheet" href="css/style.min.css?_v=20250624144638">
+	<!-- <style>
+		html:target {
+    scroll-margin-top: 0 !important;
+  } -->
+	</style>
+	<link rel="stylesheet" href="css/style.min.css?_v=20250624193105">
 	<link rel="shortcut icon" href="favicon.ico">
 	<!-- <meta name="robots" content="noindex, nofollow"> -->
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -35,10 +40,10 @@
 			<div class="header__menu menu">
 				<nav class="menu__body">
 					<ul class="menu__list">
-						<li class="menu__item"><a href="#" class="menu__link title-50" aria-label="link to a section">послуги</a></li>
-						<li class="menu__item"><a href="#" class="menu__link title-50" aria-label="link to a section">кейси</a></li>
-						<li class="menu__item"><a href="#" class="menu__link title-50" aria-label="link to a section">команда</a></li>
-						<li class="menu__item"><a href="#" class="menu__link title-50" aria-label="link to a section">контакти</a></li>
+						<li class="menu__item"><a href="#" data-goto=".services-home" class="menu__link title-50" aria-label="link to a section">послуги</a></li>
+						<li class="menu__item"><a href="#" data-goto=".cases-home" class="menu__link title-50" aria-label="link to a section">кейси</a></li>
+						<li class="menu__item"><a href="#" data-goto=".team" class="menu__link title-50" aria-label="link to a section">команда</a></li>
+						<li class="menu__item"><a href="#" data-goto=".footer" class="menu__link title-50" aria-label="link to a section">контакти</a></li>
 					</ul>
 				</nav>
 				<div class="menu__social">
@@ -269,7 +274,7 @@
 					<div class="cases-home__container">
 						<div class="cases-home__block mb-44-30">
 							<h2 data-watch data-watch-threshold="1" data-watch-once class="cases-home__title title-main split-words set-span ">кейси</h2>
-							<a href="#" class="cases-home__link" aria-label="link to page cases">
+							<a href="cases.html" class="cases-home__link" aria-label="link to page cases">
 								УСІ
 							</a>
 						</div>
@@ -448,7 +453,7 @@
 					<div class="blog-home__container">
 						<div class="blog-home__block cases-home__block mb-44-30">
 							<h2 data-watch data-watch-threshold="1" data-watch-once class="cases-home__title title-main split-words set-span ">блог</h2>
-							<a href="#" class="cases-home__link" aria-label="link to page blog">
+							<a href="blog.html" class="cases-home__link" aria-label="link to page blog">
 								УСІ
 							</a>
 						</div>
@@ -560,7 +565,7 @@
 						</ul>
 					</div>
 			</section>
-			<section class="brief  pb-90-60">
+			<section class="brief pb-90-60">
 				<div class="brief__container">
 					<h2 data-watch data-watch-threshold="1" data-watch-once class="brief__title title-main split-words set-span mb-44-30">Просування в Telegram</h2>
 					<div class="brief__block parent-txt-main-2">
@@ -616,11 +621,11 @@
 			</div>
 		</footer>
 	</div>
-	<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js?_v=20250624144638"></script>
-	<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js?_v=20250624144638"></script>
-	<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollToPlugin.min.js?_v=20250624144638"></script>
+	<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js?_v=20250624193105"></script>
+	<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js?_v=20250624193105"></script>
+	<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollToPlugin.min.js?_v=20250624193105"></script>
 
-	<script src="js/app.min.js?_v=20250624144638"></script>
+	<script src="js/app.min.js?_v=20250624193105"></script>
 </body>
 
 </html>

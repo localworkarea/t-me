@@ -1,11 +1,11 @@
 import { isMobile, menuClose, getHash, FLS } from "../functions.js";
 // Підключення доповнення для збільшення можливостей
 // Документація: https://github.com/cferdinandi/smooth-scroll
-// import SmoothScroll from 'smooth-scroll';
+import SmoothScroll from 'smooth-scroll';
 //==============================================================================================================================================================================================================================================================================================================================
 
 // Модуль плавної проктутки до блоку
-export let gotoBlock = (targetBlock, noHeader = false, speed = 500, offsetTop = 0) => {
+export let gotoBlock = (targetBlock, noHeader = false, speed = 1000, offsetTop = 0) => {
 	const targetBlockElement = document.querySelector(targetBlock);
 	if (targetBlockElement) {
 		let headerItem = '';
@@ -48,8 +48,5 @@ export let gotoBlock = (targetBlock, noHeader = false, speed = 500, offsetTop = 
 				behavior: "smooth"
 			});
 		}
-		FLS(`[gotoBlock]: Юхуу...їдемо до ${targetBlock}`);
-	} else {
-		FLS(`[gotoBlock]: Йой... Такого блоку немає на сторінці: ${targetBlock}`);
-	}
+	} 
 };

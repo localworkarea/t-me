@@ -235,6 +235,7 @@ html.lenis body {
   line-height: 1.1;
 }
 
+
 // == TEXTS =======================
 .txt-main {
   @include adaptiveValue("font-size", 57, 50, 2, 1920.98, 1440.98);
@@ -284,6 +285,11 @@ html.lenis body {
   font-weight: 500;
   line-height: 1.2;
   @include adaptiveValue("font-size", 19, 12, 0, 1920.98, 375.98);
+}
+.txt-18 {
+  font-weight: 500;
+  line-height: 1.2;
+  font-size: toRem(18);
 }
 
 
@@ -419,3 +425,22 @@ html.lenis body {
 		// }
 }
 
+
+
+.logo-top {
+  margin-bottom: toRem(70);
+  @media (min-width:toEm(600.98)){
+    margin-top: toRem(60);
+  }
+  @media (max-width:toEm(600.98)){
+    margin-top: toRem(100);
+  }
+	// .logo-top__container
+	&__container {
+    img {
+      width: 100%;
+      height: auto;
+      @include adaptiveValue("max-width", 184, 174,0,1440.98,375.98);
+    }
+	}
+}
