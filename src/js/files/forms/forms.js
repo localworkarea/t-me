@@ -11,76 +11,94 @@ import { gotoBlock } from "../scroll/gotoblock.js";
 
 // Робота із полями форми.
 export function formFieldsInit(options = { viewPass: false, autoHeight: false }) {
-	document.body.addEventListener("focusin", function (e) {
+document.body.addEventListener("focusin", function (e) {
 		const targetElement = e.target;
-		if ((targetElement.tagName === 'INPUT' || targetElement.tagName === 'TEXTAREA')) {
+		if (targetElement.tagName === 'INPUT' || targetElement.tagName === 'TEXTAREA') {
 			if (!targetElement.hasAttribute('data-no-focus-classes')) {
 				targetElement.classList.add('_form-focus');
 				targetElement.parentElement.classList.add('_form-focus');
 			}
+			// 👉 Добавляем _full, если уже есть значение
+			if (targetElement.value.trim() !== '') {
+				targetElement.classList.add('_full');
+				targetElement.parentElement.classList.add('_full');
+			}
 			formValidate.removeError(targetElement);
-			targetElement.hasAttribute('data-validate') ? formValidate.removeError(targetElement) : null;
+			if (targetElement.hasAttribute('data-validate')) {
+				formValidate.removeError(targetElement);
+			}
 		}
 	});
+
 	document.body.addEventListener("focusout", function (e) {
 		const targetElement = e.target;
-		if ((targetElement.tagName === 'INPUT' || targetElement.tagName === 'TEXTAREA')) {
+		if (targetElement.tagName === 'INPUT' || targetElement.tagName === 'TEXTAREA') {
 			if (!targetElement.hasAttribute('data-no-focus-classes')) {
 				targetElement.classList.remove('_form-focus');
 				targetElement.parentElement.classList.remove('_form-focus');
 			}
-			// Миттєва валідація
-			targetElement.hasAttribute('data-validate') ? formValidate.validateInput(targetElement) : null;
+			// 👉 Проверяем значение — добавляем/удаляем _full
+			if (targetElement.value.trim() !== '') {
+				targetElement.classList.add('_full');
+				targetElement.parentElement.classList.add('_full');
+			} else {
+				targetElement.classList.remove('_full');
+				targetElement.parentElement.classList.remove('_full');
+			}
+			if (targetElement.hasAttribute('data-validate')) {
+				formValidate.validateInput(targetElement);
+			}
 		}
 	});
-	// Якщо увімкнено, додаємо функціонал "Показати пароль"
-	if (options.viewPass) {
-		document.addEventListener("click", function (e) {
-			let targetElement = e.target;
-			if (targetElement.closest('[class*="__viewpass"]')) {
-				let inputType = targetElement.classList.contains('_viewpass-active') ? "password" : "text";
-				targetElement.parentElement.querySelector('input').setAttribute("type", inputType);
-				targetElement.classList.toggle('_viewpass-active');
-			}
-		});
-	}
-	// Якщо увімкнено, додаємо функціонал "Автовисота"
-	if (options.autoHeight) {
-		const textareas = document.querySelectorAll('textarea[data-autoheight]');
-		if (textareas.length) {
-			textareas.forEach(textarea => {
-				const startHeight = textarea.hasAttribute('data-autoheight-min') ?
-					Number(textarea.dataset.autoheightMin) : Number(textarea.offsetHeight);
-				const maxHeight = textarea.hasAttribute('data-autoheight-max') ?
-					Number(textarea.dataset.autoheightMax) : Infinity;
-				setHeight(textarea, Math.min(startHeight, maxHeight))
-				textarea.addEventListener('input', () => {
-					if (textarea.scrollHeight > startHeight) {
-						textarea.style.height = `auto`;
-						setHeight(textarea, Math.min(Math.max(textarea.scrollHeight, startHeight), maxHeight));
-					}
-				});
-			});
-			function setHeight(textarea, height) {
-				textarea.style.height = `${height}px`;
-			}
-		}
-	}
+
+	// // Якщо увімкнено, додаємо функціонал "Показати пароль"
+	// if (options.viewPass) {
+	// 	document.addEventListener("click", function (e) {
+	// 		let targetElement = e.target;
+	// 		if (targetElement.closest('[class*="__viewpass"]')) {
+	// 			let inputType = targetElement.classList.contains('_viewpass-active') ? "password" : "text";
+	// 			targetElement.parentElement.querySelector('input').setAttribute("type", inputType);
+	// 			targetElement.classList.toggle('_viewpass-active');
+	// 		}
+	// 	});
+	// }
+	// // Якщо увімкнено, додаємо функціонал "Автовисота"
+	// if (options.autoHeight) {
+	// 	const textareas = document.querySelectorAll('textarea[data-autoheight]');
+	// 	if (textareas.length) {
+	// 		textareas.forEach(textarea => {
+	// 			const startHeight = textarea.hasAttribute('data-autoheight-min') ?
+	// 				Number(textarea.dataset.autoheightMin) : Number(textarea.offsetHeight);
+	// 			const maxHeight = textarea.hasAttribute('data-autoheight-max') ?
+	// 				Number(textarea.dataset.autoheightMax) : Infinity;
+	// 			setHeight(textarea, Math.min(startHeight, maxHeight))
+	// 			textarea.addEventListener('input', () => {
+	// 				if (textarea.scrollHeight > startHeight) {
+	// 					textarea.style.height = `auto`;
+	// 					setHeight(textarea, Math.min(Math.max(textarea.scrollHeight, startHeight), maxHeight));
+	// 				}
+	// 			});
+	// 		});
+	// 		function setHeight(textarea, height) {
+	// 			textarea.style.height = `${height}px`;
+	// 		}
+	// 	}
+	// }
 }
 // Валідація форм
 export let formValidate = {
-	getErrors(form) {
-		let error = 0;
-		let formRequiredItems = form.querySelectorAll('*[data-required]');
-		if (formRequiredItems.length) {
-			formRequiredItems.forEach(formRequiredItem => {
-				if ((formRequiredItem.offsetParent !== null || formRequiredItem.tagName === "SELECT") && !formRequiredItem.disabled) {
-					error += this.validateInput(formRequiredItem);
-				}
-			});
-		}
-		return error;
-	},
+	// getErrors(form) {
+	// 	let error = 0;
+	// 	let formRequiredItems = form.querySelectorAll('*[data-required]');
+	// 	if (formRequiredItems.length) {
+	// 		formRequiredItems.forEach(formRequiredItem => {
+	// 			if ((formRequiredItem.offsetParent !== null || formRequiredItem.tagName === "SELECT") && !formRequiredItem.disabled) {
+	// 				error += this.validateInput(formRequiredItem);
+	// 			}
+	// 		});
+	// 	}
+	// 	return error;
+	// },
 	validateInput(formRequiredItem) {
 		let error = 0;
 		if (formRequiredItem.dataset.required === "email") {
@@ -133,34 +151,42 @@ export let formValidate = {
 		formRequiredItem.classList.remove('_form-success');
 		formRequiredItem.parentElement.classList.remove('_form-success');
 	},
-	formClean(form) {
-		form.reset();
-		setTimeout(() => {
-			let inputs = form.querySelectorAll('input,textarea');
-			for (let index = 0; index < inputs.length; index++) {
-				const el = inputs[index];
-				el.parentElement.classList.remove('_form-focus');
-				el.classList.remove('_form-focus');
-				formValidate.removeError(el);
+formClean(form) {
+	form.reset();
+	setTimeout(() => {
+		let inputs = form.querySelectorAll('input,textarea');
+		for (let index = 0; index < inputs.length; index++) {
+			const el = inputs[index];
+			el.parentElement.classList.remove('_form-focus');
+			el.classList.remove('_form-focus');
+
+			// ❗ Удаляем _full
+			el.classList.remove('_full');
+			el.parentElement.classList.remove('_full');
+
+			formValidate.removeError(el);
+		}
+
+		let checkboxes = form.querySelectorAll('.checkbox__input');
+		if (checkboxes.length > 0) {
+			for (let index = 0; index < checkboxes.length; index++) {
+				const checkbox = checkboxes[index];
+				checkbox.checked = false;
 			}
-			let checkboxes = form.querySelectorAll('.checkbox__input');
-			if (checkboxes.length > 0) {
-				for (let index = 0; index < checkboxes.length; index++) {
-					const checkbox = checkboxes[index];
-					checkbox.checked = false;
+		}
+
+		if (flsModules.select) {
+			let selects = form.querySelectorAll('div.select');
+			if (selects.length) {
+				for (let index = 0; index < selects.length; index++) {
+					const select = selects[index].querySelector('select');
+					flsModules.select.selectBuild(select);
 				}
 			}
-			if (flsModules.select) {
-				let selects = form.querySelectorAll('div.select');
-				if (selects.length) {
-					for (let index = 0; index < selects.length; index++) {
-						const select = selects[index].querySelector('select');
-						flsModules.select.selectBuild(select);
-					}
-				}
-			}
-		}, 0);
-	},
+		}
+	}, 0);
+},
+
 	emailTest(formRequiredItem) {
 		return !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,8})+$/.test(formRequiredItem.value);
 	}
@@ -181,8 +207,8 @@ export function formSubmit() {
 		}
 	}
 	async function formSubmitAction(form, e) {
-		const error = !form.hasAttribute('data-no-validate') ? formValidate.getErrors(form) : 0;
-		if (error === 0) {
+		// const error = !form.hasAttribute('data-no-validate') ? formValidate.getErrors(form) : 0;
+		// if (error === 0) {
 			const ajax = form.hasAttribute('data-ajax');
 			if (ajax) { // Якщо режим ajax
 				e.preventDefault();
@@ -207,13 +233,13 @@ export function formSubmit() {
 				e.preventDefault();
 				formSent(form);
 			}
-		} else {
-			e.preventDefault();
-			if (form.querySelector('._form-error') && form.hasAttribute('data-goto-error')) {
-				const formGoToErrorClass = form.dataset.gotoError ? form.dataset.gotoError : '._form-error';
-				gotoBlock(formGoToErrorClass, true, 1000);
-			}
-		}
+		// } else {
+		// 	e.preventDefault();
+		// 	// if (form.querySelector('._form-error') && form.hasAttribute('data-goto-error')) {
+		// 	// 	const formGoToErrorClass = form.dataset.gotoError ? form.dataset.gotoError : '._form-error';
+		// 	// 	gotoBlock(formGoToErrorClass, true, 1000);
+		// 	// }
+		// }
 	}
 	// Дії після надсилання форми
 	function formSent(form, responseResult = ``) {
@@ -225,20 +251,23 @@ export function formSubmit() {
 		}));
 		// Показуємо попап, якщо підключено модуль попапів 
 		// та для форми вказано налаштування
+		// setTimeout(() => {
+		// 	if (flsModules.popup) {
+		// 		const popup = form.dataset.popupMessage;
+		// 		popup ? flsModules.popup.open(popup) : null;
+		// 	}
+		// }, 0);
+
+		document.scrollingElement.classList.add('form-sent');
 		setTimeout(() => {
-			if (flsModules.popup) {
-				const popup = form.dataset.popupMessage;
-				popup ? flsModules.popup.open(popup) : null;
-			}
-		}, 0);
+			document.scrollingElement.classList.remove('form-sent');
+		}, 8000);
+		
 		// Очищуємо форму
 		formValidate.formClean(form);
 		// Повідомляємо до консолі
-		formLogging(`Форму відправлено!`);
 	}
-	function formLogging(message) {
-		FLS(`[Форми]: ${message}`);
-	}
+	
 }
 /* Модуль форми "кількість" */
 export function formQuantity() {

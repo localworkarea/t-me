@@ -476,14 +476,21 @@ html.lenis body {
   transition: transform .65s ease;
   transition: transform .65s ease,-webkit-transform .65s ease
 }
+.brief-open .header__btns {
+  -webkit-transform: translate(0,0);
+  transform: translate(0,0)
+}
 .btn-header {
   overflow: hidden;
   font-weight: 700;
   line-height: 1.1;
-  transition: background-color .3s ease;
+  transition: background-color .3s ease,opacity .3s ease .65s,visibility .3s ease .65s;
   position: relative
 }
 .menu-open .btn-header--menu {
+  background-color: var(--blue)
+}
+.brief-open .btn-header--brief {
   background-color: var(--blue)
 }
 .btn-header span {
@@ -494,6 +501,7 @@ html.lenis body {
   transition: transform .65s cubic-bezier(.22,.89,.34,.96);
   transition: transform .65s cubic-bezier(.22,.89,.34,.96),-webkit-transform .65s cubic-bezier(.22,.89,.34,.96)
 }
+.brief-header,
 .menu {
   pointer-events: all;
   position: fixed;
@@ -508,7 +516,9 @@ html.lenis body {
   -webkit-transform: translate(100%,0);
   transform: translate(100%,0);
   background-color: var(--white);
-  border: .0625rem solid var(--main);
+  border: .0625rem solid var(--main)
+}
+.menu {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -543,6 +553,104 @@ html.lenis body {
 .menu__copy {
   font-size: 1.25rem
 }
+.brief-open .brief-header {
+  -webkit-transform: translate(0,0);
+  transform: translate(0,0)
+}
+.brief-header__form {
+  transition: opacity .3s ease
+}
+.form-sent .brief-header__form {
+  opacity: 0;
+  pointer-events: none
+}
+.brief-header__title {
+  font-weight: 700;
+  line-height: 1.1
+}
+.brief-header__items {
+  display: grid
+}
+.brief-header__item {
+  display: grid;
+  align-items: flex-end;
+  position: relative;
+  min-height: 4.375rem
+}
+.brief-header__item._form-focus label,
+.brief-header__item._full label {
+  bottom: 50px
+}
+.brief-header__item label {
+  position: absolute;
+  pointer-events: none;
+  left: 0;
+  bottom: 15%;
+  transition: bottom .45s ease;
+  display: inline-block
+}
+.brief-header__item textarea {
+  min-height: 20vh
+}
+.brief-header__item--text {
+  margin-top: 3.125rem
+}
+.brief-header__item--text._form-focus label,
+.brief-header__item--text._full label {
+  bottom: 10px
+}
+.brief-header__item--text label {
+  position: relative;
+  bottom: 10px
+}
+.brief-header__item .input {
+  width: 100%
+}
+.brief-header__btn {
+  display: flex;
+  margin-inline: auto
+}
+.brief-header__msg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity .3s ease,visibility .3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: center
+}
+.form-sent .brief-header__msg {
+  opacity: 1;
+  pointer-events: all;
+  visibility: visible
+}
+.brief-header__msg-title {
+  font-weight: 700;
+  line-height: 1.1;
+  display: flex;
+  align-items: center;
+  gap: 1.875rem;
+  margin-bottom: 1.625rem
+}
+.brief-header__msg-title::before {
+  content: "";
+  background-image: url(../img/icons/ok.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  aspect-ratio: 1;
+  width: 4.25rem
+}
+.brief-header__msg-txt {
+  font-weight: 500;
+  line-height: 1.2
+}
 body::after {
   content: "";
   display: block;
@@ -556,6 +664,7 @@ body::after {
   visibility: hidden;
   transition: opacity .85s ease,visibility .85s ease
 }
+.brief-open body::after,
 .menu-open body::after {
   opacity: 1;
   visibility: visible
@@ -621,43 +730,20 @@ textarea {
   appearance: none
 }
 .input {
+  outline: 0;
   border-radius: 0!important;
   width: 100%;
   display: block;
-  padding: 0 20px;
-  border: 1px solid #eee;
-  caret-color: inherit
-}
-.input[placeholder]:not([data-placeholder-nohiden])::-webkit-input-placeholder {
-  -webkit-transition: opacity .3s;
-  transition: opacity .3s
-}
-.input[placeholder]:not([data-placeholder-nohiden]):-ms-input-placeholder {
-  -ms-transition: opacity .3s;
-  transition: opacity .3s
-}
-.input[placeholder]:not([data-placeholder-nohiden])::-ms-input-placeholder {
-  -ms-transition: opacity .3s;
-  transition: opacity .3s
-}
-.input[placeholder]:not([data-placeholder-nohiden])::placeholder {
-  transition: opacity .3s
-}
-.input[placeholder]:not([data-placeholder-nohiden]):focus::-webkit-input-placeholder {
-  opacity: 0
-}
-.input[placeholder]:not([data-placeholder-nohiden]):focus:-ms-input-placeholder {
-  opacity: 0
-}
-.input[placeholder]:not([data-placeholder-nohiden]):focus::-ms-input-placeholder {
-  opacity: 0
-}
-.input[placeholder]:not([data-placeholder-nohiden]):focus::placeholder {
-  opacity: 0
+  border-bottom: .0625rem solid var(--main);
+  caret-color: inherit;
+  padding: 10px 0;
+  font-weight: 500
 }
 textarea.input {
   resize: none;
-  padding: 0 0
+  padding: 20px 20px;
+  outline: 0;
+  border: .0625rem solid var(--main)
 }
 .ticker,
 section {
@@ -1428,6 +1514,7 @@ section {
     transition: opacity 0s .5s;
     opacity: 0
   }
+  .brief-open .header::before,
   .menu-open .header::before {
     opacity: 1;
     transition-delay: 0s
@@ -1451,8 +1538,7 @@ section {
     writing-mode: vertical-rl;
     text-orientation: mixed;
     border-left: .0625rem solid var(--main);
-    border-right: .0625rem solid var(--main);
-    padding-block: .9375rem
+    border-right: .0625rem solid var(--main)
   }
   .btn-header:not(:first-child) {
     border-top: .0625rem solid var(--main)
@@ -1462,13 +1548,36 @@ section {
     -webkit-transform: translate(100%,0);
     transform: translate(100%,0)
   }
+  .brief-open-btn .btn-header--menu {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition-delay: 0s
+  }
+  .brief-open .btn-header--brief .btn-header__a,
+  .brief-open .btn-header--brief .btn-header__b {
+    -webkit-transform: translate(100%,0);
+    transform: translate(100%,0)
+  }
+  .brief-header,
   .menu {
-    min-width: 58vw;
+    min-width: 58vw
+  }
+  .menu {
     padding-top: 6.25rem;
     padding-bottom: 5.625rem
   }
   .menu__link {
     max-width: 68%
+  }
+  .brief-header__form {
+    max-width: calc(50vw - 88px)
+  }
+  .brief-header__title {
+    margin-bottom: 1.875rem
+  }
+  .brief-header__msg {
+    max-width: calc(50vw - 88px)
   }
   .services-home__list li {
     position: absolute
@@ -1515,6 +1624,9 @@ section {
   }
 }
 @media (min-width:48.06125em) {
+  .brief-header {
+    padding: 3.125rem
+  }
   .promotion__item {
     min-height: 50vh
   }
@@ -1545,6 +1657,18 @@ section {
   }
   .cases-home__text {
     max-width: 75%
+  }
+}
+@media (min-width:62.06125em) {
+  .brief-header__items {
+    gap: 1.875rem;
+    grid-template-columns: repeat(2,1fr)
+  }
+  .brief-header__item:nth-child(3),
+  .brief-header__item:nth-child(4),
+  .brief-header__item:nth-child(5),
+  .brief-header__item:nth-child(6) {
+    grid-column: span 2
   }
 }
 @media (min-width:68.81125em) {
@@ -1588,8 +1712,23 @@ section {
   .menu__social {
     padding-left: 4.375rem
   }
+  .brief-header__title {
+    font-size: 2.375rem
+  }
+  .brief-header__items {
+    margin-bottom: 3.125rem
+  }
+  .brief-header__item {
+    font-size: 1.5625rem
+  }
+  .brief-header__msg {
+    padding: 3.125rem
+  }
   .footer {
     padding-top: 12.8125rem
+  }
+  .input {
+    font-size: 1.5625rem
   }
   .hero__block::before,
   .hero__year {
@@ -1704,6 +1843,12 @@ section {
   .menu__link {
     min-height: 7.3125rem
   }
+  .brief-header__msg-title {
+    font-size: 3.125rem
+  }
+  .brief-header__msg-txt {
+    font-size: 2.6875rem
+  }
   .footer__list {
     gap: 5.625rem
   }
@@ -1766,6 +1911,16 @@ section {
     flex: 0 0 90%
   }
 }
+@media (max-width:62.06125em) {
+  .brief-header__items {
+    gap: 1.25rem
+  }
+}
+@media (max-width:57.56125em) {
+  .brief-header__item textarea {
+    min-height: 6.25rem
+  }
+}
 @media (orientation:portrait)and (max-width:51.31125em) {
   .hero {
     padding-top: 6.875rem
@@ -1781,6 +1936,9 @@ section {
   }
 }
 @media (max-width:48.06125em) {
+  .brief-header {
+    padding: 6.25rem 1rem 1rem
+  }
   .promotion__item {
     min-height: 12.5rem!important
   }
@@ -1835,6 +1993,11 @@ section {
     -webkit-transform: translate(0,-100%);
     transform: translate(0,-100%)
   }
+  .brief-open .btn-header--brief .btn-header__a,
+  .brief-open .btn-header--brief .btn-header__b {
+    -webkit-transform: translate(0,-100%);
+    transform: translate(0,-100%)
+  }
   .btn-header span {
     height: 100%
   }
@@ -1845,12 +2008,18 @@ section {
   .btn-header__b {
     position: absolute
   }
+  .brief-header,
   .menu {
     width: 100%;
     height: 100svh;
-    padding-top: 12.5rem;
-    padding-bottom: 3.125rem;
     transition-duration: .85s
+  }
+  .menu {
+    padding-top: 12.5rem;
+    padding-bottom: 3.125rem
+  }
+  .brief-header__title {
+    margin-bottom: .625rem
   }
   .services-home__item {
     position: relative;
@@ -1934,11 +2103,34 @@ section {
   .menu__social {
     padding-left: 1.25rem
   }
+  .brief-header,
   .menu {
     padding-inline: 1rem
   }
   .menu__link {
     min-height: 4.1875rem
+  }
+  .brief-header__title {
+    font-size: 2rem
+  }
+  .brief-header__items {
+    margin-bottom: 1.25rem
+  }
+  .brief-header__item {
+    font-size: 1.25rem
+  }
+  .brief-header__item {
+    min-height: 3.125rem
+  }
+  .brief-header__item._form-focus label,
+  .brief-header__item._full label {
+    bottom: 2.5rem
+  }
+  .brief-header__item--text {
+    margin-top: 1.25rem
+  }
+  .brief-header__msg {
+    padding: 1rem
   }
   .footer {
     padding-top: 5.25rem
@@ -1957,6 +2149,12 @@ section {
   }
   .footer__link--social img {
     max-width: 1.125rem
+  }
+  .input {
+    font-size: 1.25rem
+  }
+  textarea.input {
+    padding: 10px
   }
   .hero__block {
     display: flex;
@@ -2333,6 +2531,24 @@ section {
   .btn-header {
     font-size: 1.125rem
   }
+  .brief-header {
+    padding: 5rem 1rem 1rem
+  }
+  .brief-header__title {
+    font-size: 1.25rem
+  }
+  .brief-header__item {
+    font-size: 1.125rem
+  }
+  .brief-header__item textarea {
+    min-height: 3.125rem
+  }
+  .brief-header__msg-title {
+    font-size: 2rem
+  }
+  .brief-header__msg-txt {
+    font-size: 1.25rem
+  }
   .hero__block::before,
   .hero__year {
     margin-left: 1.0625rem
@@ -2503,6 +2719,12 @@ section {
   .btn-header {
     font-size: clamp(1.125rem ,.8968567961rem + .9708737864vw ,2.0625rem)
   }
+  .brief-header__msg-title {
+    font-size: clamp(2rem ,1.7262281553rem + 1.1650485437vw ,3.125rem)
+  }
+  .brief-header__msg-txt {
+    font-size: clamp(1.25rem ,.9001804207rem + 1.4886731392vw ,2.6875rem)
+  }
 }
 @media (min-width:30.06125em)and (max-width:90.06125em) {
   .menu__copy,
@@ -2513,8 +2735,23 @@ section {
   .menu__link {
     min-height: clamp(4.1875rem ,3.4672825521rem + 2.3958333333vw ,5.625rem)
   }
+  .brief-header__title {
+    font-size: clamp(2rem ,1.8121171875rem + .625vw ,2.375rem)
+  }
+  .brief-header__items {
+    margin-bottom: clamp(1.25rem ,.3105859375rem + 3.125vw ,3.125rem)
+  }
+  .brief-header__item {
+    font-size: clamp(1.25rem ,1.0934309896rem + .5208333333vw ,1.5625rem)
+  }
+  .brief-header__msg {
+    padding: clamp(1rem ,-.0646692708rem + 3.5416666667vw ,3.125rem)
+  }
   .footer {
     padding-top: clamp(5.25rem ,1.4610299479rem + 12.6041666667vw ,12.8125rem)
+  }
+  .input {
+    font-size: clamp(1.25rem ,1.0934309896rem + .5208333333vw ,1.5625rem)
   }
   .cards-hero__card.card-01 {
     max-width: clamp(12.875rem ,7.5829674479rem + 17.6041666667vw ,23.4375rem)

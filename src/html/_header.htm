@@ -1,4 +1,4 @@
-<header data-scroll="200" data-scroll-show="300" class="header">
+<header  data-lenis-prevent="false" data-scroll="200" data-scroll-show="600" class="header">
 	<div class="header__btns">
 		<button type="button" class="header__btn lenis-toggle btn-header btn-header--menu" aria-label="open menu">
 			<span class="btn-header__a">Меню</span>
@@ -28,10 +28,32 @@
 		</div>
 		<p class="menu__copy">© t:me 2025</p>
 	</div>
-	<!-- <div class="header__brief brief-header">
-		<form data-dev action="#" method="post">
-			<p class="brief-header__title"></p>
-
+	<div class="header__brief brief-header">
+		<form data-dev class="brief-header__form" action="#" method="post">
+			<p class="brief-header__title">Є до нас питання?<br> -почнемо співпрацю!</p>
+			<div class="brief-header__items">
+				<div class="brief-header__item">
+					<label for="f1">Імя*</label>
+					<input id="f1" type="text" name="form[]" class="input" required>
+				</div>
+				<div class="brief-header__item">
+					<label for="f2">Назва бізнесу*</label>
+					<input id="f2" type="text" name="form[]" class="input" required>
+				</div>
+				<div class="brief-header__item">
+					<label for="f3">Email*</label>
+					<input id="f3" type="email" name="form[]" class="input" required>
+				</div>
+				<div class="brief-header__item brief-header__item--text">
+					<label for="f4">запит*</label>
+					<textarea id="f4" name="form[]" class="input" required></textarea>
+				</div>
+			</div>
+			<button type="submit" class="brief-header__btn btn" aria-label="submit">відправіти</button>
 		</form>
-	</div> -->
+		<div class="brief-header__msg">
+			<p class="brief-header__msg-title"><span>Done! Brief submitted</span></p>
+			<p class="brief-header__msg-txt">Thank you — we've received your answers and are already cooking up something exciting.<br> Within 24 hours, our specialist will get in touch with you to discuss the details.</p>
+		</div>
+	</div>
 </header>

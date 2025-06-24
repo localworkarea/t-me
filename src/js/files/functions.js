@@ -183,10 +183,7 @@ export let bodyUnlock = (delay = 500) => {
 			if (heroSection) {
 				heroSection.style.paddingRight = ''
 			}
-		// 	let footerSection = document.querySelector('.footer');
-		// if (footerSection) {
-		// 	footerSection.style.paddingRight = '';
-		// }
+		
 			document.documentElement.classList.remove("lock");
 
 			const header = document.querySelector('.header');
@@ -216,10 +213,7 @@ export let bodyLock = (delay = 500) => {
 		if (heroSection) {
 			heroSection.style.paddingRight = lockPaddingValue;
 		}
-		// let footerSection = document.querySelector('.footer');
-		// if (footerSection) {
-		// 	footerSection.style.paddingRight = lockPaddingValue;
-		// }
+		
 
 		const header = document.querySelector('.header');
 		if (header) {
@@ -496,54 +490,175 @@ export function tabs() {
 	}
 }
 // Модуль роботи з меню (бургер) =======================================================================================================================================================================================================================
+
 // export function menuInit() {
 // 	if (document.querySelector(".btn-header--menu")) {
 // 		document.addEventListener("click", function (e) {
-// 			if (bodyLockStatus && e.target.closest('.btn-header--menu')) {
-// 				bodyLockToggle();
-// 				document.documentElement.classList.toggle("menu-open");
+// 			const btn = e.target.closest('.btn-header--menu');
+// 			if (bodyLockStatus && btn) {
+// 				const isMenuOpen = document.documentElement.classList.toggle("menu-open");
+
+// 				if (isMenuOpen) {
+// 					bodyLock();
+// 					lenis.stop();
+// 				} else {
+// 					bodyUnlock();
+// 					lenis.start();
+// 				}
 // 			}
 // 		});
-// 	};
+// 	}
 // }
-// export function menuOpen() {
-// 	bodyLock();
-// 	document.documentElement.classList.add("menu-open");
-// }
-// export function menuClose() {
-// 	bodyUnlock();
-// 	document.documentElement.classList.remove("menu-open");
+// export function briefInit() {
+// 	if (document.querySelector(".btn-header--brief")) {
+// 		document.addEventListener("click", function (e) {
+// 			const btn = e.target.closest('.btn-header--brief');
+// 			if (bodyLockStatus && btn) {
+// 				const isMenuOpen = document.documentElement.classList.toggle("brief-open");
+
+// 				if (isMenuOpen) {
+// 					bodyLock();
+// 					lenis.stop();
+// 				} else {
+// 					bodyUnlock();
+// 					lenis.start();
+// 				}
+// 			}
+// 		});
+// 	}
 // }
 export function menuInit() {
 	if (document.querySelector(".btn-header--menu")) {
 		document.addEventListener("click", function (e) {
-			const btn = e.target.closest('.btn-header--menu');
+			const btn = e.target.closest(".btn-header--menu");
 			if (bodyLockStatus && btn) {
-				const isMenuOpen = document.documentElement.classList.toggle("menu-open");
+				const html = document.documentElement;
+				const isMenuOpen = html.classList.contains("menu-open");
 
-				if (isMenuOpen) {
-					bodyLock();
-					lenis.stop();
-				} else {
-					bodyUnlock();
-					lenis.start();
+				// Закрываем бриф, если он открыт
+				if (html.classList.contains("brief-open")) {
+					html.classList.remove("brief-open");
 				}
+
+				// Переключаем меню
+				html.classList.toggle("menu-open", !isMenuOpen);
+
+				// Обновляем scroll-lock состояние
+				updateScrollLockState();
 			}
 		});
 	}
 }
 
+export function briefInit() {
+	if (document.querySelector(".btn-header--brief")) {
+		document.addEventListener("click", function (e) {
+			const btn = e.target.closest(".btn-header--brief");
+			if (bodyLockStatus && btn) {
+				const html = document.documentElement;
+				const isBriefOpen = html.classList.contains("brief-open");
+
+				// Закрываем меню, если оно открыто
+				if (html.classList.contains("menu-open")) {
+					menuClose();
+				}
+
+				if (isBriefOpen) {
+					briefClose(); 
+				} else {
+					briefOpen(); 
+				}
+			}
+		});
+	}
+
+	// Все внешние кнопки на странице
+	document.querySelectorAll('[data-brief]').forEach(btn => {
+		btn.addEventListener('click', function (e) {
+			e.preventDefault();
+			if (!bodyLockStatus) return;
+
+			const html = document.documentElement;
+
+			if (html.classList.contains("menu-open")) {
+				menuClose();
+			}
+
+			html.classList.add("brief-open", "brief-open-btn");
+
+			updateScrollLockState();
+		});
+	});
+}
+
+
+// document.addEventListener("click", function (e) {
+// 	const closeBtn = e.target.closest("[data-brief-close]");
+// 	if (closeBtn) {
+// 		e.preventDefault();
+// 		briefClose();
+// 	}
+// });
+
+
+
+function updateScrollLockState() {
+	const html = document.documentElement;
+	const menuOpen = html.classList.contains("menu-open");
+	const briefOpen = html.classList.contains("brief-open");
+
+	if (menuOpen || briefOpen) {
+		// Только если scroll ещё не заблокирован
+		if (!html.classList.contains('lock')) {
+			bodyLock();
+		}
+		lenis.stop();
+	} else {
+		// Только если scroll был заблокирован
+		if (html.classList.contains('lock')) {
+			bodyUnlock();
+		}
+		lenis.start();
+	}
+}
+
+
 export function menuOpen() {
-	bodyLock();
-	lenis.stop(); // Остановка при открытии вручную
 	document.documentElement.classList.add("menu-open");
+	updateScrollLockState();
 }
 
 export function menuClose() {
-	bodyUnlock();
-	lenis.start(); // Возобновление при закрытии вручную
 	document.documentElement.classList.remove("menu-open");
+	updateScrollLockState();
 }
+
+export function briefOpen() {
+	document.documentElement.classList.add("brief-open");
+	updateScrollLockState();
+}
+
+export function briefClose() {
+	document.documentElement.classList.remove("brief-open", "brief-open-btn");
+	updateScrollLockState();
+}
+
+
+
+
+// export function menuOpen() {
+// 	bodyLock();
+// 	lenis.stop(); // Остановка при открытии вручную
+// 	document.documentElement.classList.add("menu-open");
+// }
+
+// export function menuClose() {
+// 	bodyUnlock();
+// 	lenis.start(); // Возобновление при закрытии вручную
+// 	document.documentElement.classList.remove("menu-open");
+// }
+
+
 
 // Модуль "показати ще" =======================================================================================================================================================================================================================
 export function showMore() {

@@ -5,12 +5,12 @@
   right: 0;
   opacity: 0;
   pointer-events: none;
-  
+
   @media (min-width:toEm(600.98)) {
     transform: translate(100%, 0%);
     bottom: 0;
   }
-  
+
   @media (max-width: toEm(600.98)) {
     transform: translate(0%, -100%);
     left: 0;
@@ -19,7 +19,7 @@
   .loaded & {
     transition: opacity .2s ease 1s, transform 1s ease 1s;
     opacity: 1;
-      transform: translate(0%, 0%);
+    transform: translate(0%, 0%);
   }
 
   &::before {
@@ -36,7 +36,8 @@
       transition: opacity 0s 0.5s;
       opacity: 0;
 
-      .menu-open & {
+      .menu-open &,
+      .brief-open & {
         opacity: 1;
         transition-delay: 0s;
       }
@@ -65,20 +66,28 @@
 
 
     ._header-scroll & {
-      @media (min-width:toEm(600.98)){
+      @media (min-width:toEm(600.98)) {
         transform: translate(100%, 0%);
       }
-      @media (max-width: toEm(600.98)){
+
+      @media (max-width: toEm(600.98)) {
         transform: translate(0%, -100%);
       }
     }
-    ._header-show &{
-      @media (max-width: toEm(600.98)){
+    .brief-open & {
+      transform: translate(0%, 0%);
+      @media (min-width:toEm(600.98)){
+      }
+    }
+
+    ._header-show & {
+      @media (max-width: toEm(600.98)) {
         transform: translate(0%, 0%);
       }
     }
+
     .footer-view & {
-      @media (min-width:toEm(600.98)){
+      @media (min-width:toEm(600.98)) {
         transform: translate(0%, 0%);
       }
     }
@@ -89,6 +98,9 @@
 
   // .header__menu
   &__menu {}
+
+  // .header__brief
+  &__brief {}
 }
 
 .btn-header {
@@ -96,20 +108,21 @@
   @include adaptiveValue("font-size", 33, 18, 0, 1920.98, 375.98);
   font-weight: 700;
   line-height: 1.1;
-  transition: background-color .3s ease;
+  transition: background-color .3s ease, opacity .3s ease 0.65s, visibility .3s ease 0.65s;
   position: relative;
+
   @media (any-hover: hover) {
     &:hover {
       background-color: var(--blue);
     }
   }
-  
+
   @media (min-width:toEm(600.98)) {
     writing-mode: vertical-rl;
     text-orientation: mixed;
     border-left: toRem(1) solid var(--main);
     border-right: toRem(1) solid var(--main);
-    padding-block: toRem(15);
+    // padding-block: toRem(15);
 
     &:not(:first-child) {
       border-top: toRem(1) solid var(--main);
@@ -141,9 +154,32 @@
         }
       }
     }
+    .brief-open-btn & {
+      @media (min-width:toEm(600.98)){
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transition-delay: 0s;
+      }
+    }
   }
 
-  &--brief {}
+  &--brief {
+    .brief-open & {
+      background-color: var(--blue);
+
+      .btn-header__a,
+      .btn-header__b {
+        @media (min-width:toEm(600.98)) {
+          transform: translate(100%, 0);
+        }
+
+        @media (max-width:toEm(600.98)) {
+          transform: translate(0%, -100%);
+        }
+      }
+    }
+  }
 
   span {
     display: grid;
@@ -158,8 +194,8 @@
 
   .btn-header__a,
   .btn-header__b {
-    @media (max-width: toEm(600.98)){
-         height: toRem(72);
+    @media (max-width: toEm(600.98)) {
+      height: toRem(72);
     }
   }
 
@@ -168,8 +204,8 @@
 
   // .btn-header__b
   &__b {
-    @media (max-width: toEm(600.98)){
-        position: absolute;
+    @media (max-width: toEm(600.98)) {
+      position: absolute;
 
     }
   }
@@ -179,47 +215,61 @@
   @include adaptiveValue("padding-left", 70, 20, 0, 1440.98, 480.98);
 }
 
-.menu {
+%menuStyle {
   pointer-events: all;
   position: fixed;
   z-index: 0;
   top: 0;
   right: 0;
-  // bottom: 0;
   height: 100%;
   overflow: auto;
-  // min-height: 100%;
+  // overscroll-behavior: contain;
   transition: transform 1s cubic-bezier(.22, .89, .34, .96);
   transform: translate(100%, 0);
   background-color: var(--white);
   border: toRem(1) solid var(--main);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: toRem(40);
-  @media (min-width:toEm(600.98)){
+
+  @media (min-width:toEm(600.98)) {
     min-width: 58vw;
-    padding-top: toRem(100);
-    padding-bottom: toRem(90);
   }
-  @media (max-width: toEm(600.98)){
+
+  @media (max-width: toEm(600.98)) {
     width: 100%;
     height: 100svh;
-    padding-top: toRem(200);
-    padding-bottom: toRem(50);
     transition-duration: 0.85s;
-  }
-  @media (max-width: toEm(390.98)){
-    padding-top: toRem(100);
-  }
-  @media (min-width:$mobileSmall) {
-    padding-left: toRem(30);
-    padding-right: toRem(20);
   }
 
   @media (max-width:$mobileSmall) {
     padding-inline: toRem(16);
   }
+}
+
+.menu {
+  @extend %menuStyle;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: toRem(40);
+
+  @media (min-width:toEm(600.98)) {
+    padding-top: toRem(100);
+    padding-bottom: toRem(90);
+  }
+
+  @media (max-width: toEm(600.98)) {
+    padding-top: toRem(200);
+    padding-bottom: toRem(50);
+  }
+
+  @media (max-width: toEm(390.98)) {
+    padding-top: toRem(100);
+  }
+
+  @media (min-width:$mobileSmall) {
+    padding-left: toRem(30);
+    padding-right: toRem(20);
+  }
+
 
   .menu-open & {
     transform: translate(0, 0);
@@ -231,8 +281,7 @@
   }
 
   // .menu__list
-  &__list {
-  }
+  &__list {}
 
   // .menu__item
   &__item {
@@ -252,13 +301,14 @@
     @include adaptiveValue("min-height", 90, 67, 3, 1440.98, 480.98);
     @extend %paddLeft;
     transition: background-color .3s ease;
-    
+
     @media (any-hover: hover) {
       &:hover {
         background-color: var(--blue);
       }
     }
-    @media (min-width:toEm(600.98)){
+
+    @media (min-width:toEm(600.98)) {
       max-width: 68%;
     }
   }
@@ -293,6 +343,217 @@
   }
 }
 
+
+.brief-header {
+  @extend %menuStyle;
+
+  @media (min-width: toEm(768.98)) {
+    padding: toRem(50);
+  }
+
+  @media (max-width:$mobile) {
+    padding: toRem(100) toRem(16) toRem(16);
+  }
+
+  @media (max-width: toEm(375.98)) {
+    padding: toRem(80) toRem(16) toRem(16);
+  }
+
+  .brief-open & {
+    transform: translate(0, 0);
+  }
+
+  // .brief-header__form
+  &__form {
+    transition: opacity .3s ease;
+
+    .form-sent & {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    @media (min-width:toEm(600.98)) {
+      max-width: calc(50vw - 88px);
+    }
+  }
+
+  // .brief-header__title
+  &__title {
+    font-weight: 700;
+    line-height: 1.1;
+    @include adaptiveValue("font-size", 38, 32, 0, 1440.98, 480.98);
+
+    @media (min-width:toEm(600.98)) {
+      margin-bottom: toRem(30);
+    }
+
+    @media (max-width: toEm(600.98)) {
+      margin-bottom: toRem(10);
+    }
+
+    @media (max-width:toEm(375.98)) {
+      font-size: toRem(20);
+    }
+  }
+
+  // .brief-header__items
+  &__items {
+    display: grid;
+    @include adaptiveValue("margin-bottom", 50, 20, 0, 1440.98, 480.98);
+
+    @media (min-width:$tablet) {
+      gap: toRem(30);
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (max-width:$tablet) {
+      gap: toRem(20);
+    }
+  }
+
+  // .brief-header__item
+  &__item {
+    display: grid;
+    align-items: flex-end;
+    position: relative;
+    min-height: toRem(70);
+    @include adaptiveValue("font-size", 25, 20, 0, 1440.98, 480.98);
+
+    @media (max-width:$mobileSmall) {
+      min-height: toRem(50);
+    }
+
+    @media (max-width:toEm(375.98)) {
+      font-size: toRem(18);
+    }
+
+    &:nth-child(3),
+    &:nth-child(4),
+    &:nth-child(5),
+    &:nth-child(6) {
+      @media (min-width:$tablet) {
+        grid-column: span 2;
+      }
+    }
+
+    &._form-focus,
+    &._full {
+      label {
+        bottom: 50px;
+
+        @media (max-width:$mobileSmall) {
+          bottom: toRem(40);
+        }
+      }
+    }
+
+    label {
+      position: absolute;
+      pointer-events: none;
+      left: 0;
+      bottom: 15%;
+      transition: bottom .45s ease;
+      display: inline-block;
+    }
+
+    textarea {
+      min-height: 20vh;
+
+      @media (max-width: toEm(920.98)) {
+        min-height: toRem(100);
+      }
+
+      @media (max-width: toEm(375.98)) {
+        min-height: toRem(50);
+      }
+    }
+
+    &--text {
+      margin-top: toRem(50);
+
+      @media (max-width:$mobileSmall) {
+        margin-top: toRem(20);
+      }
+
+      &._form-focus,
+      &._full {
+        label {
+          bottom: 10px;
+        }
+      }
+
+      label {
+        position: relative;
+        bottom: 10px;
+      }
+    }
+
+    .input {
+      width: 100%;
+    }
+  }
+
+  // .brief-header__btn
+  &__btn {
+    display: flex;
+    margin-inline: auto;
+  }
+
+  // .brief-header__msg
+  &__msg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity .3s ease, visibility .3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    .form-sent & {
+      opacity: 1;
+      pointer-events: all;
+      visibility: visible;
+    }
+    @include adaptiveValue("padding", 50, 16,0,1440.98,480.98);
+    @media (min-width:toEm(600.98)) {
+      max-width: calc(50vw - 88px);
+    }
+  }
+
+  // .brief-header__msg-title
+  &__msg-title {
+    @include adaptiveValue("font-size", 50, 32, 0, 1920.98, 375.98);
+    font-weight: 700;
+    line-height: 1.1;
+    display: flex;
+    align-items: center;
+    gap: toRem(30);
+    margin-bottom: toRem(26);
+    &::before {
+      content: '';
+      background-image: url("@img/icons/ok.svg");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+      aspect-ratio: 1;
+      width: toRem(68);
+    }
+  }
+
+  // .brief-header__msg-txt
+  &__msg-txt {
+     font-weight: 500;
+    line-height: 1.2;
+    @include adaptiveValue("font-size", 43, 20, 0, 1920.98, 375.98);
+  }
+}
+
+
 body {
   &::after {
     content: '';
@@ -308,7 +569,8 @@ body {
     visibility: hidden;
     transition: opacity .85s ease, visibility .85s ease;
 
-    .menu-open & {
+    .menu-open &,
+    .brief-open & {
       opacity: 1;
       visibility: visible;
     }

@@ -772,26 +772,58 @@
         if (document.querySelector(".btn-header--menu")) document.addEventListener("click", function(e) {
             const btn = e.target.closest(".btn-header--menu");
             if (bodyLockStatus && btn) {
-                const isMenuOpen = document.documentElement.classList.toggle("menu-open");
-                if (isMenuOpen) {
-                    bodyLock();
-                    lenis.stop();
-                } else {
-                    bodyUnlock();
-                    lenis.start();
-                }
+                const html = document.documentElement;
+                const isMenuOpen = html.classList.contains("menu-open");
+                if (html.classList.contains("brief-open")) html.classList.remove("brief-open");
+                html.classList.toggle("menu-open", !isMenuOpen);
+                updateScrollLockState();
             }
         });
     }
-    function functions_menuClose() {
-        bodyUnlock();
-        lenis.start();
-        document.documentElement.classList.remove("menu-open");
+    function briefInit() {
+        if (document.querySelector(".btn-header--brief")) document.addEventListener("click", function(e) {
+            const btn = e.target.closest(".btn-header--brief");
+            if (bodyLockStatus && btn) {
+                const html = document.documentElement;
+                const isBriefOpen = html.classList.contains("brief-open");
+                if (html.classList.contains("menu-open")) functions_menuClose();
+                if (isBriefOpen) briefClose(); else briefOpen();
+            }
+        });
+        document.querySelectorAll("[data-brief]").forEach(btn => {
+            btn.addEventListener("click", function(e) {
+                e.preventDefault();
+                if (!bodyLockStatus) return;
+                const html = document.documentElement;
+                if (html.classList.contains("menu-open")) functions_menuClose();
+                html.classList.add("brief-open", "brief-open-btn");
+                updateScrollLockState();
+            });
+        });
     }
-    function FLS(message) {
-        setTimeout(() => {
-            if (window.FLS) console.log(message);
-        }, 0);
+    function updateScrollLockState() {
+        const html = document.documentElement;
+        const menuOpen = html.classList.contains("menu-open");
+        const briefOpen = html.classList.contains("brief-open");
+        if (menuOpen || briefOpen) {
+            if (!html.classList.contains("lock")) bodyLock();
+            lenis.stop();
+        } else {
+            if (html.classList.contains("lock")) bodyUnlock();
+            lenis.start();
+        }
+    }
+    function functions_menuClose() {
+        document.documentElement.classList.remove("menu-open");
+        updateScrollLockState();
+    }
+    function briefOpen() {
+        document.documentElement.classList.add("brief-open");
+        updateScrollLockState();
+    }
+    function briefClose() {
+        document.documentElement.classList.remove("brief-open", "brief-open-btn");
+        updateScrollLockState();
     }
     function getDigFormat(item, sepp = " ") {
         return item.toString().replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, `$1${sepp}`);
@@ -801,53 +833,44 @@
             return self.indexOf(item) === index;
         });
     }
-    let gotoblock_gotoBlock = (targetBlock, noHeader = false, speed = 500, offsetTop = 0) => {
-        const targetBlockElement = document.querySelector(targetBlock);
-        if (targetBlockElement) {
-            let headerItem = "";
-            let headerItemHeight = 0;
-            if (noHeader) {
-                headerItem = "header.header";
-                const headerElement = document.querySelector(headerItem);
-                if (!headerElement.classList.contains("_header-scroll")) {
-                    headerElement.style.cssText = `transition-duration: 0s;`;
-                    headerElement.classList.add("_header-scroll");
-                    headerItemHeight = headerElement.offsetHeight;
-                    headerElement.classList.remove("_header-scroll");
-                    setTimeout(() => {
-                        headerElement.style.cssText = ``;
-                    }, 0);
-                } else headerItemHeight = headerElement.offsetHeight;
+    function formFieldsInit(options = {
+        viewPass: false,
+        autoHeight: false
+    }) {
+        document.body.addEventListener("focusin", function(e) {
+            const targetElement = e.target;
+            if (targetElement.tagName === "INPUT" || targetElement.tagName === "TEXTAREA") {
+                if (!targetElement.hasAttribute("data-no-focus-classes")) {
+                    targetElement.classList.add("_form-focus");
+                    targetElement.parentElement.classList.add("_form-focus");
+                }
+                if (targetElement.value.trim() !== "") {
+                    targetElement.classList.add("_full");
+                    targetElement.parentElement.classList.add("_full");
+                }
+                formValidate.removeError(targetElement);
+                if (targetElement.hasAttribute("data-validate")) formValidate.removeError(targetElement);
             }
-            let options = {
-                speedAsDuration: true,
-                speed,
-                header: headerItem,
-                offset: offsetTop,
-                easing: "easeOutQuad"
-            };
-            document.documentElement.classList.contains("menu-open") ? functions_menuClose() : null;
-            if (typeof SmoothScroll !== "undefined") (new SmoothScroll).animateScroll(targetBlockElement, "", options); else {
-                let targetBlockElementPosition = targetBlockElement.getBoundingClientRect().top + scrollY;
-                targetBlockElementPosition = headerItemHeight ? targetBlockElementPosition - headerItemHeight : targetBlockElementPosition;
-                targetBlockElementPosition = offsetTop ? targetBlockElementPosition - offsetTop : targetBlockElementPosition;
-                window.scrollTo({
-                    top: targetBlockElementPosition,
-                    behavior: "smooth"
-                });
+        });
+        document.body.addEventListener("focusout", function(e) {
+            const targetElement = e.target;
+            if (targetElement.tagName === "INPUT" || targetElement.tagName === "TEXTAREA") {
+                if (!targetElement.hasAttribute("data-no-focus-classes")) {
+                    targetElement.classList.remove("_form-focus");
+                    targetElement.parentElement.classList.remove("_form-focus");
+                }
+                if (targetElement.value.trim() !== "") {
+                    targetElement.classList.add("_full");
+                    targetElement.parentElement.classList.add("_full");
+                } else {
+                    targetElement.classList.remove("_full");
+                    targetElement.parentElement.classList.remove("_full");
+                }
+                if (targetElement.hasAttribute("data-validate")) formValidate.validateInput(targetElement);
             }
-            FLS(`[gotoBlock]: Юхуу...їдемо до ${targetBlock}`);
-        } else FLS(`[gotoBlock]: Йой... Такого блоку немає на сторінці: ${targetBlock}`);
-    };
+        });
+    }
     let formValidate = {
-        getErrors(form) {
-            let error = 0;
-            let formRequiredItems = form.querySelectorAll("*[data-required]");
-            if (formRequiredItems.length) formRequiredItems.forEach(formRequiredItem => {
-                if ((formRequiredItem.offsetParent !== null || formRequiredItem.tagName === "SELECT") && !formRequiredItem.disabled) error += this.validateInput(formRequiredItem);
-            });
-            return error;
-        },
         validateInput(formRequiredItem) {
             let error = 0;
             if (formRequiredItem.dataset.required === "email") {
@@ -902,6 +925,8 @@
                     const el = inputs[index];
                     el.parentElement.classList.remove("_form-focus");
                     el.classList.remove("_form-focus");
+                    el.classList.remove("_full");
+                    el.parentElement.classList.remove("_full");
                     formValidate.removeError(el);
                 }
                 let checkboxes = form.querySelectorAll(".checkbox__input");
@@ -935,37 +960,28 @@
             });
         }
         async function formSubmitAction(form, e) {
-            const error = !form.hasAttribute("data-no-validate") ? formValidate.getErrors(form) : 0;
-            if (error === 0) {
-                const ajax = form.hasAttribute("data-ajax");
-                if (ajax) {
-                    e.preventDefault();
-                    const formAction = form.getAttribute("action") ? form.getAttribute("action").trim() : "#";
-                    const formMethod = form.getAttribute("method") ? form.getAttribute("method").trim() : "GET";
-                    const formData = new FormData(form);
-                    form.classList.add("_sending");
-                    const response = await fetch(formAction, {
-                        method: formMethod,
-                        body: formData
-                    });
-                    if (response.ok) {
-                        let responseResult = await response.json();
-                        form.classList.remove("_sending");
-                        formSent(form, responseResult);
-                    } else {
-                        alert("Помилка");
-                        form.classList.remove("_sending");
-                    }
-                } else if (form.hasAttribute("data-dev")) {
-                    e.preventDefault();
-                    formSent(form);
-                }
-            } else {
+            const ajax = form.hasAttribute("data-ajax");
+            if (ajax) {
                 e.preventDefault();
-                if (form.querySelector("._form-error") && form.hasAttribute("data-goto-error")) {
-                    const formGoToErrorClass = form.dataset.gotoError ? form.dataset.gotoError : "._form-error";
-                    gotoblock_gotoBlock(formGoToErrorClass, true, 1e3);
+                const formAction = form.getAttribute("action") ? form.getAttribute("action").trim() : "#";
+                const formMethod = form.getAttribute("method") ? form.getAttribute("method").trim() : "GET";
+                const formData = new FormData(form);
+                form.classList.add("_sending");
+                const response = await fetch(formAction, {
+                    method: formMethod,
+                    body: formData
+                });
+                if (response.ok) {
+                    let responseResult = await response.json();
+                    form.classList.remove("_sending");
+                    formSent(form, responseResult);
+                } else {
+                    alert("Помилка");
+                    form.classList.remove("_sending");
                 }
+            } else if (form.hasAttribute("data-dev")) {
+                e.preventDefault();
+                formSent(form);
             }
         }
         function formSent(form, responseResult = ``) {
@@ -974,17 +990,11 @@
                     form
                 }
             }));
+            document.scrollingElement.classList.add("form-sent");
             setTimeout(() => {
-                if (modules_flsModules.popup) {
-                    const popup = form.dataset.popupMessage;
-                    popup ? modules_flsModules.popup.open(popup) : null;
-                }
-            }, 0);
+                document.scrollingElement.classList.remove("form-sent");
+            }, 8e3);
             formValidate.formClean(form);
-            formLogging(`Форму відправлено!`);
-        }
-        function formLogging(message) {
-            FLS(`[Форми]: ${message}`);
         }
     }
     class ScrollWatcher {
@@ -2065,6 +2075,8 @@
     window["FLS"] = false;
     addLoadedClass();
     menuInit();
+    briefInit();
+    formFieldsInit({});
     formSubmit();
     headerScroll();
     digitsCounter();

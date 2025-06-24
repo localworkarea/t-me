@@ -23,6 +23,7 @@ import * as flsFunctions from "./files/functions.js";
 flsFunctions.addLoadedClass();
 /* Модуль для роботи з меню (Бургер) */
 flsFunctions.menuInit();
+flsFunctions.briefInit();
 /* Форматування чисел */
 // import './libs/wNumb.min.js';
 
@@ -87,12 +88,12 @@ flsFunctions.menuInit();
 import * as flsForms from "./files/forms/forms.js";
 
 /* Робота з полями форми */
-/*
+// /*
 flsForms.formFieldsInit({
-	viewPass: false,
-	autoHeight: false
+	// viewPass: false,
+	// autoHeight: false
 });
-*/
+// *///
 /* Надсилання форми */
 flsForms.formSubmit();
 

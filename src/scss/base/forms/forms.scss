@@ -9,29 +9,37 @@ textarea {
 	appearance: none;
 }
 .input {
+	outline: none;
 	border-radius: 0 !important;
 	width: 100%;
 	display: block;
-	padding: 0px 20px;
-	border: 1px solid #eee;
+	border-bottom: toRem(1) solid var(--main);
 	caret-color: inherit;
-	&._form-focus {
-	}
-	&._form-error {
-	}
+	padding: 10px 0;
+	font-weight: 500;
+	@include adaptiveValue("font-size", 25, 20,0,1440.98,480.98);
+	// &._form-focus {
+	// }
+	// &._form-error {
+	// }
 }
-.input[placeholder]:not([data-placeholder-nohiden]) {
-	&::placeholder {
-		transition: opacity 0.3s;
-	}
-	&:focus::placeholder {
-		opacity: 0;
-	}
-}
+// .input[placeholder]:not([data-placeholder-nohiden]) {
+// 	&::placeholder {
+// 		transition: opacity 0.3s;
+// 	}
+// 	&:focus::placeholder {
+// 		opacity: 0;
+// 	}
+// }
 
 textarea.input {
 	resize: none;
-	padding: 0px 0px;
+	padding: 20px 20px;
+	outline: none;
+	border: toRem(1) solid var(--main);
+	@media (max-width:$mobileSmall){
+		padding: 10px;
+	}
 }
 
 
