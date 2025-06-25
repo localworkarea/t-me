@@ -38,8 +38,8 @@
   // .footer__link
   &__link {
     display: block;
-    font-weight: 700;
-    transition: color .3s ease;
+ @extend %fw700;
+    @extend %transitionColor;
 
     &:not(:last-child) {
       @include adaptiveValue("margin-bottom", 30, 15, 0, 1920.98, 480.98);
@@ -101,7 +101,7 @@
 
   // .footer__privacy
   &__privacy {
-    transition: color .3s ease;
+    @extend %transitionColor;
 
     @media (any-hover: hover) {
       &:hover {

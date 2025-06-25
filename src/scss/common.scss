@@ -52,6 +52,12 @@ html.lenis body {
   margin-inline: auto;
   @include adaptiveValue("max-width", 1770, 1392, 0, 1920.98, 1440.98);
 }
+[class*="__sm-container"] {
+  width: 100%;
+  padding-inline: toRem(16);
+  margin-inline: auto;
+  @include adaptiveValue("max-width", 1536, 1182, 0, 1920.98, 1440.98);
+}
 
 .split-lines,
 .split-words,
@@ -169,14 +175,14 @@ html.lenis body {
 
 // == TITLES ========================
 .title-hero {
-  font-weight: 500;
+  @extend %fw500;
   @include adaptiveValue("font-size", 51, 30, 2, 1920.98, 1440.98);
   @include adaptiveValue("font-size", 30, 18, 3, 1440.98, 375.98);
 }
 
 .title-hero--tme {
   font-family: "archivo", sans-serif;
-  font-weight: 700;
+  @extend %fw700;
   @include adaptiveValue("font-size", 234, 180, 2, 1920.98, 1440.98);
   @include adaptiveValue("font-size", 180, 130, 3, 1440.98, 375.98);
 }
@@ -184,7 +190,7 @@ html.lenis body {
 .title-main {
   @include adaptiveValue("font-size", 104, 80, 2, 1920.98, 1440.98);
   @include adaptiveValue("font-size", 80, 40, 3, 1440.98, 375.98);
-  font-weight: 700;
+  @extend %fw700;
   // line-height: 1.15;
   line-height: 1;
   @extend %viewSetSpan;
@@ -198,13 +204,13 @@ html.lenis body {
 .title-50 {
    @include adaptiveValue("font-size", 65, 50, 2, 1920.98, 1440.98);
   @include adaptiveValue("font-size", 50, 38, 3, 1440.98, 375.98);
-  font-weight: 700;
+  @extend %fw700;
   line-height: 1.1;
 }
 .title-45 {
    @include adaptiveValue("font-size", 58, 45, 2, 1920.98, 1440.98);
   @include adaptiveValue("font-size", 45, 30, 3, 1440.98, 375.98);
-  font-weight: 700;
+ @extend %fw700;
   line-height: 1.1;
 }
 
@@ -212,26 +218,26 @@ html.lenis body {
   // @include adaptiveValue("font-size", 104, 44, 2, 1920.98, 1440.98);
   // @include adaptiveValue("font-size", 44, 24, 3, 1440.98, 375.98);
   @include adaptiveValue("font-size", 44, 24, 0, 1440.98, 375.98);
-  font-weight: 700;
+@extend %fw700;
   line-height: 1.1;
 }
 
 .title-42 {
   @include adaptiveValue("font-size", 54, 42, 2, 1920.98, 1440.98);
   @include adaptiveValue("font-size", 42, 26, 3, 1440.98, 375.98);
-  font-weight: 700;
+  @extend %fw700;
   line-height: 1.1;
 }
 
 .title-33 {
   @include adaptiveValue("font-size", 43, 33, 2, 1920.98, 1440.98);
   @include adaptiveValue("font-size", 33, 26, 3, 1440.98, 375.98);
-  font-weight: 700;
+  @extend %fw700;
   line-height: 1.1;
 }
 .title-25 {
   @include adaptiveValue("font-size", 33, 21, 0, 1920.98, 375.98);
-  font-weight: 700;
+  @extend %fw700;
   line-height: 1.1;
 }
 
@@ -240,7 +246,7 @@ html.lenis body {
 .txt-main {
   @include adaptiveValue("font-size", 57, 50, 2, 1920.98, 1440.98);
   @include adaptiveValue("font-size", 50, 21, 3, 1440.98, 375.98);
-  font-weight: 700;
+  @extend %fw700;
   line-height: 1.2;
   
   &--33 {
@@ -270,7 +276,7 @@ html.lenis body {
 
 
 .txt-23 {
-  font-weight: 500;
+   @extend %fw500;
   line-height: 1.2;
   @include adaptiveValue("font-size", 30, 18, 0, 1920.98, 375.98);
 }
@@ -282,12 +288,12 @@ html.lenis body {
 }
 
 .txt-19 {
-  font-weight: 500;
+    @extend %fw500;
   line-height: 1.2;
   @include adaptiveValue("font-size", 19, 12, 0, 1920.98, 375.98);
 }
 .txt-18 {
-  font-weight: 500;
+    @extend %fw500;
   line-height: 1.2;
   font-size: toRem(18);
 }
@@ -311,7 +317,7 @@ html.lenis body {
 
 // -- MARGINS =====================
 .mb-90-60 {
-  @include adaptiveValue("margin-bottom", 60, 50, 0, 1440.98, 375.98);
+  @include adaptiveValue("margin-bottom", 90, 50, 0, 1440.98, 375.98);
 }
 .mb-60-50 {
   @include adaptiveValue("margin-bottom", 60, 50, 0, 1440.98, 375.98);
@@ -373,7 +379,7 @@ html.lenis body {
   width: max-content;
   position: relative;
   background-color: var(--white);
-  font-weight: 700;
+  @extend %fw700;
   text-transform: uppercase;
   display: inline-flex;
   align-items: center;
@@ -407,7 +413,7 @@ html.lenis body {
     }
   }
   &--500 {
-    font-weight: 500;
+     @extend %fw500;
   }
 		// // .btn__chars
 		// &__chars {
@@ -443,4 +449,41 @@ html.lenis body {
       @include adaptiveValue("max-width", 184, 174,0,1440.98,375.98);
     }
 	}
+}
+
+
+%transitionBG {
+   transition: background-color .3s ease;
+       @media (any-hover: hover){
+        &:hover{
+          background-color: var(--blue);
+        }
+      }
+}
+%transitionColor {
+   transition: color .3s ease;
+}
+%Montserrat {
+  font-family: "Montserrat", sans-serif;
+}
+%fw700 {
+   font-weight: 700;
+}
+%fw500 {
+   font-weight: 500;
+}
+
+%mandatory {
+    @media (max-width: toEm(600.98)) {
+      display: flex;
+      overflow: auto;
+      scroll-snap-type: x mandatory;
+      padding-left: toRem(16);
+      padding-right: toRem(16);
+      margin-inline: toRem(-16);
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
 }

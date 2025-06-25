@@ -79,6 +79,11 @@
       @media (min-width:toEm(600.98)){
       }
     }
+    .brief-open-btn & {
+      @media (min-width:toEm(600.98)){
+        transform: translate(0%, 0%);
+      }
+    }
 
     ._header-show & {
       @media (max-width: toEm(600.98)) {
@@ -106,7 +111,7 @@
 .btn-header {
   overflow: hidden;
   @include adaptiveValue("font-size", 33, 18, 0, 1920.98, 375.98);
-  font-weight: 700;
+  @extend %fw700;
   line-height: 1.1;
   transition: background-color .3s ease, opacity .3s ease 0.65s, visibility .3s ease 0.65s;
   position: relative;
@@ -250,20 +255,8 @@
   flex-direction: column;
   justify-content: space-between;
   gap: toRem(40);
-
-  @media (min-width:toEm(600.98)) {
-    padding-top: toRem(100);
-    padding-bottom: toRem(90);
-  }
-
-  @media (max-width: toEm(600.98)) {
-    padding-top: toRem(200);
-    padding-bottom: toRem(50);
-  }
-
-  @media (max-width: toEm(390.98)) {
-    padding-top: toRem(100);
-  }
+  padding-top: toRem(70);
+  @include adaptiveValue("padding-bottom", 90, 50,0,1440.98,480.98);
 
   @media (min-width:$mobileSmall) {
     padding-left: toRem(30);
@@ -300,13 +293,7 @@
     @include adaptiveValue("min-height", 117, 90, 2, 1920.98, 1440.98);
     @include adaptiveValue("min-height", 90, 67, 3, 1440.98, 480.98);
     @extend %paddLeft;
-    transition: background-color .3s ease;
-
-    @media (any-hover: hover) {
-      &:hover {
-        background-color: var(--blue);
-      }
-    }
+    @extend %transitionBG;
 
     @media (min-width:toEm(600.98)) {
       max-width: 68%;
@@ -335,6 +322,37 @@
       }
     }
   }
+
+		// .menu__lng
+		&__lng {
+      @extend %paddLeft;
+      display: flex;
+      align-items: center;
+      @media (max-width: toEm(600.98)){
+        margin-left: toRem(-37);
+      }
+		}
+		// .menu__lng-link
+		&__lng-link {
+      position: relative;
+      text-transform: uppercase;
+        @extend %fw500;
+      display: grid;
+      place-items:center;
+      @include adaptiveValue("min-height", 51, 37,0,1440.98,480.98);
+      @include adaptiveValue("min-width", 87, 63,0,1440.98,480.98);
+      @include adaptiveValue("font-size", 25, 18,0,1440.98,480.98);
+      border: toRem(1) solid var(--main);
+      @extend %transitionBG;
+      color: var(--gray3);
+      &._active {
+        color: var(--main);
+      }
+      &:nth-child(2) {
+        left: -1px;
+      }
+  
+		}
 
   // .menu__copy
   &__copy {
@@ -379,7 +397,7 @@
 
   // .brief-header__title
   &__title {
-    font-weight: 700;
+ @extend %fw700;
     line-height: 1.1;
     @include adaptiveValue("font-size", 38, 32, 0, 1440.98, 480.98);
 
@@ -528,7 +546,7 @@
   // .brief-header__msg-title
   &__msg-title {
     @include adaptiveValue("font-size", 50, 32, 0, 1920.98, 375.98);
-    font-weight: 700;
+    @extend %fw700;
     line-height: 1.1;
     display: flex;
     align-items: center;
@@ -547,7 +565,7 @@
 
   // .brief-header__msg-txt
   &__msg-txt {
-     font-weight: 500;
+      @extend %fw500;
     line-height: 1.2;
     @include adaptiveValue("font-size", 43, 20, 0, 1920.98, 375.98);
   }
