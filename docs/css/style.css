@@ -468,6 +468,7 @@ html.lenis body {
 .goal-case__num,
 .item-blog-home__footer p,
 .item-blog__time,
+.promotion-case ol li:before,
 .txt-channels__counters {
   font-family: Montserrat,sans-serif
 }
@@ -482,6 +483,7 @@ html.lenis body {
 .hero__year,
 .item-blog__subtitle,
 .item-blog__title,
+.promotion-case p,
 .roadmap__list li::before,
 .title-25,
 .title-33,
@@ -848,6 +850,13 @@ section {
   min-width: 1.8125rem;
   aspect-ratio: 1;
   background-color: var(--red)
+}
+.hero__title {
+  opacity: 0
+}
+.loaded .hero__title {
+  transition: opacity .2s ease;
+  opacity: 1
 }
 .hero__txt {
   max-width: 48.125rem
@@ -1339,17 +1348,20 @@ section {
 .article__body p,
 .article__body ul,
 .article__body video {
-  margin-bottom: 1.25rem
+  margin-bottom: 2.5rem
 }
 .article__body figure {
-  margin-bottom: 1.875rem
+  margin-bottom: 2.5rem
+}
+.article__body p a {
+  color: var(--blue)
 }
 .article__body img {
   width: 100%;
   max-width: 100%;
   height: auto;
-  margin-top: 1.875rem;
-  margin-bottom: 1.875rem
+  margin-top: 2.5rem;
+  margin-bottom: 2.5rem
 }
 .article__body figcaption {
   text-align: center;
@@ -1369,6 +1381,10 @@ section {
   border-radius: 50%;
   background-color: var(--blue)
 }
+.article__body ul ul {
+  padding-top: 15px;
+  padding-left: 1.5625rem
+}
 .article__body li:not(:last-child) {
   margin-bottom: .625rem
 }
@@ -1387,7 +1403,7 @@ section {
   content: counter(item) ".";
   position: absolute;
   left: .3125rem;
-  top: .5rem;
+  top: .3125rem;
   font-size: 1.25rem
 }
 .head-article {
@@ -1429,6 +1445,61 @@ section {
 .goal-case__txt {
   font-size: 1.375rem;
   line-height: 1.2
+}
+.promotion-case {
+  font-weight: 700;
+  line-height: 1.2
+}
+.promotion-case p {
+  line-height: 1.1
+}
+.promotion-case p a {
+  color: var(--blue)
+}
+.promotion-case ul li {
+  padding-left: 1.4375rem;
+  position: relative
+}
+.promotion-case ul li:before {
+  content: "";
+  position: absolute;
+  top: .9375rem;
+  left: .3125rem;
+  width: .5rem;
+  height: .5rem;
+  border-radius: 50%;
+  background-color: var(--blue)
+}
+.promotion-case ul ul {
+  padding-top: 15px;
+  padding-left: 1.5625rem
+}
+.promotion-case li:not(:last-child) {
+  margin-bottom: .625rem
+}
+.promotion-case ol li {
+  padding-left: 1.875rem
+}
+.promotion-case ol {
+  list-style-type: none;
+  counter-reset: item
+}
+.promotion-case ol li {
+  position: relative
+}
+.promotion-case ol li:before {
+  counter-increment: item;
+  content: counter(item) ".";
+  position: absolute;
+  left: .3125rem;
+  top: .3125rem;
+  font-size: 1.25rem
+}
+.promotion-case h3,
+.promotion-case h4,
+.promotion-case h5,
+.promotion-case h6 {
+  margin-bottom: 1.25rem
 }
 .promotion-case__content {
   display: grid;
@@ -2130,7 +2201,42 @@ section {
   .article__body h4,
   .article__body h5,
   .article__body h6 {
+    font-size: 2.5rem
+  }
+  .article__body h3,
+  .article__body h4,
+  .article__body h5,
+  .article__body h6 {
     margin-top: 3.125rem
+  }
+  .article__body p {
+    font-size: 1.625rem
+  }
+  .article__body ol,
+  .article__body ul {
+    font-size: 1.625rem
+  }
+  .promotion-case p:not(:last-child) {
+    margin-bottom: 3.75rem
+  }
+  .promotion-case ol,
+  .promotion-case ul {
+    font-size: 1.625rem
+  }
+  .promotion-case h3,
+  .promotion-case h4,
+  .promotion-case h5,
+  .promotion-case h6 {
+    font-size: 2.5rem
+  }
+  .promotion-case h3,
+  .promotion-case h4,
+  .promotion-case h5,
+  .promotion-case h6 {
+    margin-top: 3.125rem
+  }
+  .promotion-case .wp-block-columns:not(:last-child) {
+    margin-bottom: 5.625rem
   }
 }
 @media (min-width:120.06125em) {
@@ -2226,6 +2332,9 @@ section {
   }
   .filter__btn {
     font-size: 1.5625rem
+  }
+  .promotion-case p {
+    font-size: 2.6875rem
   }
 }
 @media (min-width:90em) {
@@ -2895,6 +3004,21 @@ section {
   .article__body ol li:before {
     top: 0
   }
+  .promotion-case p:not(:last-child) {
+    margin-bottom: 2.5rem
+  }
+  .promotion-case ul li:before {
+    top: .5rem
+  }
+  .promotion-case ol li:before {
+    top: 0
+  }
+  .promotion-case h3,
+  .promotion-case h4,
+  .promotion-case h5,
+  .promotion-case h6 {
+    margin-top: 2.5rem
+  }
 }
 @media (max-width:23.49875em) {
   .title-hero {
@@ -3022,6 +3146,35 @@ section {
   .article__body h2 {
     font-size: 2.5rem
   }
+  .article__body h3,
+  .article__body h4,
+  .article__body h5,
+  .article__body h6 {
+    font-size: 1.5625rem
+  }
+  .article__body p {
+    font-size: 1.25rem
+  }
+  .article__body ol,
+  .article__body ul {
+    font-size: 1.25rem
+  }
+  .promotion-case p {
+    font-size: 1.625rem
+  }
+  .promotion-case ol,
+  .promotion-case ul {
+    font-size: 1.25rem
+  }
+  .promotion-case h3,
+  .promotion-case h4,
+  .promotion-case h5,
+  .promotion-case h6 {
+    font-size: 1.5625rem
+  }
+  .promotion-case .wp-block-columns:not(:last-child) {
+    margin-bottom: 3.125rem
+  }
 }
 @media (min-width:90.06125em)and (max-width:120.06125em) {
   [class*=__container] {
@@ -3077,6 +3230,9 @@ section {
   }
   .cases-home__scroll {
     padding-inline: clamp(2.5rem ,-6.8813802083rem + 10.4166666667vw ,5.625rem)
+  }
+  .promotion-case p {
+    font-size: clamp(2.0625rem ,.1862239583rem + 2.0833333333vw ,2.6875rem)
   }
 }
 @media (min-width:23.49875em)and (max-width:90.06125em) {
@@ -3155,6 +3311,35 @@ section {
   }
   .article__body h2 {
     font-size: clamp(2.5rem ,1.6174178404rem + 3.7558685446vw ,5rem)
+  }
+  .article__body h3,
+  .article__body h4,
+  .article__body h5,
+  .article__body h6 {
+    font-size: clamp(1.5625rem ,1.2315316901rem + 1.4084507042vw ,2.5rem)
+  }
+  .article__body p {
+    font-size: clamp(1.25rem ,1.1176126761rem + .5633802817vw ,1.625rem)
+  }
+  .article__body ol,
+  .article__body ul {
+    font-size: clamp(1.25rem ,1.1176126761rem + .5633802817vw ,1.625rem)
+  }
+  .promotion-case p {
+    font-size: clamp(1.625rem ,1.4705481221rem + .6572769953vw ,2.0625rem)
+  }
+  .promotion-case ol,
+  .promotion-case ul {
+    font-size: clamp(1.25rem ,1.1176126761rem + .5633802817vw ,1.625rem)
+  }
+  .promotion-case h3,
+  .promotion-case h4,
+  .promotion-case h5,
+  .promotion-case h6 {
+    font-size: clamp(1.5625rem ,1.2315316901rem + 1.4084507042vw ,2.5rem)
+  }
+  .promotion-case .wp-block-columns:not(:last-child) {
+    margin-bottom: clamp(3.125rem ,2.2424178404rem + 3.7558685446vw ,5.625rem)
   }
 }
 @media (min-width:23.49875em)and (max-width:120.06125em) {
@@ -3282,6 +3467,15 @@ section {
   .article__body h4,
   .article__body h5,
   .article__body h6 {
+    margin-top: clamp(2.5rem ,2.1868619792rem + 1.0416666667vw ,3.125rem)
+  }
+  .promotion-case p:not(:last-child) {
+    margin-bottom: clamp(2.5rem ,1.8737239583rem + 2.0833333333vw ,3.75rem)
+  }
+  .promotion-case h3,
+  .promotion-case h4,
+  .promotion-case h5,
+  .promotion-case h6 {
     margin-top: clamp(2.5rem ,2.1868619792rem + 1.0416666667vw ,3.125rem)
   }
 }

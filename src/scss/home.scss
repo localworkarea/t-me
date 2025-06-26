@@ -71,6 +71,11 @@ section,
 
   // .hero__title
   &__title {
+    opacity: 0;
+    .loaded & {
+      transition: opacity .2s ease;
+      opacity: 1;
+    }
     @media (min-width:$mobileSmall) {
       order: 3;
       align-self: flex-end;
@@ -1820,7 +1825,7 @@ section,
     h4,
     h5,
     h6 {
-      //  @include adaptiveValue("font-size", 40, 20, 0, 1440.98, 375.98);
+       @include adaptiveValue("font-size", 40, 25, 0, 1440.98, 375.98);
       @include adaptiveValue("margin-top", 50, 40, 0, 1440.98, 480.98);
       margin-bottom: toRem(20);
     }
@@ -1830,11 +1835,11 @@ section,
     ol,
     video,
     blockquote {
-      margin-bottom: toRem(20);
+      margin-bottom: toRem(40);
     }
 
     figure {
-      margin-bottom: toRem(30);
+      margin-bottom: toRem(40);
 
       img {
         @include adaptiveValue("margin-bottom", 10, 8, 0, 1440, 1366.98);
@@ -1842,10 +1847,10 @@ section,
     }
 
     p {
-      // @include adaptiveValue("font-size", 40, 20, 0, 1440.98, 375.98);
+      @include adaptiveValue("font-size", 26, 20, 0, 1440.98, 375.98);
 
       a {
-
+        color: var(--blue);
         // color: $red;
         // @extend %fontWeight700;
         // @extend %transitionColor;
@@ -1862,8 +1867,8 @@ section,
       width: 100%;
       max-width: 100%;
       height: auto;
-      margin-top: toRem(30);
-      margin-bottom: toRem(30);
+      margin-top: toRem(40);
+      margin-bottom: toRem(40);
     }
 
     figcaption {
@@ -1874,7 +1879,7 @@ section,
 
     ol,
     ul {
-      // @include adaptiveValue("font-size", 30, 20, 0, 1440.98, 375.98);
+     @include adaptiveValue("font-size", 26, 20, 0, 1440.98, 375.98);
     }
 
     ul li {
@@ -1893,6 +1898,15 @@ section,
 
         @media (max-width:$mobileSmall) {
           top: toRem(8);
+        }
+      }
+    }
+    ul {
+      ul {
+        padding-top: 15px;
+        padding-left: toRem(25);
+        li {
+
         }
       }
     }
@@ -1919,7 +1933,7 @@ section,
           content: counter(item) ".";
           position: absolute;
           left: toRem(5);
-          top: toRem(8);
+          top: toRem(5);
          @extend %Montserrat;
           // @include adaptiveValue("top", 2, 2,0,1440,1366.98);
           font-size: toRem(20);
@@ -1995,7 +2009,7 @@ section,
 
 // == - SECTION ==========================================
 .case {
-
+   
   // .case__container
   &__container {}
 
@@ -2097,7 +2111,100 @@ section,
 }
 
 .promotion-case {
+font-weight: 700;
+line-height: 1.2;
+ p {
+       @include adaptiveValue("font-size", 43, 33, 2, 1920.98, 1440.98);
+  @include adaptiveValue("font-size", 33, 26, 3, 1440.98, 375.98);
+  @extend %fw700;
+  line-height: 1.1;
+  &:not(:last-child) {
+    @include adaptiveValue("margin-bottom", 60, 40,0,1440.98,480.98);
+  }
+      a {
+        color: var(--blue);
+      }
+    }
+        ol,
+    ul {
+     @include adaptiveValue("font-size", 26, 20, 0, 1440.98, 375.98);
+    }
 
+    ul li {
+      padding-left: toRem(23);
+      position: relative;
+
+      &:before {
+        content: '';
+        position: absolute;
+        top: toRem(15);
+        left: toRem(5);
+        width: toRem(8);
+        height: toRem(8);
+        border-radius: 50%;
+        background-color: var(--blue);
+
+        @media (max-width:$mobileSmall) {
+          top: toRem(8);
+        }
+      }
+    }
+    ul {
+      ul {
+        padding-top: 15px;
+        padding-left: toRem(25);
+        li {
+
+        }
+      }
+    }
+
+    li {
+      &:not(:last-child) {
+        margin-bottom: toRem(10);
+      }
+    }
+
+    ol li {
+      padding-left: toRem(30);
+    }
+
+    ol {
+      list-style-type: none;
+      counter-reset: item;
+
+      li {
+        position: relative;
+
+        &:before {
+          counter-increment: item;
+          content: counter(item) ".";
+          position: absolute;
+          left: toRem(5);
+          top: toRem(5);
+         @extend %Montserrat;
+          // @include adaptiveValue("top", 2, 2,0,1440,1366.98);
+          font-size: toRem(20);
+
+          @media (max-width:$mobileSmall) {
+            top: toRem(0);
+          }
+        }
+      }
+    }
+      h3,
+    h4,
+    h5,
+    h6 {
+       @include adaptiveValue("font-size", 40, 25, 0, 1440.98, 375.98);
+      @include adaptiveValue("margin-top", 50, 40, 0, 1440.98, 480.98);
+      margin-bottom: toRem(20);
+    }
+    .wp-block-columns {
+      &:not(:last-child) {
+        @include adaptiveValue("margin-bottom", 90, 50, 0, 1440.98, 375.98);
+      }
+    }
   // .promotion-case__title
   &__title {}
 
