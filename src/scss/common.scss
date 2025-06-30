@@ -441,6 +441,10 @@ html.lenis body {
   @media (max-width:toEm(600.98)){
     margin-top: toRem(100);
   }
+  .page-not-found & {
+    margin-top: toRem(40) !important;
+    margin-bottom: toRem(40) !important;
+  }
 	// .logo-top__container
 	&__container {
     img {
@@ -486,4 +490,44 @@ html.lenis body {
         display: none;
       }
     }
+}
+
+
+.pagination {
+  margin-inline: auto;
+  max-width: max-content;
+    @include adaptiveValue("margin-top", 90, 60, 0, 1440.98, 375.98);
+  ul {
+    display: flex;
+    align-items: center;
+    li {
+      width: toRem(43);
+      flex: 0 0 toRem(43);
+      aspect-ratio: 1;
+      border: toRem(1) solid var(--main);
+      display: grid;
+      place-items: center;
+      font-size: toRem(20);
+      @extend %Montserrat;
+      @extend %fw700;
+      position: relative;
+      &:not(:first-child) {
+        margin-left: -1px;
+      }
+      a {
+        display: grid;
+        place-items: center;
+        width: 100%;
+        height: 100%;
+        &.active {
+          background-color: var(--gray2);
+        }
+        &:active {
+          background-color: var(--blue);
+        }
+        @extend %transitionColor;
+        @extend %transitionBG;
+      }
+    }
+  }
 }

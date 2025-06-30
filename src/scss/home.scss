@@ -2231,6 +2231,52 @@ line-height: 1.2;
 
 
 // == - SECTION ==========================================
+.page-not-found {
+  min-height: 100svh;
+  .page {
+    flex: 1;
+    display: grid;
+    place-items: center;
+  }
+}
+.not-found {
+		// .not-found__container
+		&__container {
+		}
+		// .not-found__body
+		&__body {
+      text-align: center;
+		}
+		// .not-found__main
+		&__main {
+       @extend %Montserrat;
+      @extend %fw700;
+      color: #ccc;
+      span {
+        display: inline-block;
+        border: toRem(1) solid var(--main);
+        color: var(--main);
+        padding-inline: 1.5vw;
+      }
+      @media (orientation: landscape) {
+        font-size: 19vw;
+      }
+      @media (orientation: portrait) {
+        font-size: 37vw;
+      }
+		}
+		// .not-found__text
+		&__text {
+      // max-width: toRem(655);
+      @include adaptiveValue("max-width", 850, 700,0,1920.98,1440.98);
+      margin-inline: auto;
+		}
+		// .not-found__link
+		&__link {
+		}
+}
+
+
 // == - SECTION ==========================================
 // == - SECTION ==========================================
 // == - SECTION ==========================================
