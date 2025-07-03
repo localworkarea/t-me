@@ -443,6 +443,9 @@ html.lenis body {
   transition: transform .45s ease;
   transition: transform .45s ease,-webkit-transform .45s ease
 }
+.btn--gray {
+  background-color: var(--gray)
+}
 .logo-top {
   margin-bottom: 4.375rem
 }
@@ -895,10 +898,10 @@ section {
   aspect-ratio: 1;
   background-color: var(--red)
 }
-.hero__title {
+.hero__content {
   opacity: 0
 }
-.loaded .hero__title {
+.loaded .hero__content {
   transition: opacity .2s ease;
   opacity: 1
 }
@@ -907,6 +910,13 @@ section {
 }
 .hero__year {
   font-size: 1.0625rem
+}
+.hero__btns {
+  opacity: 0
+}
+.loaded .hero__btns {
+  transition: opacity .3s ease .45s;
+  opacity: 1
 }
 .cards-hero {
   position: absolute;
@@ -1592,7 +1602,7 @@ section {
   .hero__block::before {
     order: 2
   }
-  .hero__title {
+  .hero__content {
     order: 3;
     align-self: flex-end
   }
@@ -2751,7 +2761,7 @@ section {
   .hero__block::before {
     margin-bottom: 1.25rem
   }
-  .hero__title {
+  .hero__content {
     flex: 1
   }
   .cards-hero__card.card-01 {

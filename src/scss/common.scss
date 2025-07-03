@@ -415,6 +415,9 @@ html.lenis body {
   &--500 {
      @extend %fw500;
   }
+  &--gray {
+    background-color: var(--gray);
+  }
 		// // .btn__chars
 		// &__chars {
     //   // text-shadow: ;

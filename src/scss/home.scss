@@ -68,9 +68,8 @@ section,
       }
     }
   }
-
-  // .hero__title
-  &__title {
+	// .hero__content
+	&__content {
     opacity: 0;
     .loaded & {
       transition: opacity .2s ease;
@@ -80,10 +79,14 @@ section,
       order: 3;
       align-self: flex-end;
     }
-
+  
     @media (max-width:$mobileSmall) {
       flex: 1;
     }
+	}
+
+  // .hero__title
+  &__title {
   }
 
   // .hero__t-me
@@ -108,7 +111,17 @@ section,
       order: 1;
     }
   }
-
+		// .hero__btns
+		&__btns {
+      opacity: 0;
+      .loaded & {
+        transition: opacity .3s ease .45s;
+        opacity: 1;
+		}
+	// .hero__btn
+	&__btn {
+    }
+	}
   // .hero__cards
   &__cards {}
 }
