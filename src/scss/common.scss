@@ -437,12 +437,15 @@ html.lenis body {
 
 
 .logo-top {
-  margin-bottom: toRem(70);
+  margin-bottom: toRem(20);
   @media (min-width:toEm(600.98)){
     margin-top: toRem(60);
   }
   @media (max-width:toEm(600.98)){
     margin-top: toRem(100);
+  }
+  @media (min-width:$mobileSmall){
+    margin-bottom: toRem(30);
   }
   .page-not-found & {
     margin-top: toRem(40) !important;
@@ -530,6 +533,61 @@ html.lenis body {
         }
         @extend %transitionColor;
         @extend %transitionBG;
+      }
+    }
+  }
+}
+
+
+
+.breadcrumb {
+  @media (min-width:$mobileSmall){
+    margin-bottom: toRem(40);
+  }
+  @media (max-width:$mobileSmall){
+    margin-bottom: toRem(20);
+  }
+	// .breadcrumb__list
+	&__list {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: toRem(4);
+    overflow-y: hidden;
+    overflow-x: auto;
+    min-height: toRem(25);
+    @media (min-width:$mobile){
+       flex-wrap: wrap; 
+    }
+    @media (max-width:$mobile){
+      margin-inline: toRem(-20); 
+      padding-inline: toRem(20);
+      mask-image: linear-gradient(to right, white 90%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to right, white 90%, transparent 100%);
+    }
+    &::-webkit-scrollbar {
+      display: none;
+    }
+	}
+	// .breadcrumb__item
+	&__item {
+    white-space: nowrap;
+    font-size: toRem(16);
+    font-weight: 500;
+    color: #A0A0A0;
+    &:not(:last-child) {
+      a {
+        display: flex;
+        align-items: center;
+        gap: toRem(4);
+        @media (any-hover: hover){
+          &:hover{
+            color: var(--blue);
+          }
+        }
+        &::after {
+          content:'>';
+        }
       }
     }
   }

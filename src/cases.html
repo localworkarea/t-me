@@ -3,149 +3,176 @@
 @@include('html/_head.htm',{
 "title":"t:me | CASES"
 })
+
 <body>
 	<div class="wrapper page-cases">
 		@@include('html/_header-all.htm',{})
-		 <div class="logo-top">
-      <div class="logo-top__container">
-        <img src="@img/icons/t-me.svg" width="184" height="62" alt="logog t:me">
-      </div>
-    </div>
+		<div class="logo-top">
+			<div class="logo-top__container">
+				<img src="@img/icons/t-me.svg" width="184" height="62" alt="logog t:me">
+			</div>
+		</div>
+		<div class="breadcrumb">
+			<nav class="breadcrumb__container">
+				<ul itemscope itemtype="https://schema.org/BreadcrumbList" class="breadcrumb__list">
+					<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb__item">
+						<a itemprop="item" href="index.html"><span itemprop="name">Головна</span></a>
+						<meta itemprop="position" content="1" />
+					</li>
+					<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb__item">
+						<a itemprop="item" href="article.html"><span itemprop="name">Статті</span></a>
+						<meta itemprop="position" content="2" />
+					</li>
+					<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb__item">
+						<a itemprop="item" href="blog.html"><span itemprop="name">Блог</span></a>
+						<meta itemprop="position" content="3" />
+					</li>
+					<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb__item">
+						<a itemprop="item" href="cases.html"><span itemprop="name">Кейси</span></a>
+						<meta itemprop="position" content="4" />
+					</li>
+					<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb__item">
+						<span itemprop="name">Telegram маркетинг, що працю</span>
+						<meta itemprop="position" content="5" />
+					</li>
+				</ul>
+			</nav>
+		</div>
 		<main class="page">
-      <section class="cases pb-150-90">
+			<section class="cases pb-150-90">
 				<div class="cases__container">
-					 <ul class="cases__filter filter">
-            <li class="filter__item">
-              <a href="#" class="filter__btn _active" aria-label="filter">All</a>
-            </li>
-            <li class="filter__item">
-              <a href="#" class="filter__btn" aria-label="filter">Telegram-маркетинг</a>
-            </li>
-            <li class="filter__item">
-              <a href="#" class="filter__btn" aria-label="filter">Контент для Telegram</a>
-            </li>
-            <li class="filter__item">
-              <a href="#" class="filter__btn" aria-label="filter">аналітика</a>
-            </li>
-            <li class="filter__item">
-              <a href="#" class="filter__btn" aria-label="filter">новини</a>
-            </li>
-          </ul>
+					<ul class="cases__filter filter">
+						<li class="filter__item">
+							<a href="#" class="filter__btn _active" aria-label="filter">All</a>
+						</li>
+						<li class="filter__item">
+							<a href="#" class="filter__btn" aria-label="filter">Telegram-маркетинг</a>
+						</li>
+						<li class="filter__item">
+							<a href="#" class="filter__btn" aria-label="filter">Контент для Telegram</a>
+						</li>
+						<li class="filter__item">
+							<a href="#" class="filter__btn" aria-label="filter">аналітика</a>
+						</li>
+						<li class="filter__item">
+							<a href="#" class="filter__btn" aria-label="filter">новини</a>
+						</li>
+					</ul>
 					<ul class="cases__list">
 						<li class="cases-home__item">
-								<div class="cases-home__img">
-									<img class="ibg" src="@img/cases/cases-1.jpg" width="690" height="477" alt="Image">
-								</div>
-								<div class="cases-home__footer">
-									<p class="cases-home__title-item title-33">Uklon</p>
-									<p class="cases-home__txt txt-18">Як працює ситуатив та спецпропозиції на промо в регіональних телеграм-каналах</p>
-								</div>
-								<a href="case.html" class="cases-home__link-item" aria-label="case link"></a>
-							</li>
+							<div class="cases-home__img">
+								<img class="ibg" src="@img/cases/cases-1.jpg" width="690" height="477" alt="Image">
+							</div>
+							<div class="cases-home__footer">
+								<p class="cases-home__title-item title-33">Uklon</p>
+								<p class="cases-home__txt txt-18">Як працює ситуатив та спецпропозиції на промо в регіональних телеграм-каналах</p>
+							</div>
+							<a href="case.html" class="cases-home__link-item" aria-label="case link"></a>
+						</li>
 						<li class="cases-home__item">
-								<div class="cases-home__img">
-									<img class="ibg" src="@img/cases/cases-2.jpg" width="690" height="477" alt="Image">
-								</div>
-								<div class="cases-home__footer">
-									<p class="cases-home__title-item title-33">Сільпо</p>
-									<p class="cases-home__txt txt-18">Як працює ситуатив та спецпропозиції на промо в регіональних телеграм-каналах. Як працює ситуатив та спецпропозиції на промо в регіональних телеграм-каналах</p>
-								</div>
-								<a href="case.html" class="cases-home__link-item" aria-label="case link"></a>
-							</li>
+							<div class="cases-home__img">
+								<img class="ibg" src="@img/cases/cases-2.jpg" width="690" height="477" alt="Image">
+							</div>
+							<div class="cases-home__footer">
+								<p class="cases-home__title-item title-33">Сільпо</p>
+								<p class="cases-home__txt txt-18">Як працює ситуатив та спецпропозиції на промо в регіональних телеграм-каналах. Як працює ситуатив та спецпропозиції на промо в регіональних телеграм-каналах</p>
+							</div>
+							<a href="case.html" class="cases-home__link-item" aria-label="case link"></a>
+						</li>
 						<li class="cases-home__item">
-								<div class="cases-home__img">
-									<img class="ibg" src="@img/cases/cases-3.jpg" width="690" height="477" alt="Image">
-								</div>
-								<div class="cases-home__footer">
-									<p class="cases-home__title-item title-33">Алло</p>
-									<p class="cases-home__txt txt-18">Як робити медіабаїнг для найбільшого комерційного каналу в українському Телеграмі</p>
-								</div>
-								<a href="case.html" class="cases-home__link-item" aria-label="case link"></a>
-							</li>
+							<div class="cases-home__img">
+								<img class="ibg" src="@img/cases/cases-3.jpg" width="690" height="477" alt="Image">
+							</div>
+							<div class="cases-home__footer">
+								<p class="cases-home__title-item title-33">Алло</p>
+								<p class="cases-home__txt txt-18">Як робити медіабаїнг для найбільшого комерційного каналу в українському Телеграмі</p>
+							</div>
+							<a href="case.html" class="cases-home__link-item" aria-label="case link"></a>
+						</li>
 						<li class="cases-home__item">
-								<div class="cases-home__img">
-									<img class="ibg" src="@img/cases/cases-1.jpg" width="690" height="477" alt="Image">
-								</div>
-								<div class="cases-home__footer">
-									<p class="cases-home__title-item title-33">Uklon</p>
-									<p class="cases-home__txt txt-18">Як працює ситуатив та спецпропозиції на промо в регіональних телеграм-каналах</p>
-								</div>
-								<a href="case.html" class="cases-home__link-item" aria-label="case link"></a>
-							</li>
+							<div class="cases-home__img">
+								<img class="ibg" src="@img/cases/cases-1.jpg" width="690" height="477" alt="Image">
+							</div>
+							<div class="cases-home__footer">
+								<p class="cases-home__title-item title-33">Uklon</p>
+								<p class="cases-home__txt txt-18">Як працює ситуатив та спецпропозиції на промо в регіональних телеграм-каналах</p>
+							</div>
+							<a href="case.html" class="cases-home__link-item" aria-label="case link"></a>
+						</li>
 						<li class="cases-home__item">
-								<div class="cases-home__img">
-									<img class="ibg" src="@img/cases/cases-2.jpg" width="690" height="477" alt="Image">
-								</div>
-								<div class="cases-home__footer">
-									<p class="cases-home__title-item title-33">Сільпо</p>
-									<p class="cases-home__txt txt-18">Як працює ситуатив та спецпропозиції на промо в регіональних телеграм-каналах. Як працює ситуатив та спецпропозиції на промо в регіональних телеграм-каналах</p>
-								</div>
-								<a href="case.html" class="cases-home__link-item" aria-label="case link"></a>
-							</li>
+							<div class="cases-home__img">
+								<img class="ibg" src="@img/cases/cases-2.jpg" width="690" height="477" alt="Image">
+							</div>
+							<div class="cases-home__footer">
+								<p class="cases-home__title-item title-33">Сільпо</p>
+								<p class="cases-home__txt txt-18">Як працює ситуатив та спецпропозиції на промо в регіональних телеграм-каналах. Як працює ситуатив та спецпропозиції на промо в регіональних телеграм-каналах</p>
+							</div>
+							<a href="case.html" class="cases-home__link-item" aria-label="case link"></a>
+						</li>
 						<li class="cases-home__item">
-								<div class="cases-home__img">
-									<img class="ibg" src="@img/cases/cases-3.jpg" width="690" height="477" alt="Image">
-								</div>
-								<div class="cases-home__footer">
-									<p class="cases-home__title-item title-33">Алло</p>
-									<p class="cases-home__txt txt-18">Як робити медіабаїнг для найбільшого комерційного каналу в українському Телеграмі</p>
-								</div>
-								<a href="case.html" class="cases-home__link-item" aria-label="case link"></a>
-							</li>
+							<div class="cases-home__img">
+								<img class="ibg" src="@img/cases/cases-3.jpg" width="690" height="477" alt="Image">
+							</div>
+							<div class="cases-home__footer">
+								<p class="cases-home__title-item title-33">Алло</p>
+								<p class="cases-home__txt txt-18">Як робити медіабаїнг для найбільшого комерційного каналу в українському Телеграмі</p>
+							</div>
+							<a href="case.html" class="cases-home__link-item" aria-label="case link"></a>
+						</li>
 						<li class="cases-home__item">
-								<div class="cases-home__img">
-									<img class="ibg" src="@img/cases/cases-1.jpg" width="690" height="477" alt="Image">
-								</div>
-								<div class="cases-home__footer">
-									<p class="cases-home__title-item title-33">Uklon</p>
-									<p class="cases-home__txt txt-18">Як працює ситуатив та спецпропозиції на промо в регіональних телеграм-каналах</p>
-								</div>
-								<a href="case.html" class="cases-home__link-item" aria-label="case link"></a>
-							</li>
+							<div class="cases-home__img">
+								<img class="ibg" src="@img/cases/cases-1.jpg" width="690" height="477" alt="Image">
+							</div>
+							<div class="cases-home__footer">
+								<p class="cases-home__title-item title-33">Uklon</p>
+								<p class="cases-home__txt txt-18">Як працює ситуатив та спецпропозиції на промо в регіональних телеграм-каналах</p>
+							</div>
+							<a href="case.html" class="cases-home__link-item" aria-label="case link"></a>
+						</li>
 						<li class="cases-home__item">
-								<div class="cases-home__img">
-									<img class="ibg" src="@img/cases/cases-2.jpg" width="690" height="477" alt="Image">
-								</div>
-								<div class="cases-home__footer">
-									<p class="cases-home__title-item title-33">Сільпо</p>
-									<p class="cases-home__txt txt-18">Як працює ситуатив та спецпропозиції на промо в регіональних телеграм-каналах. Як працює ситуатив та спецпропозиції на промо в регіональних телеграм-каналах</p>
-								</div>
-								<a href="case.html" class="cases-home__link-item" aria-label="case link"></a>
-							</li>
+							<div class="cases-home__img">
+								<img class="ibg" src="@img/cases/cases-2.jpg" width="690" height="477" alt="Image">
+							</div>
+							<div class="cases-home__footer">
+								<p class="cases-home__title-item title-33">Сільпо</p>
+								<p class="cases-home__txt txt-18">Як працює ситуатив та спецпропозиції на промо в регіональних телеграм-каналах. Як працює ситуатив та спецпропозиції на промо в регіональних телеграм-каналах</p>
+							</div>
+							<a href="case.html" class="cases-home__link-item" aria-label="case link"></a>
+						</li>
 						<li class="cases-home__item">
-								<div class="cases-home__img">
-									<img class="ibg" src="@img/cases/cases-3.jpg" width="690" height="477" alt="Image">
-								</div>
-								<div class="cases-home__footer">
-									<p class="cases-home__title-item title-33">Алло</p>
-									<p class="cases-home__txt txt-18">Як робити медіабаїнг для найбільшого комерційного каналу в українському Телеграмі</p>
-								</div>
-								<a href="case.html" class="cases-home__link-item" aria-label="case link"></a>
-							</li>
+							<div class="cases-home__img">
+								<img class="ibg" src="@img/cases/cases-3.jpg" width="690" height="477" alt="Image">
+							</div>
+							<div class="cases-home__footer">
+								<p class="cases-home__title-item title-33">Алло</p>
+								<p class="cases-home__txt txt-18">Як робити медіабаїнг для найбільшого комерційного каналу в українському Телеграмі</p>
+							</div>
+							<a href="case.html" class="cases-home__link-item" aria-label="case link"></a>
+						</li>
 					</ul>
-					   <nav class="pagination">
-            <ul>
-              <li><a href="#" aria-label="Previous">
-                  <svg width="7" height="12" viewBox="0 0 7 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                      d="M6.11772 10.6666L5.20786 11.6159L0.252077 6.44218C0.172192 6.35927 0.108795 6.26069 0.0655333 6.1521C0.0222717 6.04352 0 5.92706 0 5.80945C0 5.69184 0.0222717 5.57539 0.0655333 5.4668C0.108795 5.35821 0.172192 5.25963 0.252077 5.17673L5.20786 0.000305176L6.11686 0.949615L1.46551 5.80811L6.11772 10.6666Z"
-                      fill="black" />
-                  </svg>
-                </a></li>
-              <li><a href="#">1</a></li>
-              <li><a href="#" class="active">2</a></li>
-              <li><a href="#">3</a></li>
-              <li><span>...</span></li>
-              <li><a href="#">6</a></li>
-              <li><a href="#" aria-label="Next">
-                  <svg width="7" height="12" viewBox="0 0 7 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                      d="M0.835408 0.950219L1.74527 0.00090933L6.70105 5.17465C6.78093 5.25755 6.84433 5.35613 6.88759 5.46472C6.93085 5.57331 6.95313 5.68976 6.95313 5.80737C6.95313 5.92498 6.93085 6.04143 6.88759 6.15002C6.84433 6.25861 6.78093 6.35719 6.70105 6.44009L1.74527 11.6165L0.836264 10.6672L5.48762 5.80871L0.835408 0.950219Z"
-                      fill="black" />
-                  </svg>
-                </a></li>
-            </ul>
-          </nav>
+					<nav class="pagination">
+						<ul>
+							<li><a href="#" aria-label="Previous">
+									<svg width="7" height="12" viewBox="0 0 7 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path
+											d="M6.11772 10.6666L5.20786 11.6159L0.252077 6.44218C0.172192 6.35927 0.108795 6.26069 0.0655333 6.1521C0.0222717 6.04352 0 5.92706 0 5.80945C0 5.69184 0.0222717 5.57539 0.0655333 5.4668C0.108795 5.35821 0.172192 5.25963 0.252077 5.17673L5.20786 0.000305176L6.11686 0.949615L1.46551 5.80811L6.11772 10.6666Z"
+											fill="black" />
+									</svg>
+								</a></li>
+							<li><a href="#">1</a></li>
+							<li><a href="#" class="active">2</a></li>
+							<li><a href="#">3</a></li>
+							<li><span>...</span></li>
+							<li><a href="#">6</a></li>
+							<li><a href="#" aria-label="Next">
+									<svg width="7" height="12" viewBox="0 0 7 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path
+											d="M0.835408 0.950219L1.74527 0.00090933L6.70105 5.17465C6.78093 5.25755 6.84433 5.35613 6.88759 5.46472C6.93085 5.57331 6.95313 5.68976 6.95313 5.80737C6.95313 5.92498 6.93085 6.04143 6.88759 6.15002C6.84433 6.25861 6.78093 6.35719 6.70105 6.44009L1.74527 11.6165L0.836264 10.6672L5.48762 5.80871L0.835408 0.950219Z"
+											fill="black" />
+									</svg>
+								</a></li>
+						</ul>
+					</nav>
 				</div>
 			</section>
 			<section class="brief pb-90-60">
@@ -164,4 +191,5 @@
 	</div>
 	@@include('html/_js.htm',{})
 </body>
+
 </html>

@@ -447,7 +447,7 @@ html.lenis body {
   background-color: var(--gray)
 }
 .logo-top {
-  margin-bottom: 4.375rem
+  margin-bottom: 1.25rem
 }
 .page-not-found .logo-top {
   margin-top: 2.5rem!important;
@@ -558,6 +558,32 @@ html.lenis body {
 }
 .pagination ul li a:active {
   background-color: var(--blue)
+}
+.breadcrumb__list {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: .25rem;
+  overflow-y: hidden;
+  overflow-x: auto;
+  min-height: 1.5625rem
+}
+.breadcrumb__list::-webkit-scrollbar {
+  display: none
+}
+.breadcrumb__item {
+  white-space: nowrap;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #a0a0a0
+}
+.breadcrumb__item:not(:last-child) a {
+  display: flex;
+  align-items: center;
+  gap: .25rem
+}
+.breadcrumb__item:not(:last-child) a::after {
+  content: ">"
 }
 .header {
   position: fixed;
@@ -1592,6 +1618,12 @@ section {
     min-height: 3.25rem;
     padding-inline: 1.1875rem
   }
+  .logo-top {
+    margin-bottom: 1.875rem
+  }
+  .breadcrumb {
+    margin-bottom: 2.5rem
+  }
   .menu {
     padding-left: 1.875rem;
     padding-right: 1.25rem
@@ -2060,6 +2092,9 @@ section {
   }
 }
 @media (min-width:48.06125em) {
+  .breadcrumb__list {
+    flex-wrap: wrap
+  }
   .brief-header {
     padding: 3.125rem
   }
@@ -2513,6 +2548,12 @@ section {
   }
 }
 @media (max-width:48.06125em) {
+  .breadcrumb__list {
+    margin-inline: -1.25rem;
+    padding-inline: 1.25rem;
+    mask-image: linear-gradient(to right,#fff 90%,transparent 100%);
+    -webkit-mask-image: linear-gradient(to right,#fff 90%,transparent 100%)
+  }
   .brief-header {
     padding: 6.25rem 1rem 1rem
   }
@@ -2682,6 +2723,9 @@ section {
     font-size: 1.125rem;
     min-height: 2.5625rem;
     padding-inline: .8125rem
+  }
+  .breadcrumb {
+    margin-bottom: 1.25rem
   }
   .menu__copy,
   .menu__link,
@@ -3643,6 +3687,9 @@ section {
   .menu__lng-link:hover,
   .pagination ul li a:hover {
     background-color: var(--blue)
+  }
+  .breadcrumb__item:not(:last-child) a:hover {
+    color: var(--blue)
   }
   .btn-header:hover {
     background-color: var(--blue)
