@@ -31,7 +31,7 @@ flsFunctions.briefInit();
 Модуль "Спойлери"
 Сніппет (HTML): spollers
 */
-// flsFunctions.spollers();
+flsFunctions.spollers();
 
 /*
 Модуль "Таби"
@@ -43,7 +43,7 @@ flsFunctions.briefInit();
 Модуль "Показати ще"
 Сніппет (HTML): showmore
 */
-// flsFunctions.showMore();
+flsFunctions.showMore();
 
 /*
 Модуль "До/Після"

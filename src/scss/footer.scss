@@ -38,7 +38,7 @@
   // .footer__link
   &__link {
     display: block;
- @extend %fw700;
+  font-weight: 700;
     @extend %transitionColor;
 
     &:not(:last-child) {

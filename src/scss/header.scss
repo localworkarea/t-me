@@ -111,7 +111,7 @@
 .btn-header {
   overflow: hidden;
   @include adaptiveValue("font-size", 33, 18, 0, 1920.98, 375.98);
-  @extend %fw700;
+   font-weight: 700;
   line-height: 1.1;
   transition: background-color .3s ease, opacity .3s ease 0.65s, visibility .3s ease 0.65s;
   position: relative;
@@ -336,7 +336,7 @@
 		&__lng-link {
       position: relative;
       text-transform: uppercase;
-        @extend %fw500;
+         font-weight: 500;
       display: grid;
       place-items:center;
       @include adaptiveValue("min-height", 51, 37,0,1440.98,480.98);
@@ -397,7 +397,7 @@
 
   // .brief-header__title
   &__title {
- @extend %fw700;
+  font-weight: 700;
     line-height: 1.1;
     @include adaptiveValue("font-size", 38, 32, 0, 1440.98, 480.98);
 
@@ -546,7 +546,7 @@
   // .brief-header__msg-title
   &__msg-title {
     @include adaptiveValue("font-size", 50, 32, 0, 1920.98, 375.98);
-    @extend %fw700;
+     font-weight: 700;
     line-height: 1.1;
     display: flex;
     align-items: center;
@@ -565,7 +565,7 @@
 
   // .brief-header__msg-txt
   &__msg-txt {
-      @extend %fw500;
+       font-weight: 500;
     line-height: 1.2;
     @include adaptiveValue("font-size", 43, 20, 0, 1920.98, 375.98);
   }
