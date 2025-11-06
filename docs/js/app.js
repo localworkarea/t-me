@@ -2660,6 +2660,27 @@
                 });
             }
         });
+        document.addEventListener("DOMContentLoaded", () => {
+            const flyForm = document.querySelector(".fly-form");
+            const toggleBtn = flyForm?.querySelector(".fly-form__btn");
+            const SCROLL_THRESHOLD = 200;
+            if (!flyForm || !toggleBtn) return;
+            toggleBtn.addEventListener("click", e => {
+                e.stopPropagation();
+                flyForm.classList.toggle("_active-fly-form");
+            });
+            document.addEventListener("click", e => {
+                if (flyForm.classList.contains("_active-fly-form") && !e.target.closest(".fly-form__content") && !e.target.closest(".fly-form__btn")) flyForm.classList.remove("_active-fly-form");
+            });
+            document.addEventListener("keydown", e => {
+                if (e.key === "Escape" && flyForm.classList.contains("_active-fly-form")) flyForm.classList.remove("_active-fly-form");
+            });
+            function checkScrollPosition() {
+                if (window.scrollY > SCROLL_THRESHOLD) flyForm.classList.add("_scroll-dwn"); else flyForm.classList.remove("_scroll-dwn");
+            }
+            checkScrollPosition();
+            window.addEventListener("scroll", checkScrollPosition);
+        });
         window["FLS"] = false;
         addLoadedClass();
         menuInit();

@@ -274,6 +274,10 @@ html.lenis body {
   }
 }
 
+.ff-m {
+   font-family: "Montserrat", sans-serif;
+}
+
 .txt-60 {
   font-family: "Montserrat", sans-serif;
   font-weight: 700;
@@ -451,6 +455,14 @@ html.lenis body {
     @media (any-hover: hover){
       &:hover{
         background-color: #26bd83;
+      }
+    }
+  }
+  &--blue {
+    background-color: var(--blue);
+    @media (any-hover: hover){
+      &:hover{
+        background-color:var(--gray);
       }
     }
   }
@@ -644,4 +656,187 @@ html.lenis body {
 }
 .bg-clr--gray {
   background-color: var(--gray);
+}
+.bg-clr--orange-dark {
+  background-color: var(--orange-dark);
+}
+
+
+// ==== =========================================
+
+.fly-form {
+  pointer-events: none;
+  position: fixed;
+  z-index: 13;
+  bottom: toRem(25);
+  right: toRem(20);
+  max-width: calc(100vw - 40px);
+  opacity: 0;
+  .loaded & {
+    opacity: 1;
+    transition: opacity .45s ease 1.5s, right .65s ease 0.1s;
+  }
+  @media (min-width:toEm(600.98)){
+    max-width: toRem(360);
+    bottom: toRem(30);
+    right: toRem(140);
+    &._scroll-dwn {
+      right: toRem(30);
+    }
+    .footer-view & {
+      right: toRem(140);
+    }
+  }
+		// .fly-form__body
+		&__body {
+      // clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+      clip-path: polygon(100% 100%, 100% 100%, 100% 100%, 100% 100%);
+      pointer-events: all;
+      background-color: var(--white);
+      border: 1px solid var(--gray3);
+      padding: 20px;
+      margin-bottom: toRem(20);
+      transition: clip-path .45s ease, opacity .3s ease, visibility .3s ease;
+      
+      ._active-fly-form & {
+        clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+      }
+
+      @media (min-width:$mobileSmall){
+         padding: 30px; 
+         margin-bottom: toRem(30);
+      }
+		}
+
+		// .fly-form__content
+		&__content {
+      position: relative;
+      z-index: 2;
+		}
+    
+		// .fly-form__wrapper
+		&__wrapper {
+      position: relative;
+      z-index: 3;
+       transition: opacity .3s ease, visibility .3s ease;
+
+      .form-sent & {
+        opacity: 0;
+        visibility: hidden;
+      }
+		}
+
+		// .fly-form__title
+		&__title {
+        font-size: 26px;
+      font-weight: 700;
+      line-height: 1.2;
+		}
+
+		// .fly-form__form
+		&__form {
+		}
+
+		// .fly-form__msg
+		&__msg {
+      position: absolute;
+      z-index: 0;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity .45s ease, visibility .45s ease;
+
+      display: grid;
+      place-items: center;
+      text-align: center;
+
+      font-size: 26px;
+      font-weight: 700;
+      line-height: 1.2;
+
+      .form-sent & {
+        opacity: 1;
+        visibility: visible;
+      }
+		}
+
+		// .fly-form__close
+		&__close {
+      pointer-events: none;
+		}
+
+		// .fly-form__btn
+		&__btn {
+      pointer-events: all;
+      display: block;
+      margin-left: auto;
+      width: 60px;
+      height: 60px;
+      background-color: var(--blue);
+      border: 1px solid var(--main);
+      .btn-open {
+          ._active-fly-form & {
+            display: none;
+          }
+        }
+        .btn-close {
+          display: none;
+          ._active-fly-form & {
+            display: block;
+          }
+      }
+		}
+  }
+  
+  .form-fly {
+		// .form-fly__item
+		&__item {
+      position: relative;
+      min-height: 52px;
+      display: grid;
+      align-items: flex-end;
+      &._form-focus {
+        label {
+          bottom: toRem(30);
+        }
+      }
+      &._full {
+        label {
+          bottom: toRem(30);
+        }
+      }
+      label {
+        position: absolute;
+        pointer-events: none;
+        bottom: toRem(8);
+        left: 0;
+        font-size: 16px;
+        transition: bottom .3s ease;
+      }
+      input {
+        font-size: 16px;
+        padding: 8px 0;
+      }
+		}
+
+		// .form-fly__btn
+		&__btn {
+      margin-top: toRem(30);
+      width: 100%;
+      justify-content: center;
+		}
+}
+.input {
+}
+.btn {
+}
+.btn--blue {
+}
+.btn-close {
+}
+.btn-open {
 }

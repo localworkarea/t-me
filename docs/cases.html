@@ -18,7 +18,7 @@
     scroll-margin-top: 0 !important;
   } -->
 	</style>
-	<link rel="stylesheet" href="css/style.min.css?_v=20251003133112">
+	<link rel="stylesheet" href="css/style.min.css?_v=20251106141648">
 	<link rel="shortcut icon" href="favicon.ico">
 	<!-- <meta name="robots" content="noindex, nofollow"> -->
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -269,19 +269,16 @@
 			<div class="footer__container">
 				<ul class="footer__list">
 					<li class="footer__item">
-						<p class="footer__title title-33">Контакти</p>
-						<a href="mailto:T:me@gmail.com" class="footer__link txt-23" aria-label="link to">T:me@gmail.com</a>
+						<p class="footer__title title-33">контакти</p>
+						<a href="mailto:T:me@gmail.com" class="footer__link txt-23" aria-label="link to">t:me@gmail.com</a>
 						<a href="tel:+380980490622" class="footer__link txt-23" aria-label="link to">+38 098 049 06 22</a>
-					</li>
-					<li class="footer__item">
-						<p class="footer__title title-33">Офіс</p>
 						<a href="№" class="footer__link footer__link--span txt-23" aria-label="link to">
 							<span>Igor Sikorsky Street, 8</span>
 							<span>Kyiv, 02000</span>
 						</a>
 					</li>
 					<li class="footer__item">
-						<p class="footer__title title-33">Cоціальні Мережі</p>
+						<p class="footer__title title-33">cоціальні vережі</p>
 						<a href="#" class="footer__link footer__link--social txt-23" aria-label="link to">
 							<span>
 								Telegram
@@ -294,6 +291,28 @@
 								<img src="img/icons/insta.svg" width="23" height="23" alt="Image">
 							</span>
 						</a>
+					</li>
+					<li class="footer__item">
+						<ul class="footer__sublist">
+							<li class="footer__subitem">
+								<a href="#" class="footer__sublink title-33" aria-label="link to the section">послуги</a>
+							</li>
+							<li class="footer__subitem">
+								<a href="#" class="footer__sublink title-33" aria-label="link to the section">кейси</a>
+							</li>
+							<li class="footer__subitem">
+								<a href="#" class="footer__sublink title-33" aria-label="link to the section">команда</a>
+							</li>
+							<li class="footer__subitem">
+								<a href="#" class="footer__sublink title-33" aria-label="link to the section">блог</a>
+							</li>
+							<li class="footer__subitem">
+								<a href="#" class="footer__sublink title-33" aria-label="link to the section">контакти</a>
+							</li>
+							<li class="footer__subitem">
+								<a href="#" class="footer__sublink title-33" aria-label="link to the section">про нас</a>
+							</li>
+						</ul>
 					</li>
 				</ul>
 				<div class="footer__bottom">
@@ -309,11 +328,46 @@
 			</div>
 		</footer>
 	</div>
-	<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js?_v=20251003133112"></script>
-	<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js?_v=20251003133112"></script>
-	<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollToPlugin.min.js?_v=20251003133112"></script>
+	<div class="fly-form">
+		<div class="fly-form__body">
+			<div class="fly-form__content">
+				<div class="fly-form__wrapper">
+					<div class="fly-form__title">
+						<p>Виникли питання? Залиште свої контакти і ми зв’яжемося з вами</p>
+					</div>
+					<form data-dev class="fly-form__form form-fly" action="#" method="post">
+						<div class="form-fly__item">
+							<label for="f5">Імя*</label>
+							<input id="f5" type="text" name="form[]" class="input" required>
+						</div>
+						<div class="form-fly__item">
+							<label for="f6">Телефон*</label>
+							<input id="f6" type="text" name="form[]" class="input" required>
+						</div>
+						<div class="form-fly__item">
+							<label for="f7">Нік в Telegram</label>
+							<input id="f7" type="text" name="form[]" class="input">
+						</div>
+						<button type="submit" class="form-fly__btn btn btn--blue" aria-label="submit">відправіти</button>
+					</form>
+				</div>
+				<div class="fly-form__msg">
+					<p>Дякуємо!<br> Наш менедер скоро зв'яжеться з вами.</p>
+				</div>
+			</div>
+		</div>
+		<div class="fly-form__close">
+			<button type="button" class="fly-form__btn" aria-label="close">
+				<img class="btn-open" src="img/icons/form-phone.svg" width="60" height="60" alt="Image">
+				<img class="btn-close" src="img/icons/form-close.svg" width="60" height="60" alt="Image">
+			</button>
+		</div>
+	</div>
+	<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js?_v=20251106141648"></script>
+	<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js?_v=20251106141648"></script>
+	<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollToPlugin.min.js?_v=20251106141648"></script>
 
-	<script src="js/app.min.js?_v=20251003133112"></script>
+	<script src="js/app.min.js?_v=20251106141648"></script>
 </body>
 
 </html>

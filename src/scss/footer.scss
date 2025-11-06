@@ -32,7 +32,9 @@
 
   // .footer__title
   &__title {
-    @include adaptiveValue("margin-bottom", 60, 20, 0, 1920.98, 480.98);
+    &:not(:last-child) {
+      @include adaptiveValue("margin-bottom", 60, 20, 0, 1920.98, 480.98);
+    }
   }
 
   // .footer__link
@@ -70,7 +72,7 @@
       align-items: center;
       justify-content: space-between;
       width: 100%;
-      max-width: 85%;
+      max-width: 60%;
       gap: toRem(27);
     }
     img {
@@ -79,6 +81,27 @@
       @include adaptiveValue("max-width", 30,18,0,1920.98,480.98 );
     }
   }
+
+		// .footer__sublist
+		&__sublist {
+		}
+
+		// .footer__subitem
+		&__subitem {
+      &:not(:last-child) {
+        @include adaptiveValue("margin-bottom", 60, 20, 0, 1920.98, 480.98);
+      }
+		}
+
+		// .footer__sublink
+		&__sublink {
+      transition: color .3s ease;
+      @media (any-hover: hover){
+        &:hover{
+          color: var(--blue);
+        }
+      }
+		}
 
   // .footer__bottom
   &__bottom {}

@@ -510,3 +510,48 @@ if (tickers.length > 0) {
 }
 
 // ====================================================
+
+document.addEventListener('DOMContentLoaded', () => {
+  const flyForm = document.querySelector('.fly-form');
+  const toggleBtn = flyForm?.querySelector('.fly-form__btn');
+  const SCROLL_THRESHOLD = 200; // порог скролла
+
+  if (!flyForm || !toggleBtn) return;
+
+  // === Открытие/закрытие по кнопке ===
+  toggleBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    flyForm.classList.toggle('_active-fly-form');
+  });
+
+  // === Клик вне формы — закрыть ===
+  document.addEventListener('click', (e) => {
+    if (
+      flyForm.classList.contains('_active-fly-form') &&
+      !e.target.closest('.fly-form__content') &&
+      !e.target.closest('.fly-form__btn')
+    ) {
+      flyForm.classList.remove('_active-fly-form');
+    }
+  });
+
+  // === Закрытие по ESC ===
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && flyForm.classList.contains('_active-fly-form')) {
+      flyForm.classList.remove('_active-fly-form');
+    }
+  });
+
+  // === Отслеживание прокрутки ===
+  function checkScrollPosition() {
+    if (window.scrollY > SCROLL_THRESHOLD) {
+      flyForm.classList.add('_scroll-dwn');
+    } else {
+      flyForm.classList.remove('_scroll-dwn');
+    }
+  }
+
+  // Проверяем при загрузке и при скролле
+  checkScrollPosition();
+  window.addEventListener('scroll', checkScrollPosition);
+});
