@@ -8,28 +8,8 @@ import {
 import { gotoBlock } from "../files/scroll/gotoblock.js";
 import { pageNavigation } from "../files/scroll/scroll.js";
 
-// import Lenis from 'lenis'
-// // npm i lenis
-// // === ПЛАВНАЯ ПРОКРУТКА ЧЕРЕЗ LENIS =============================
-// const lenis = new Lenis({
-//   // smooth: true,          // Включает плавный скролл
-//   // smoothTouch: true,     // Включает плавный скролл на мобильных устройствах
-//   lerp: 0.04, // Определяет инерцию (чем ближе к 1, тем медленнее скролл)
-//   // direction: 'vertical', // Задаёт направление скролла: 'vertical' или 'horizontal'
-//   // mouseMultiplier: 1, // Чувствительность прокрутки мыши (увеличивайте, чтобы сделать скролл быстрее)
-// })
-
-// lenis.on('scroll', ScrollTrigger.update)
-// gsap.ticker.add((time) => {
-//   lenis.raf(time * 1000)
-// })
-// gsap.ticker.lagSmoothing(0)
-
 
 import SplitType from 'split-type'
-// npm i split-type
-
-
 
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
@@ -38,96 +18,6 @@ gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 // убрать lock body на главной странице
 // .lock-body на <html> при загрузке задает position fixed чтобы убрать скролл страницы на время загрузки.
-
-
-const splitTextLines = document.querySelectorAll('.split-lines');
-const splitTextWords = document.querySelectorAll('.split-words');
-const splitTextChars = document.querySelectorAll('.split-chars');
-const splitTextBoth = document.querySelectorAll('.split-both');
-const splitSetSpan = document.querySelectorAll('.split-words.set-span');
-
-function initSplitType() {
-  // Если существуют элементы с классом .split-lines
-  if (splitTextLines.length > 0) {
-    splitTextLines.forEach(element => {
-      new SplitType(element, {
-        types: 'lines'
-      });
-    });
-  }
-
-  // Если существуют элементы с классом .split-words
-  if (splitTextWords.length > 0) {
-    splitTextWords.forEach(element => {
-      new SplitType(element, {
-        types: 'words'
-      });
-
-      // Проставляем индексы для всех слов
-      const words = element.querySelectorAll('.word');
-      words.forEach((word, index) => {
-        word.style.setProperty('--index', index);
-      });
-    });
-  }
-
-  // Если существуют элементы с классом .split-chars
-  if (splitTextChars.length > 0) {
-    splitTextChars.forEach(element => {
-      new SplitType(element, {
-        types: 'chars'
-      });
-
-      const chars = element.querySelectorAll('.char');
-      chars.forEach((char, index) => {
-        char.style.setProperty('--index', index);
-      });
-    });
-  }
-
-  // Если существуют элементы с классом .split-both
-  if (splitTextBoth.length > 0) {
-    splitTextBoth.forEach(element => {
-      new SplitType(element, {
-        types: 'lines, words'
-      });
-
-      // Проставляем индексы для всех слов
-      const words = element.querySelectorAll('.word');
-      words.forEach((word, index) => {
-        word.style.setProperty('--index', index);
-      });
-    });
-  }
-
-  // Добавляем <span> для каждого слова внутри .split-words.set-span
-  if (splitSetSpan.length > 0) {
-    splitSetSpan.forEach(splitSetSpan => {
-      const words = splitSetSpan.querySelectorAll('.word');
-
-      words.forEach(word => {
-        const text = word.textContent.trim();
-        word.innerHTML = `<span class="word-span">${text}</span>`;
-      });
-    });
-  }
-}
-
-// Инициализация SplitType при загрузке
-initSplitType();
-
-let lastWidth = window.innerWidth;
-window.addEventListener('resize', () => {
-  const currentWidth = window.innerWidth;
-
-  if (currentWidth !== lastWidth) {
-    initSplitType();
-    ScrollTrigger.refresh();
-    lastWidth = currentWidth;
-  }
-});
-
-
 const heroSection = document.querySelector('.hero');
 if (heroSection) {
   function checkAndScrollToTop() {
@@ -154,9 +44,62 @@ if (heroSection) {
   });
 }
 
-ScrollTrigger.refresh();
 
 
+let splitInstances = [];
+
+function destroySplitType() {
+  splitInstances.forEach(instance => instance.revert());
+  splitInstances = [];
+}
+
+function initSplitType() {
+  destroySplitType();
+
+  document.querySelectorAll('.split-lines').forEach(el => {
+    splitInstances.push(
+      new SplitType(el, { types: 'lines' })
+    );
+  });
+
+  document.querySelectorAll('.split-words').forEach(el => {
+    const instance = new SplitType(el, { types: 'words' });
+    splitInstances.push(instance);
+
+    el.querySelectorAll('.word').forEach((word, i) => {
+      word.style.setProperty('--index', i);
+    });
+  });
+
+  document.querySelectorAll('.split-chars').forEach(el => {
+    const instance = new SplitType(el, { types: 'chars' });
+    splitInstances.push(instance);
+
+    el.querySelectorAll('.char').forEach((char, i) => {
+      char.style.setProperty('--index', i);
+    });
+  });
+
+  document.querySelectorAll('.split-both').forEach(el => {
+    const instance = new SplitType(el, { types: 'lines, words' });
+    splitInstances.push(instance);
+
+    el.querySelectorAll('.word').forEach((word, i) => {
+      word.style.setProperty('--index', i);
+    });
+  });
+
+  document.querySelectorAll('.split-words.set-span').forEach(el => {
+    el.querySelectorAll('.word').forEach(word => {
+      const text = word.textContent.trim();
+      word.innerHTML = `<span class="word-span">${text}</span>`;
+    });
+  });
+}
+
+
+
+let mm = gsap.matchMedia();
 
 const heroContainer = document.querySelector('.hero__container');
 const parentTxtMainSections = document.querySelectorAll('.parent-txt-main');
@@ -166,10 +109,9 @@ const parentTxtMainSections3 = document.querySelector('.team__text');
 const roadmapSection = document.querySelector('.roadmap__container');
 const roadmapItems = document.querySelectorAll('.roadmap__item');
 
-
-
 function createAnimation() {
-  ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+
+   mm.revert();
 
   if (heroSection) {
     gsap.to(heroContainer, {
@@ -210,26 +152,145 @@ function createAnimation() {
 
   }
 
+  // if (roadmapSection) {
+  //   roadmapItems.forEach((item1) => {
+  //     gsap.to(item1, {
+  //       y: 0,
+  //       opacity: 1,
+  //       // ease: "none",
+  //       scrollTrigger: {
+  //         trigger: roadmapSection,
+  //         start: "top center",
+  //         end: "top bottom",
+  //         scrub: true,
+  //         markers: true,
+  //       }
+  //     });
+  //   });
+  // }
 
-  let mm = gsap.matchMedia();
-  mm.add({
-    min600: "(min-width:37.5em)",
-    max600: "(max-width:37.5em)",
-  }, (context) => {
 
-    let {
-      min600,
-      max600
-    } = context.conditions;
+
+
+  if (parentTxtMainSections2.length > 0) {
+    parentTxtMainSections2.forEach((section) => {
+      const txt = section.querySelector('.txt-main');
+      if (txt) {
+        const words = txt.querySelectorAll('.word');
+        if (words.length > 0) {
+          gsap.to(words, {
+            opacity: 1,
+            stagger: 0.1,
+            ease: "none",
+            scrollTrigger: {
+              trigger: section,
+              start: "top 80%",
+              end: "top 10%",
+              scrub: true,
+              // markers: true,
+            },
+          });
+        }
+      }
+
+    });
+
+  }
+
+  if (parentTxtMainSections3) {
+    const words = parentTxtMainSections3.querySelectorAll('.word-span');
+    if (words.length > 0) {
+      gsap.to(words, {
+        y: "-8%",
+        // opacity: 1,
+        stagger: 0.1,
+        ease: "none",
+        scrollTrigger: {
+          trigger: parentTxtMainSections3,
+          start: "top 80%",
+          end: "top 10%",
+          scrub: true,
+          // markers: true,
+        },
+      });
+    }
+  }
+
+
+   mm.add({
+    desktop: "(min-width: 37.5em)",
+    mobile: "(max-width: 37.5em)"
+  }, context => {
+
+    if (context.conditions.desktop) {
+      initDesktopAnimations();
+    }
+
+    if (context.conditions.mobile) {
+      // mobile logic
+    }
+
+  });
+
+    // roadmap — САМЫЙ ПОСЛЕДНИЙ
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      initRoadmapAnimation();
+      ScrollTrigger.refresh(true);
+    });
+  });
+
+}
+
+
+// function initRoadmapAnimation() {
+//   if (!roadmapSection) return;
+
+//   roadmapItems.forEach(item => {
+//     gsap.to(item, {
+//       y: 0,
+//       opacity: 1,
+//       scrollTrigger: {
+//         trigger: roadmapSection,
+//         start: "top center",
+//         end: "top top",
+//         scrub: true,
+//         // markers: true,
+//       }
+//     });
+//   });
+// }
+function initRoadmapAnimation() {
+  if (!roadmapSection) return;
+
+  gsap.set(roadmapItems, {
+    opacity: 0,
+    yPercent: (i) => 20 + i * 25,
+  });
+
+  roadmapItems.forEach(item => {
+    gsap.to(item, {
+      yPercent: 0,
+      opacity: 1,
+      scrollTrigger: {
+        trigger: roadmapSection,
+        start: "top center",
+        end: "top top",
+        scrub: true,
+      }
+    });
+  });
+}
+
+
+
+function initDesktopAnimations() {
 
     const servixeHome = document.querySelector('.services-home');
     const servixeHomecontainer = document.querySelector('.services-home__container');
     const servixeHomeItems = document.querySelectorAll('.services-home__item');
 
-    if (min600) {
-      // === SERVICES-HOME АНИМАЦИЯ ===
-
-      if (servixeHome) {
+   if (servixeHome) {
         let maxHeight = 0;
         servixeHomeItems.forEach(item => {
           const itemHeight = item.offsetHeight;
@@ -305,22 +366,6 @@ function createAnimation() {
             // markers: true,
           }
         });
-
-        // items.forEach((item) => {
-        //   gsap.to(item, {
-        //     // opacity: 1,
-        //     scale: 1,
-        //     // y: 0,
-        //     scrollTrigger: {
-        //       trigger: item,
-        //       containerAnimation: scrollTween,
-        //       start: "left center",
-        //       end: "center top",
-        //       scrub: true,
-        //       markers: true,
-        //     }
-        //   });
-        // });
       }
 
       const blogSection = document.querySelector('.blog-home');
@@ -350,124 +395,53 @@ function createAnimation() {
           }
         });
       }
-
-    }
-
-    if (max600) {
-
-
-    }
-
-  }); // end match media ----------------------------------------
-
-
-
-  if (roadmapSection) {
-    roadmapItems.forEach((item1) => {
-      gsap.to(item1, {
-        y: 0,
-        opacity: 1,
-        // ease: "none",
-        scrollTrigger: {
-          trigger: roadmapSection,
-          start: "top center",
-          end: "top top",
-          scrub: true,
-          // markers: true,
-        }
-      });
-    });
-  }
-
-
-
-  if (parentTxtMainSections2.length > 0) {
-    parentTxtMainSections2.forEach((section) => {
-      const txt = section.querySelector('.txt-main');
-      if (txt) {
-        const words = txt.querySelectorAll('.word');
-        if (words.length > 0) {
-          gsap.to(words, {
-            opacity: 1,
-            stagger: 0.1,
-            ease: "none",
-            scrollTrigger: {
-              trigger: section,
-              start: "top 80%",
-              end: "top 10%",
-              scrub: true,
-              // markers: true,
-            },
-          });
-        }
-      }
-
-    });
-
-  }
-  if (parentTxtMainSections3) {
-    const words = parentTxtMainSections3.querySelectorAll('.word-span');
-    if (words.length > 0) {
-      gsap.to(words, {
-        y: "-8%",
-        // opacity: 1,
-        stagger: 0.1,
-        ease: "none",
-        scrollTrigger: {
-          trigger: parentTxtMainSections3,
-          start: "top 80%",
-          end: "top 10%",
-          scrub: true,
-          // markers: true,
-        },
-      });
-    }
-  }
-
 }
 
 
-createAnimation();
+let resizeTimeout;
+let lastWidth = window.innerWidth;
 
-
-let lastWidth2 = window.innerWidth;
 window.addEventListener('resize', () => {
-  const currentWidth = window.innerWidth;
-  
-  if (currentWidth !== lastWidth2) {
+  clearTimeout(resizeTimeout);
+
+  resizeTimeout = setTimeout(() => {
+    const currentWidth = window.innerWidth;
+    if (currentWidth === lastWidth) return;
+
+    lastWidth = currentWidth;
+
     initSplitType();
-    setTimeout(() => {
-      createAnimation();
-    }, 300);
-    ScrollTrigger.refresh();
-    lastWidth2 = currentWidth;
-  }
+    createAnimation();
+    ScrollTrigger.refresh(true);
+
+  }, 250);
 });
 
+
+initSplitType();
+window.addEventListener('load', () => {
+  createAnimation();
+  ScrollTrigger.refresh(true);
+
   setTimeout(() => {
-  const hash = getHash();
-  if (hash) {
-    let selector;
-    if (document.querySelector(`#${hash}`)) {
-      selector = `#${hash}`;
-    } else if (document.querySelector(`.${hash}`)) {
-      selector = `.${hash}`;
-    }
+    const hash = getHash();
+    if (!hash) return;
 
-    if (selector) {
-      // ВАЖНО: ScrollTrigger должен быть полностью обновлён
-      ScrollTrigger.refresh(); 
+    let selector = null;
+    if (document.querySelector(`#${hash}`)) selector = `#${hash}`;
+    else if (document.querySelector(`.${hash}`)) selector = `.${hash}`;
 
-      // И после refresh — запускаем goto
-      setTimeout(() => {
-        gotoBlock(selector, false, 1000, 20);
-      }, 100); // можно 0-200 мс
-    }
-  }
-}, 0);
+    if (!selector) return;
 
-// document.addEventListener("DOMContentLoaded", () => {
-// });
+    ScrollTrigger.refresh(true);
+
+    setTimeout(() => {
+      gotoBlock(selector, false, 1000, 20);
+    }, 100);
+
+  }, 0);
+});
+
 
 
 // Ticker =================================

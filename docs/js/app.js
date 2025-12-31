@@ -2354,62 +2354,6 @@
             return SplitType;
         }();
         gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
-        const splitTextLines = document.querySelectorAll(".split-lines");
-        const splitTextWords = document.querySelectorAll(".split-words");
-        const splitTextChars = document.querySelectorAll(".split-chars");
-        const splitTextBoth = document.querySelectorAll(".split-both");
-        const splitSetSpan = document.querySelectorAll(".split-words.set-span");
-        function initSplitType() {
-            if (splitTextLines.length > 0) splitTextLines.forEach(element => {
-                new SplitType(element, {
-                    types: "lines"
-                });
-            });
-            if (splitTextWords.length > 0) splitTextWords.forEach(element => {
-                new SplitType(element, {
-                    types: "words"
-                });
-                const words = element.querySelectorAll(".word");
-                words.forEach((word, index) => {
-                    word.style.setProperty("--index", index);
-                });
-            });
-            if (splitTextChars.length > 0) splitTextChars.forEach(element => {
-                new SplitType(element, {
-                    types: "chars"
-                });
-                const chars = element.querySelectorAll(".char");
-                chars.forEach((char, index) => {
-                    char.style.setProperty("--index", index);
-                });
-            });
-            if (splitTextBoth.length > 0) splitTextBoth.forEach(element => {
-                new SplitType(element, {
-                    types: "lines, words"
-                });
-                const words = element.querySelectorAll(".word");
-                words.forEach((word, index) => {
-                    word.style.setProperty("--index", index);
-                });
-            });
-            if (splitSetSpan.length > 0) splitSetSpan.forEach(splitSetSpan => {
-                const words = splitSetSpan.querySelectorAll(".word");
-                words.forEach(word => {
-                    const text = word.textContent.trim();
-                    word.innerHTML = `<span class="word-span">${text}</span>`;
-                });
-            });
-        }
-        initSplitType();
-        let lastWidth = window.innerWidth;
-        window.addEventListener("resize", () => {
-            const currentWidth = window.innerWidth;
-            if (currentWidth !== lastWidth) {
-                initSplitType();
-                ScrollTrigger.refresh();
-                lastWidth = currentWidth;
-            }
-        });
         const heroSection = document.querySelector(".hero");
         if (heroSection) {
             function checkAndScrollToTop() {
@@ -2431,7 +2375,53 @@
                 }, 0);
             });
         }
-        ScrollTrigger.refresh();
+        let splitInstances = [];
+        function destroySplitType() {
+            splitInstances.forEach(instance => instance.revert());
+            splitInstances = [];
+        }
+        function initSplitType() {
+            destroySplitType();
+            document.querySelectorAll(".split-lines").forEach(el => {
+                splitInstances.push(new SplitType(el, {
+                    types: "lines"
+                }));
+            });
+            document.querySelectorAll(".split-words").forEach(el => {
+                const instance = new SplitType(el, {
+                    types: "words"
+                });
+                splitInstances.push(instance);
+                el.querySelectorAll(".word").forEach((word, i) => {
+                    word.style.setProperty("--index", i);
+                });
+            });
+            document.querySelectorAll(".split-chars").forEach(el => {
+                const instance = new SplitType(el, {
+                    types: "chars"
+                });
+                splitInstances.push(instance);
+                el.querySelectorAll(".char").forEach((char, i) => {
+                    char.style.setProperty("--index", i);
+                });
+            });
+            document.querySelectorAll(".split-both").forEach(el => {
+                const instance = new SplitType(el, {
+                    types: "lines, words"
+                });
+                splitInstances.push(instance);
+                el.querySelectorAll(".word").forEach((word, i) => {
+                    word.style.setProperty("--index", i);
+                });
+            });
+            document.querySelectorAll(".split-words.set-span").forEach(el => {
+                el.querySelectorAll(".word").forEach(word => {
+                    const text = word.textContent.trim();
+                    word.innerHTML = `<span class="word-span">${text}</span>`;
+                });
+            });
+        }
+        let mm = gsap.matchMedia();
         const heroContainer = document.querySelector(".hero__container");
         const parentTxtMainSections = document.querySelectorAll(".parent-txt-main");
         const parentTxtMainSections2 = document.querySelectorAll(".parent-txt-main-2");
@@ -2439,7 +2429,7 @@
         const roadmapSection = document.querySelector(".roadmap__container");
         const roadmapItems = document.querySelectorAll(".roadmap__item");
         function createAnimation() {
-            ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+            mm.revert();
             if (heroSection) gsap.to(heroContainer, {
                 yPercent: -30,
                 opacity: 0,
@@ -2467,117 +2457,6 @@
                         }
                     });
                 }
-            });
-            let mm = gsap.matchMedia();
-            mm.add({
-                min600: "(min-width:37.5em)",
-                max600: "(max-width:37.5em)"
-            }, context => {
-                let {min600, max600} = context.conditions;
-                const servixeHome = document.querySelector(".services-home");
-                const servixeHomecontainer = document.querySelector(".services-home__container");
-                const servixeHomeItems = document.querySelectorAll(".services-home__item");
-                if (min600) {
-                    if (servixeHome) {
-                        let maxHeight = 0;
-                        servixeHomeItems.forEach(item => {
-                            const itemHeight = item.offsetHeight;
-                            if (itemHeight > maxHeight) maxHeight = itemHeight;
-                        });
-                        servixeHomecontainer.style.setProperty("--heightEl", `${maxHeight}px`);
-                        const lastIndex = servixeHomeItems.length - 1;
-                        const speedFactor = 1.5;
-                        const pinEnd = () => `${(lastIndex - .9 + 1) * (window.innerHeight / speedFactor)}px`;
-                        ScrollTrigger.create({
-                            trigger: servixeHome,
-                            start: "top top",
-                            end: pinEnd,
-                            pin: servixeHomecontainer,
-                            scrub: true
-                        });
-                        servixeHomeItems.forEach((item, i) => {
-                            gsap.to(item, {
-                                y: 0,
-                                scrollTrigger: {
-                                    trigger: servixeHome,
-                                    start: () => `top+=${(i - .9) * (window.innerHeight / speedFactor)}px`,
-                                    end: () => `top+=${(i - 0) * (window.innerHeight / speedFactor)}px`,
-                                    scrub: true
-                                }
-                            });
-                            if (i > 0) {
-                                const prevItem = servixeHomeItems[i - 1];
-                                gsap.to(prevItem, {
-                                    opacity: 0,
-                                    scrollTrigger: {
-                                        trigger: servixeHome,
-                                        start: () => `top+=${(i - 1) * (window.innerHeight / speedFactor)}px`,
-                                        end: () => `top+=${i * (window.innerHeight / speedFactor)}px`,
-                                        scrub: true
-                                    }
-                                });
-                            }
-                        });
-                    }
-                    const casesSection = document.querySelector(".cases-home");
-                    const casesWrapper = casesSection?.querySelector(".cases-home__content");
-                    const scrollWrapper = casesWrapper?.querySelector(".cases-home__scroll");
-                    const list = scrollWrapper?.querySelector(".cases-home__list");
-                    const items = list?.querySelectorAll(".cases-home__item");
-                    if (casesSection && scrollWrapper && list && items.length > 0) {
-                        const style = window.getComputedStyle(scrollWrapper);
-                        const paddingLeft = parseFloat(style.paddingLeft) || 0;
-                        const paddingRight = parseFloat(style.paddingRight) || 0;
-                        const totalPadding = paddingLeft + paddingRight;
-                        gsap.to(list, {
-                            x: () => -(list.scrollWidth - scrollWrapper.clientWidth + totalPadding),
-                            ease: "none",
-                            scrollTrigger: {
-                                trigger: casesSection,
-                                start: "top 50px",
-                                end: () => `+=${(list.scrollWidth - scrollWrapper.clientWidth + totalPadding) / 1.5}`,
-                                scrub: true,
-                                pin: casesWrapper
-                            }
-                        });
-                    }
-                    const blogSection = document.querySelector(".blog-home");
-                    const blogWrapper = blogSection?.querySelector(".blog-home__content");
-                    const scrollWrapper2 = blogWrapper?.querySelector(".blog-home__scroll");
-                    const list2 = scrollWrapper2?.querySelector(".blog-home__list");
-                    const items2 = list2?.querySelectorAll(".blog-home__item");
-                    if (blogSection && blogWrapper && scrollWrapper2 && list2 && items2.length > 0) {
-                        const style2 = window.getComputedStyle(scrollWrapper2);
-                        const paddingLeft2 = parseFloat(style2.paddingLeft) || 0;
-                        const paddingRight2 = parseFloat(style2.paddingRight) || 0;
-                        const totalPadding2 = paddingLeft2 + paddingRight2;
-                        const scrollDistance = list2.scrollWidth - scrollWrapper2.clientWidth + totalPadding2;
-                        gsap.to(list2, {
-                            x: () => `-${scrollDistance}px`,
-                            ease: "none",
-                            scrollTrigger: {
-                                trigger: blogSection,
-                                start: "top 30px",
-                                end: () => `+=${scrollDistance / 1.5}`,
-                                scrub: true,
-                                pin: blogWrapper
-                            }
-                        });
-                    }
-                }
-                if (max600) ;
-            });
-            if (roadmapSection) roadmapItems.forEach(item1 => {
-                gsap.to(item1, {
-                    y: 0,
-                    opacity: 1,
-                    scrollTrigger: {
-                        trigger: roadmapSection,
-                        start: "top center",
-                        end: "top top",
-                        scrub: true
-                    }
-                });
             });
             if (parentTxtMainSections2.length > 0) parentTxtMainSections2.forEach(section => {
                 const txt = section.querySelector(".txt-main");
@@ -2610,33 +2489,159 @@
                     }
                 });
             }
+            mm.add({
+                desktop: "(min-width: 37.5em)",
+                mobile: "(max-width: 37.5em)"
+            }, context => {
+                if (context.conditions.desktop) initDesktopAnimations();
+                if (context.conditions.mobile) ;
+            });
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    initRoadmapAnimation();
+                    ScrollTrigger.refresh(true);
+                });
+            });
         }
-        createAnimation();
-        let lastWidth2 = window.innerWidth;
+        function initRoadmapAnimation() {
+            if (!roadmapSection) return;
+            gsap.set(roadmapItems, {
+                opacity: 0,
+                yPercent: i => 20 + i * 25
+            });
+            roadmapItems.forEach(item => {
+                gsap.to(item, {
+                    yPercent: 0,
+                    opacity: 1,
+                    scrollTrigger: {
+                        trigger: roadmapSection,
+                        start: "top center",
+                        end: "top top",
+                        scrub: true
+                    }
+                });
+            });
+        }
+        function initDesktopAnimations() {
+            const servixeHome = document.querySelector(".services-home");
+            const servixeHomecontainer = document.querySelector(".services-home__container");
+            const servixeHomeItems = document.querySelectorAll(".services-home__item");
+            if (servixeHome) {
+                let maxHeight = 0;
+                servixeHomeItems.forEach(item => {
+                    const itemHeight = item.offsetHeight;
+                    if (itemHeight > maxHeight) maxHeight = itemHeight;
+                });
+                servixeHomecontainer.style.setProperty("--heightEl", `${maxHeight}px`);
+                const lastIndex = servixeHomeItems.length - 1;
+                const speedFactor = 1.5;
+                const pinEnd = () => `${(lastIndex - .9 + 1) * (window.innerHeight / speedFactor)}px`;
+                ScrollTrigger.create({
+                    trigger: servixeHome,
+                    start: "top top",
+                    end: pinEnd,
+                    pin: servixeHomecontainer,
+                    scrub: true
+                });
+                servixeHomeItems.forEach((item, i) => {
+                    gsap.to(item, {
+                        y: 0,
+                        scrollTrigger: {
+                            trigger: servixeHome,
+                            start: () => `top+=${(i - .9) * (window.innerHeight / speedFactor)}px`,
+                            end: () => `top+=${(i - 0) * (window.innerHeight / speedFactor)}px`,
+                            scrub: true
+                        }
+                    });
+                    if (i > 0) {
+                        const prevItem = servixeHomeItems[i - 1];
+                        gsap.to(prevItem, {
+                            opacity: 0,
+                            scrollTrigger: {
+                                trigger: servixeHome,
+                                start: () => `top+=${(i - 1) * (window.innerHeight / speedFactor)}px`,
+                                end: () => `top+=${i * (window.innerHeight / speedFactor)}px`,
+                                scrub: true
+                            }
+                        });
+                    }
+                });
+            }
+            const casesSection = document.querySelector(".cases-home");
+            const casesWrapper = casesSection?.querySelector(".cases-home__content");
+            const scrollWrapper = casesWrapper?.querySelector(".cases-home__scroll");
+            const list = scrollWrapper?.querySelector(".cases-home__list");
+            const items = list?.querySelectorAll(".cases-home__item");
+            if (casesSection && scrollWrapper && list && items.length > 0) {
+                const style = window.getComputedStyle(scrollWrapper);
+                const paddingLeft = parseFloat(style.paddingLeft) || 0;
+                const paddingRight = parseFloat(style.paddingRight) || 0;
+                const totalPadding = paddingLeft + paddingRight;
+                gsap.to(list, {
+                    x: () => -(list.scrollWidth - scrollWrapper.clientWidth + totalPadding),
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: casesSection,
+                        start: "top 50px",
+                        end: () => `+=${(list.scrollWidth - scrollWrapper.clientWidth + totalPadding) / 1.5}`,
+                        scrub: true,
+                        pin: casesWrapper
+                    }
+                });
+            }
+            const blogSection = document.querySelector(".blog-home");
+            const blogWrapper = blogSection?.querySelector(".blog-home__content");
+            const scrollWrapper2 = blogWrapper?.querySelector(".blog-home__scroll");
+            const list2 = scrollWrapper2?.querySelector(".blog-home__list");
+            const items2 = list2?.querySelectorAll(".blog-home__item");
+            if (blogSection && blogWrapper && scrollWrapper2 && list2 && items2.length > 0) {
+                const style2 = window.getComputedStyle(scrollWrapper2);
+                const paddingLeft2 = parseFloat(style2.paddingLeft) || 0;
+                const paddingRight2 = parseFloat(style2.paddingRight) || 0;
+                const totalPadding2 = paddingLeft2 + paddingRight2;
+                const scrollDistance = list2.scrollWidth - scrollWrapper2.clientWidth + totalPadding2;
+                gsap.to(list2, {
+                    x: () => `-${scrollDistance}px`,
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: blogSection,
+                        start: "top 30px",
+                        end: () => `+=${scrollDistance / 1.5}`,
+                        scrub: true,
+                        pin: blogWrapper
+                    }
+                });
+            }
+        }
+        let resizeTimeout;
+        let lastWidth = window.innerWidth;
         window.addEventListener("resize", () => {
-            const currentWidth = window.innerWidth;
-            if (currentWidth !== lastWidth2) {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                const currentWidth = window.innerWidth;
+                if (currentWidth === lastWidth) return;
+                lastWidth = currentWidth;
                 initSplitType();
-                setTimeout(() => {
-                    createAnimation();
-                }, 300);
-                ScrollTrigger.refresh();
-                lastWidth2 = currentWidth;
-            }
+                createAnimation();
+                ScrollTrigger.refresh(true);
+            }, 250);
         });
-        setTimeout(() => {
-            const hash = getHash();
-            if (hash) {
-                let selector;
+        initSplitType();
+        window.addEventListener("load", () => {
+            createAnimation();
+            ScrollTrigger.refresh(true);
+            setTimeout(() => {
+                const hash = getHash();
+                if (!hash) return;
+                let selector = null;
                 if (document.querySelector(`#${hash}`)) selector = `#${hash}`; else if (document.querySelector(`.${hash}`)) selector = `.${hash}`;
-                if (selector) {
-                    ScrollTrigger.refresh();
-                    setTimeout(() => {
-                        gotoBlock(selector, false, 1e3, 20);
-                    }, 100);
-                }
-            }
-        }, 0);
+                if (!selector) return;
+                ScrollTrigger.refresh(true);
+                setTimeout(() => {
+                    gotoBlock(selector, false, 1e3, 20);
+                }, 100);
+            }, 0);
+        });
         const tickers = document.querySelectorAll("[data-ticker]");
         if (tickers.length > 0) tickers.forEach(ticker => {
             const speed = ticker.getAttribute("data-ticker-speed") || 80;

@@ -4,14 +4,8 @@ import {
 } from "./modules.js";
 
 import Lenis from 'lenis'
-// npm i lenis
-// === ПЛАВНАЯ ПРОКРУТКА ЧЕРЕЗ LENIS =============================
 const lenis = new Lenis({
-	// smooth: true,          // Включает плавный скролл
-	// smoothTouch: true,     // Включает плавный скролл на мобильных устройствах
-	lerp: 0.04, // Определяет инерцию (чем ближе к 1, тем медленнее скролл)
-	// direction: 'vertical', // Задаёт направление скролла: 'vertical' или 'horizontal'
-	// mouseMultiplier: 1, // Чувствительность прокрутки мыши (увеличивайте, чтобы сделать скролл быстрее)
+	lerp: 0.04,
 })
 
 lenis.on('scroll', ScrollTrigger.update)
@@ -490,43 +484,6 @@ export function tabs() {
 	}
 }
 // Модуль роботи з меню (бургер) =======================================================================================================================================================================================================================
-
-// export function menuInit() {
-// 	if (document.querySelector(".btn-header--menu")) {
-// 		document.addEventListener("click", function (e) {
-// 			const btn = e.target.closest('.btn-header--menu');
-// 			if (bodyLockStatus && btn) {
-// 				const isMenuOpen = document.documentElement.classList.toggle("menu-open");
-
-// 				if (isMenuOpen) {
-// 					bodyLock();
-// 					lenis.stop();
-// 				} else {
-// 					bodyUnlock();
-// 					lenis.start();
-// 				}
-// 			}
-// 		});
-// 	}
-// }
-// export function briefInit() {
-// 	if (document.querySelector(".btn-header--brief")) {
-// 		document.addEventListener("click", function (e) {
-// 			const btn = e.target.closest('.btn-header--brief');
-// 			if (bodyLockStatus && btn) {
-// 				const isMenuOpen = document.documentElement.classList.toggle("brief-open");
-
-// 				if (isMenuOpen) {
-// 					bodyLock();
-// 					lenis.stop();
-// 				} else {
-// 					bodyUnlock();
-// 					lenis.start();
-// 				}
-// 			}
-// 		});
-// 	}
-// }
 export function menuInit() {
 	if (document.querySelector(".btn-header--menu")) {
 		document.addEventListener("click", function (e) {
@@ -645,18 +602,6 @@ export function briefClose() {
 
 
 
-
-// export function menuOpen() {
-// 	bodyLock();
-// 	lenis.stop(); // Остановка при открытии вручную
-// 	document.documentElement.classList.add("menu-open");
-// }
-
-// export function menuClose() {
-// 	bodyUnlock();
-// 	lenis.start(); // Возобновление при закрытии вручную
-// 	document.documentElement.classList.remove("menu-open");
-// }
 
 
 
