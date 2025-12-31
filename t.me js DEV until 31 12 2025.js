@@ -19,6 +19,33 @@ gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 // убрать lock body на главной странице
 // .lock-body на <html> при загрузке задает position fixed чтобы убрать скролл страницы на время загрузки.
 
+const heroSection = document.querySelector('.hero');
+if (heroSection) {
+  function checkAndScrollToTop() {
+    const heroRect = heroSection.getBoundingClientRect();
+    const viewportHeight = window.innerHeight;
+    if (heroRect.top <= viewportHeight / 2 && heroRect.bottom >= viewportHeight / 2) {
+      setTimeout(() => {
+        document.documentElement.classList.remove('lock-body');
+        document.body.style.paddingRight = '';
+        document.querySelector('.hero').style.paddingRight = '';
+      }, 0);
+      
+    } else {
+      document.documentElement.classList.remove('lock-body');
+      document.body.style.paddingRight = '';
+      document.querySelector('.hero').style.paddingRight = '';
+    }
+  }
+  
+  window.addEventListener("load", function () {
+    setTimeout(function () {
+      checkAndScrollToTop();
+    }, 0);
+  });
+}
+
+
 
 const splitTextLines = document.querySelectorAll('.split-lines');
 const splitTextWords = document.querySelectorAll('.split-words');
@@ -107,32 +134,6 @@ window.addEventListener('resize', () => {
   }
 });
 
-
-const heroSection = document.querySelector('.hero');
-if (heroSection) {
-  function checkAndScrollToTop() {
-    const heroRect = heroSection.getBoundingClientRect();
-    const viewportHeight = window.innerHeight;
-    if (heroRect.top <= viewportHeight / 2 && heroRect.bottom >= viewportHeight / 2) {
-      setTimeout(() => {
-        document.documentElement.classList.remove('lock-body');
-        document.body.style.paddingRight = '';
-        document.querySelector('.hero').style.paddingRight = '';
-      }, 0);
-      
-    } else {
-      document.documentElement.classList.remove('lock-body');
-      document.body.style.paddingRight = '';
-      document.querySelector('.hero').style.paddingRight = '';
-    }
-  }
-  
-  window.addEventListener("load", function () {
-    setTimeout(function () {
-      checkAndScrollToTop();
-    }, 0);
-  });
-}
 
 ScrollTrigger.refresh();
 

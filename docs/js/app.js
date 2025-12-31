@@ -2421,7 +2421,6 @@
                 });
             });
         }
-        let mm = gsap.matchMedia();
         const heroContainer = document.querySelector(".hero__container");
         const parentTxtMainSections = document.querySelectorAll(".parent-txt-main");
         const parentTxtMainSections2 = document.querySelectorAll(".parent-txt-main-2");
@@ -2429,7 +2428,7 @@
         const roadmapSection = document.querySelector(".roadmap__container");
         const roadmapItems = document.querySelectorAll(".roadmap__item");
         function createAnimation() {
-            mm.revert();
+            ScrollTrigger.getAll().forEach(trigger => trigger.kill());
             if (heroSection) gsap.to(heroContainer, {
                 yPercent: -30,
                 opacity: 0,
@@ -2457,6 +2456,28 @@
                         }
                     });
                 }
+            });
+            if (createAnimation.mm) createAnimation.mm.kill();
+            createAnimation.mm = gsap.matchMedia();
+            createAnimation.mm.add({
+                min600: "(min-width:37.5em)",
+                max600: "(max-width:37.5em)"
+            }, context => {
+                let {min600, max600} = context.conditions;
+                if (min600) initDesktopAnimations();
+                if (max600) ;
+            });
+            if (roadmapSection) roadmapItems.forEach(item1 => {
+                gsap.to(item1, {
+                    y: 0,
+                    opacity: 1,
+                    scrollTrigger: {
+                        trigger: roadmapSection,
+                        start: "top center",
+                        end: "top top",
+                        scrub: true
+                    }
+                });
             });
             if (parentTxtMainSections2.length > 0) parentTxtMainSections2.forEach(section => {
                 const txt = section.querySelector(".txt-main");
@@ -2489,38 +2510,6 @@
                     }
                 });
             }
-            mm.add({
-                desktop: "(min-width: 37.5em)",
-                mobile: "(max-width: 37.5em)"
-            }, context => {
-                if (context.conditions.desktop) initDesktopAnimations();
-                if (context.conditions.mobile) ;
-            });
-            requestAnimationFrame(() => {
-                requestAnimationFrame(() => {
-                    initRoadmapAnimation();
-                    ScrollTrigger.refresh(true);
-                });
-            });
-        }
-        function initRoadmapAnimation() {
-            if (!roadmapSection) return;
-            gsap.set(roadmapItems, {
-                opacity: 0,
-                yPercent: i => 20 + i * 25
-            });
-            roadmapItems.forEach(item => {
-                gsap.to(item, {
-                    yPercent: 0,
-                    opacity: 1,
-                    scrollTrigger: {
-                        trigger: roadmapSection,
-                        start: "top center",
-                        end: "top top",
-                        scrub: true
-                    }
-                });
-            });
         }
         function initDesktopAnimations() {
             const servixeHome = document.querySelector(".services-home");
@@ -2624,12 +2613,13 @@
                 initSplitType();
                 createAnimation();
                 ScrollTrigger.refresh(true);
-            }, 250);
+            }, 0);
         });
-        initSplitType();
         window.addEventListener("load", () => {
-            createAnimation();
-            ScrollTrigger.refresh(true);
+            initSplitType();
+            setTimeout(() => {
+                createAnimation();
+            }, 50);
             setTimeout(() => {
                 const hash = getHash();
                 if (!hash) return;
@@ -2685,6 +2675,24 @@
             }
             checkScrollPosition();
             window.addEventListener("scroll", checkScrollPosition);
+        });
+        const subLists = document.querySelectorAll(".has-sublist");
+        if (subLists.length) subLists.forEach(item => {
+            const link = item.querySelector(".menu__link");
+            const sublist = item.querySelector(".sublist");
+            if (!link || !sublist) return;
+            _slideUp(sublist, 0);
+            if (link.hasAttribute("data-goto")) link.removeAttribute("data-goto");
+            link.addEventListener("click", e => {
+                e.preventDefault();
+                if (item.classList.contains("_open-sublist")) {
+                    item.classList.remove("_open-sublist");
+                    _slideUp(sublist, 500);
+                } else {
+                    item.classList.add("_open-sublist");
+                    _slideDown(sublist, 500);
+                }
+            });
         });
         window["FLS"] = false;
         addLoadedClass();

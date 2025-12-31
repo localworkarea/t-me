@@ -271,23 +271,53 @@
   // .menu__body
   &__body {
     // margin-bottom: toRem(40);
+    flex: 1;
   }
 
   // .menu__list
-  &__list {}
+  &__list {
+     @media (min-width:toEm(600.98)) {
+      max-width: 72%;
+    }
+  }
 
   // .menu__item
   &__item {
-    &:not(:last-child) {
-      .menu__link {
-        border-bottom: toRem(1) solid var(--main);
+    &.has-sublist {
+      // padding-bottom: toRem(35);
+      &._open-sublist {
+        .menu__link {
+          border-bottom: toRem(1) solid var(--main);
+          &::after {
+            transform: rotate(-180deg);
+          }
+        }
       }
+      .menu__link {
+        &::after {
+          @extend %arrow;
+           background-image: url("@img/icons/arrow-dwn-b.svg");
+          aspect-ratio: 43/43;
+          @include adaptiveValue("width", 40, 32, 0, 1920.98, 375.98);
+          margin-left: toRem(10);
+          transition: transform .4s ease;
+          @media (min-width:$mobileSmall){
+            margin-bottom: toRem(3);
+          }
+        }
+      }
+    }
+
+    &:not(:last-child) {
+      // .menu__link {
+        border-bottom: toRem(1) solid var(--main);
+      // }
     }
   }
 
   // .menu__link
   &__link {
-    display: grid;
+    display: flex;
     align-items: flex-end;
     padding-bottom: toRem(15);
     @include adaptiveValue("min-height", 117, 90, 2, 1920.98, 1440.98);
@@ -295,9 +325,9 @@
     @extend %paddLeft;
     @extend %transitionBG;
 
-    @media (min-width:toEm(600.98)) {
-      max-width: 68%;
-    }
+    // @media (min-width:toEm(600.98)) {
+    //   max-width: 72%;
+    // }
   }
 
   // .menu__social
@@ -360,6 +390,33 @@
     font-size: toRem(20);
   }
 }
+
+.sublist {
+    margin-top: toRem(35);
+          padding-bottom: toRem(35);
+		// .sublist__item
+		&__item {
+      &:not(:last-child) {
+        margin-bottom: toRem(7);
+      }
+		}
+		// .sublist__link
+		&__link {
+      transition: color .3s ease;
+      font-weight: 600;
+      // line-height: 1.7;
+      @extend %paddLeft;
+      // @media (min-width:toEm(600.98)) {
+      //   max-width: 72%;
+      // }
+      @media (any-hover: hover){
+        &:hover{
+          color: var(--blue);
+        }
+      }
+		}
+}
+
 
 
 .brief-header {

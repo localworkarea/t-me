@@ -1,5 +1,5 @@
 import {
-  isMobile, menuInit, lenis, getHash
+  isMobile, menuInit, lenis, getHash, _slideUp, _slideDown, _slideToggle
 } from "./functions.js";
 // Підключення списку активних модулів
 import {
@@ -98,9 +98,6 @@ function initSplitType() {
 }
 
 
-
-let mm = gsap.matchMedia();
-
 const heroContainer = document.querySelector('.hero__container');
 const parentTxtMainSections = document.querySelectorAll('.parent-txt-main');
 const parentTxtMainSections2 = document.querySelectorAll('.parent-txt-main-2');
@@ -109,9 +106,10 @@ const parentTxtMainSections3 = document.querySelector('.team__text');
 const roadmapSection = document.querySelector('.roadmap__container');
 const roadmapItems = document.querySelectorAll('.roadmap__item');
 
-function createAnimation() {
 
-   mm.revert();
+
+function createAnimation() {
+  ScrollTrigger.getAll().forEach(trigger => trigger.kill());
 
   if (heroSection) {
     gsap.to(heroContainer, {
@@ -152,26 +150,47 @@ function createAnimation() {
 
   }
 
-  // if (roadmapSection) {
-  //   roadmapItems.forEach((item1) => {
-  //     gsap.to(item1, {
-  //       y: 0,
-  //       opacity: 1,
-  //       // ease: "none",
-  //       scrollTrigger: {
-  //         trigger: roadmapSection,
-  //         start: "top center",
-  //         end: "top bottom",
-  //         scrub: true,
-  //         markers: true,
-  //       }
-  //     });
-  //   });
-  // }
 
+  // let mm = gsap.matchMedia();
+  if (createAnimation.mm) {
+  createAnimation.mm.kill(); // destroy previous matchMedia
+}
+createAnimation.mm = gsap.matchMedia();
+ createAnimation.mm.add({
+    min600: "(min-width:37.5em)",
+    max600: "(max-width:37.5em)",
+  }, (context) => {
 
+    let {
+      min600,
+      max600
+    } = context.conditions;
 
+    if (min600) {
+      initDesktopAnimations();
+    }
 
+    if (max600) {
+    }
+
+  }); // end match media ----------------------------------------
+
+  if (roadmapSection) {
+    roadmapItems.forEach((item1) => {
+      gsap.to(item1, {
+        y: 0,
+        opacity: 1,
+        // ease: "none",
+        scrollTrigger: {
+          trigger: roadmapSection,
+          start: "top center",
+          end: "top top",
+          scrub: true,
+          // markers: true,
+        }
+      });
+    });
+  }
   if (parentTxtMainSections2.length > 0) {
     parentTxtMainSections2.forEach((section) => {
       const txt = section.querySelector('.txt-main');
@@ -196,7 +215,6 @@ function createAnimation() {
     });
 
   }
-
   if (parentTxtMainSections3) {
     const words = parentTxtMainSections3.querySelectorAll('.word-span');
     if (words.length > 0) {
@@ -216,73 +234,7 @@ function createAnimation() {
     }
   }
 
-
-   mm.add({
-    desktop: "(min-width: 37.5em)",
-    mobile: "(max-width: 37.5em)"
-  }, context => {
-
-    if (context.conditions.desktop) {
-      initDesktopAnimations();
-    }
-
-    if (context.conditions.mobile) {
-      // mobile logic
-    }
-
-  });
-
-    // roadmap — САМЫЙ ПОСЛЕДНИЙ
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      initRoadmapAnimation();
-      ScrollTrigger.refresh(true);
-    });
-  });
-
 }
-
-
-// function initRoadmapAnimation() {
-//   if (!roadmapSection) return;
-
-//   roadmapItems.forEach(item => {
-//     gsap.to(item, {
-//       y: 0,
-//       opacity: 1,
-//       scrollTrigger: {
-//         trigger: roadmapSection,
-//         start: "top center",
-//         end: "top top",
-//         scrub: true,
-//         // markers: true,
-//       }
-//     });
-//   });
-// }
-function initRoadmapAnimation() {
-  if (!roadmapSection) return;
-
-  gsap.set(roadmapItems, {
-    opacity: 0,
-    yPercent: (i) => 20 + i * 25,
-  });
-
-  roadmapItems.forEach(item => {
-    gsap.to(item, {
-      yPercent: 0,
-      opacity: 1,
-      scrollTrigger: {
-        trigger: roadmapSection,
-        start: "top center",
-        end: "top top",
-        scrub: true,
-      }
-    });
-  });
-}
-
-
 
 function initDesktopAnimations() {
 
@@ -290,7 +242,7 @@ function initDesktopAnimations() {
     const servixeHomecontainer = document.querySelector('.services-home__container');
     const servixeHomeItems = document.querySelectorAll('.services-home__item');
 
-   if (servixeHome) {
+      if (servixeHome) {
         let maxHeight = 0;
         servixeHomeItems.forEach(item => {
           const itemHeight = item.offsetHeight;
@@ -362,8 +314,6 @@ function initDesktopAnimations() {
             end: () => `+=${(list.scrollWidth - scrollWrapper.clientWidth + totalPadding)/1.5}`,
             scrub: true,
             pin: casesWrapper,
-            // anticipatePin: true,
-            // markers: true,
           }
         });
       }
@@ -398,6 +348,7 @@ function initDesktopAnimations() {
 }
 
 
+
 let resizeTimeout;
 let lastWidth = window.innerWidth;
 
@@ -414,16 +365,24 @@ window.addEventListener('resize', () => {
     createAnimation();
     ScrollTrigger.refresh(true);
 
-  }, 250);
+  }, 0);
 });
 
 
-initSplitType();
+
+
+
 window.addEventListener('load', () => {
-  createAnimation();
-  ScrollTrigger.refresh(true);
+  initSplitType();
 
   setTimeout(() => {
+    createAnimation();
+    // ScrollTrigger.refresh(true); 
+  }, 50);
+  
+
+  setTimeout(() => {
+
     const hash = getHash();
     if (!hash) return;
 
@@ -529,3 +488,32 @@ document.addEventListener('DOMContentLoaded', () => {
   checkScrollPosition();
   window.addEventListener('scroll', checkScrollPosition);
 });
+
+
+const subLists = document.querySelectorAll('.has-sublist');
+if (subLists.length) {
+	subLists.forEach((item) => {
+		const link = item.querySelector('.menu__link');
+		const sublist = item.querySelector('.sublist');
+
+		if (!link || !sublist) return;
+
+		_slideUp(sublist, 0);
+    if (link.hasAttribute('data-goto')) {
+    	link.removeAttribute('data-goto');
+    }
+
+
+		link.addEventListener('click', (e) => {
+			e.preventDefault();
+
+			if (item.classList.contains('_open-sublist')) {
+				item.classList.remove('_open-sublist');
+				_slideUp(sublist, 500);
+			} else {
+				item.classList.add('_open-sublist');
+				_slideDown(sublist, 500);
+			}
+		});
+	});
+}

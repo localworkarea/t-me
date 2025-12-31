@@ -548,17 +548,6 @@ export function briefInit() {
 	});
 }
 
-
-// document.addEventListener("click", function (e) {
-// 	const closeBtn = e.target.closest("[data-brief-close]");
-// 	if (closeBtn) {
-// 		e.preventDefault();
-// 		briefClose();
-// 	}
-// });
-
-
-
 function updateScrollLockState() {
 	const html = document.documentElement;
 	const menuOpen = html.classList.contains("menu-open");

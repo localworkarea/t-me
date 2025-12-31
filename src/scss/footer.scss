@@ -21,8 +21,9 @@
   &__list {
     display: grid;
     @include adaptiveValue("gap", 90, 40, 0, 1920.98, 480.98);
-    @media (min-width:toEm(820.98)){
-      max-width: 80%;
+    @media (min-width:toEm(1024.98)){
+      // max-width: 80%;
+      max-width: calc(100% - 120px);
       grid-template-columns: repeat(3, auto);
     }
   }

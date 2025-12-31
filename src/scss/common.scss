@@ -235,6 +235,12 @@ html.lenis body {
    font-weight: 700;
   line-height: 1.1;
 }
+.title-30 {
+  @include adaptiveValue("font-size", 43, 30, 2, 1920.98, 1440.98);
+  @include adaptiveValue("font-size", 30, 26, 3, 1440.98, 375.98);
+   font-weight: 700;
+  line-height: 1.1;
+}
 .title-25 {
   @include adaptiveValue("font-size", 33, 21, 0, 1920.98, 375.98);
    font-weight: 700;
@@ -306,6 +312,11 @@ html.lenis body {
     font-weight: 500;
   line-height: 1.2;
   @include adaptiveValue("font-size", 30, 18, 0, 1920.98, 375.98);
+}
+.txt-22 {
+    font-weight: 500;
+  line-height: 1.2;
+  @include adaptiveValue("font-size", 26, 18, 0, 1920.98, 375.98);
 }
 
 
@@ -511,7 +522,7 @@ html.lenis body {
 
 
 %transitionBG {
-   transition: background-color .3s ease;
+   transition: background-color .3s ease, border .3s ease;
        @media (any-hover: hover){
         &:hover{
           background-color: var(--blue);
